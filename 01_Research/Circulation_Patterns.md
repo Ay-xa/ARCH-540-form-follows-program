@@ -141,13 +141,41 @@
 - 平面里看到、任务书没写的：第 1（接待看见一切）、5（体育馆从门厅可见 + 自己的外门）、6（泳池和体育馆不相邻）、7（更衣藏在背后）、11（托儿在端部、独立出入口）、14（后勤在背面）、15（门厅通高 + 楼梯物件）。
 - 和本项目渐变序列的关系：第 2、10、11 说明"有露台 / 外门的房间"（咖啡、多功能室、托儿、老人休息室）天然是 buffered → controlled 的交界，这正是 10-20 提到的"冬夏阶段不同的功能放在交界处"的位置；第 7、14 说明更衣和后勤是"不需要外窗、不需要向阳"的核，可以放在平面最深处。
 
+## 4（补 2）. 楼梯、电梯和服务功能的位置（2026-10-22，用户追问后再读 10 张多层平面）
+
+读的是：Sixteen Mile L1/L2、Marpole 2011 入口层 / 下层、Commonwealth L03、East Bayfront L1、Gleneagles 上层、Western North York 二层、Redmond L1/L2、Eastside L1、Sport England 首层、Kingston 两层，加上之前看过的 Clayton、Churchill、Toyotomi。强度同前（几乎都 / 多数 / 有些）。
+
+**楼梯和电梯**
+17. **主楼梯是门厅里的一个"物件"，和接待台在同一个视野里。** 几乎都（Clayton 螺旋梯在大堂中央；Churchill 大楼梯在通高大堂；Marpole 2011 的阶梯看台就是主楼梯；Commonwealth 主梯紧贴登记台；East Bayfront 楼梯在大堂西端；Redmond 楼梯在街道上、体育馆门口；Western North York 在 living room 里；Sport England 楼梯 + 电梯就在接待后面）。
+18. **电梯紧挨主楼梯，但在门厅的边上不在中间；它和接待、行政、公共卫生间凑成一个核。** 多数（Sport England："Lifts"在接待和办公之间；Kingston 电梯 E 在大堂、健身楼梯和行政的角上；East Bayfront 电梯夹在大堂和更衣 / 卫生间之间；Redmond 二层电梯 + 卫生间 + 行政一条核；Sixteen Mile 电梯 + 楼梯核在新旧楼交接处）。反例：Marpole 2011 的电梯在东翼办公区，和楼宇工程师办公室、清洁间放一起，不在门厅——因为主楼梯（看台）本身太大。
+19. **每个大件在远离门厅的那一端有一部疏散楼梯；疏散梯放在房间带的端头，不放在中段。** 几乎都（Sixteen Mile 泳池西端、图书馆东端各一；Clayton 体育馆西南角、东北角；Eastside 体育馆东北角、泳池两端；Western North York 活动室带两端；Commonwealth 各角；Gleneagles 西核心一部 + 东端室外梯）。
+20. **二层的楼梯落在跑道环或二层门厅上；上下楼层的卫生间、楼梯、电梯叠在同一位置。** 多数（Sixteen Mile Level 2 lobby 正对 galleria 上方；Western North York 二层卫生间 + 楼梯 + 电梯夹在两组活动室之间，和首层对位；Redmond 二层核与首层同位）。
+
+**服务功能**
+21. **公共卫生间在门厅和更衣带的交接处，正好落在湿区 / 干区的分界上，一组服务门厅和两个大件。** 几乎都（Churchill 北侧更衣带中段；Clayton 6 在大堂和更衣之间；Sport England 的 WC 群在湿更衣和咖啡 / 接待之间；Toyotomi 紧贴入口大厅中央；East Bayfront lockers / washrooms 直接开向大堂；Commonwealth 在登记台旁）。
+22. **机房贴着泳池（最大的负荷），在背面外墙上，有自己的检修 / 换滤料出口；电气间常和它分开放在另一个角。** 几乎都（Sport England plant room + pool store + sub station 整排在北侧，标"access for filter replacement"；Sixteen Mile 泳池机房在泳池西端；Marpole 2011 机电房 43 在北端更衣带后面，另一个在西北角；Kingston "services"在更衣带最西端；Kenilworth 机房在泳池房）。没有泳池时机房贴体育馆或厨房（Redmond 后勤群在东北角、紧贴餐厅和厨房，有自己的院子）。
+23. **库房直接开进大件里面：体育馆库房沿体育馆一侧、泳池库房开向池边。** 几乎都（Sport England equipment store 挂在体育馆东侧、pool store 在池边；Marpole 2011 体育馆储藏 29 贴体育馆西侧；Churchill、Sixteen Mile 同样）。
+24. **"后勤核"：清洁间、楼宇工程师办公室、员工卫生间、电梯凑在一起，放在更衣带和行政之间的一翼，不在公共面上。** 多数（Marpole 2011 的 40、41、42、26 一组；Sport England staff + office + 员工 WC 在接待后面；East Bayfront service space 9 和 staff work area 8 在街角一起）。
+25. **垃圾 / 回收和服务入口在建筑的一个角上、靠服务车道，常和入口广场只隔一个转角，而不是在最远处。** 有些（Marpole 2011 垃圾回收 24 + 清洁间 25 在入口广场旁的西北角；Kenilworth 回收间"entry from site"；Redmond 后勤院在东北角）。
+26. **公园一侧的"球场小屋"卫生间有独立室外门，不穿建筑。** 有些（Marpole 2011 field house washrooms 44 在南端带外门；Kenilworth pool house 可独立关闭；Marpole 2021 任务书也有球场小屋）。
+
+**对工具的意义**
+- 楼梯 / 电梯 / 卫生间 / 清洁间可以合成一个"核"（core）物件，规则是：贴门厅边、在湿干分界上、上下对位。机房是另一个物件：贴泳池（或最大负荷）、在背面外墙、有外门。库房不单列，是大件的附属深度（Sport England 的 equipment store 约占体育馆一侧 3 m 进深——目测，待量）。
+- 这些都是"不需要外窗、不需要向阳"的功能，正是渐变序列里可以放在最深处的核；但它们又必须贴着门厅或大件，所以不能简单丢到平面中心。
+
 ## 4（决定）. 空间排布逻辑的优先级（用户 2026-10-22 决定）
 1. **先按任务书的要求**（Marpole 2021 的邻接、楼层、净高、直通室外；`Marpole_Functional_Program_2021.md`、工具里的 `ADJACENCY` / `EXTERIOR_ACCESS`）。
 2. **再用上面第 4（补）节归纳出的建筑经验规则**（接待看见一切、体育馆贴门厅侧面、泳池与体育馆不相邻、更衣藏背后、健身在二层、托儿在端部等）。
 3. 两者都要做成 skill（`.claude/skills/community-centre-layout/`），以后规则稳定了再接进工具的评分。
 
+## 4（补 3）. 量出来的几个尺寸（2026-10-22，图上目测，±1–2 m，强度 B）
+- **Sport England 2014 范式首层**（有 10 m 比例尺）：门厅带（foyer + 接待 + 咖啡，沿泳池大厅一侧）宽约 8–9 m；门斗约 3.5 × 3 m；从接待到体育馆的主走廊宽约 4–5 m；湿更衣区约 19 m 宽 × 27 m 深（含淋浴和卫生间）；文字：泳池周边走道 2.5 m（p.10）。
+- **Churchill Meadows**（有 20 m 比例尺）：南北穿越的大堂净宽约 10 m（泳池一侧有长凳，走道约 7.5 m）、长约 45 m，约 450 m²，占 ~7,000 m² 建筑的 6%；北侧更衣带深约 14 m。
+- **Marpole 2021 任务书的比例**（面积表）：门厅 1,190 / 35,363 ft² ≈ 3.4%；行政 ≈ 4%；更衣与公共卫生间 ≈ 6%；设备与后勤 ≈ 16%；体育馆储藏 = 体育馆 8%。
+- 没量：A 型街道的宽度（Sixteen Mile galleria、Western North York 内廊）没有比例尺，可用已知的篮球场 28 × 15 m 反推，待做。
+
 ## 5. 待做 / 没做
-- 各类型的尺寸规律（街道宽度、门厅面积占比、更衣带深度）没有量；Sport England 导则里有部分数字，还没抄。
+- 各类型的尺寸规律只量了 Sport England 和 Churchill 两例（第 4（补 3）节）；A 型街道的宽度还没量。
 - Marpole 现行方案（2022 起）没有公开平面，只有鸟瞰；Killarney、Trout Lake、Creekside 没找到平面。
 - Barker Rinker Seacat 的"main street concept"（美国康乐中心常用的分类说法）PDF 超过抓取上限没读；没有找到正式的流线分类文献，上面五种是从案例归纳的。
 - 没有画统一比例的简图对比；平面图原图已存，下一步可以按同一比例描三样东西。

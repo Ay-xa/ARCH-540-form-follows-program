@@ -46,6 +46,28 @@
   .controls input[type=number]{width:64px;padding:2px 4px;border:1px solid var(--line);border-radius:4px;font:inherit}
   .controls input[type=range]{width:120px}
   .readout{color:var(--muted);font-size:12px}
+  /* 使用者模式（2026-10-22）：只显示功能本身；开发者模式不变。dev = 只在开发者模式显示 */
+  body.mode-user .hint, body.mode-user .badge, body.mode-user .dev, body.mode-user header .sub, body.mode-user details.more,
+  body.mode-user .fields, body.mode-user .encl .hint, body.mode-user button.link[data-reset], body.mode-user #area-summary,
+  body.mode-user #space-list, body.mode-user #center > h2:last-of-type, body.mode-user #band-ctrl, body.mode-user .controls.climate,
+  body.mode-user .pc-ok, body.mode-user #left > p.hint, body.mode-user #massing-readout, body.mode-user #strategy-readout, body.mode-user label[for=chk-adj], body.mode-user .chk-dev{display:none !important}
+  body.mode-user .steppage h2{font-size:20px;margin-bottom:14px}
+  body.mode-user .layout{grid-template-columns:250px 1fr 300px}
+  body.mode-user #left h2.dev{display:none}
+  body.mode-user .card{box-shadow:none}
+  body.mode-user .side3 .card{border:none;border-top:1px solid var(--line);border-radius:0;padding:12px 0 6px}
+  body.mode-user .side3 .card:first-child{border-top:none;padding-top:0}
+  body.mode-user .prog .pr{padding:7px 10px}
+  body.mode-user #left h2{font-size:14px;color:var(--ink)}
+  body.mode-user .fnrow{font-size:14px;padding:5px 6px}
+  body.mode-user .sitewrap{grid-template-columns:1fr 260px}
+  /* 2026-10-22 按 Web Interface Guidelines 检查后补：键盘焦点可见、减少动效、数字列等宽、触控不延迟 */
+  button:focus-visible, input:focus-visible, select:focus-visible, .fnrow:focus-visible, [data-pickfn]:focus-visible{outline:2px solid var(--flag);outline-offset:2px}
+  .kv, .meta, table.areas td.num, .titleblock .counts{font-variant-numeric:tabular-nums}
+  button, .fnrow, .chip, .stepper button{touch-action:manipulation}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.01ms !important;transition-duration:0.01ms !important} }
+  #mode-toggle{margin-left:auto;font-size:12px}
+  #mode-toggle b{color:var(--accent)}
   svg#plan{width:100%;height:auto;background:var(--paper);border:1px solid var(--line);border-bottom:none;border-radius:3px 3px 0 0;touch-action:none;user-select:none;display:block}
   svg#plan text, svg#section text{font-family:Bahnschrift,"Bahnschrift SemiCondensed","Microsoft YaHei",sans-serif}
   /* 标题块：平面这张“纸”的下沿 */
@@ -199,6 +221,7 @@
     <button data-step="6">6 效果展示</button>
   </nav>
   <span class="sub">ARCH 540 作业二 · 规则见 <code>_shared/Rules/</code> · 北在上</span>
+  <button id="mode-toggle" title="使用者模式只显示功能本身；开发者模式显示所有数值、来源和说明"></button>
 </header>
 
 <!-- 第 1 步：选择要生成的功能（2026-10-18，用户要求按设计流程分步） -->
@@ -207,6 +230,7 @@
     <h2>第 1 步 · 选择要生成的功能</h2>
     <p class="hint">勾选这个社区中心要有的功能。“必有”来自温哥华《社区中心战略》（2022）目标 9，每个社区中心都要有；“基本配套”是建筑运转需要的门厅、行政、更衣和设备（Marpole 任务书里都有，分类是我的判断）；“可选”是 Marpole 里有、可加可减的房间。面积和净高在下一步确认。</p>
     <div id="program-select"></div>
+    <div id="program-check"></div>
     <div class="stepnav"><span></span><button class="primary" data-goto="2">下一步：确认面积与净高 →</button></div>
   </div>
 </div>
@@ -238,6 +262,7 @@
     <aside class="side3">
       <div class="card" id="mass-panel"></div>
       <div class="card" id="level-panel"></div>
+      <div class="card" id="circ-panel"></div>
       <div class="card" id="massing-check"></div>
       <div class="stepnav"><button data-goto="3">← 上一步</button><button class="primary" data-goto="5">下一步：功能排布 →</button></div>
     </aside>
@@ -250,7 +275,7 @@
 <div class="layout">
   <aside id="left">
     <div class="stepnav" style="margin-bottom:8px"><button data-goto="4">← 回到体块推演</button><span></span></div>
-    <h2>面积</h2>
+    <h2 class="dev">面积</h2>
     <div id="area-summary"></div>
     <h2>已放入</h2>
     <div id="function-list"></div>
@@ -270,11 +295,11 @@
     </div>
     <div class="controls">
       <label>平面标高 <select id="plan-level"></select></label>
-      <label><input type="checkbox" id="chk-adj"> 画出所有不满足的邻接</label>
-      <label><input type="checkbox" id="chk-sun"> 外墙受晒色带</label>
+      <label class="chk-dev"><input type="checkbox" id="chk-adj"> 画出所有不满足的邻接</label>
+      <label class="chk-dev"><input type="checkbox" id="chk-sun"> 外墙受晒色带</label>
       <span id="massing-readout" class="readout"></span>
     </div>
-    <div class="controls">
+    <div class="controls climate">
       <label>气候依据 <select id="sel-basis"><option value="sun">外墙受晒（太阳辐射）</option><option value="bands">南 / 中 / 北分带（原来的假设）</option></select></label>
       <label id="lbl-climper">时段 <select id="sel-climper"></select></label>
       <span id="climate-hint" class="hint"></span>
@@ -291,7 +316,7 @@
     <p class="hint">平面显示所选标高的截面：只画在这个标高处存在的体块（底标高 ≤ 标高 &lt; 顶标高）。颜色是功能区的阶段（冷淡到暖实：exposed → controlled），空白是走廊和未分配空间。墨色实线 = 外墙；深蓝虚线 = 问题或建议（需要调整的原位置、建议位置、不满足的邻接、体块贴着但接触宽度不足 5 m）；灰色斜线 = 净高不足 3.0 m；淡色虚线 = 体块轮廓（只在有多个体块时画）和挑空范围。房间左上角的小方块 = 已锁定；面积后写“挑空”的房间占了上面的层。平面里不能改体块（回到第 4 步改）。<b>拖动功能区</b>可以挪动它（吸附 1 m，只在这一层里移动；拖动时深蓝 = 不在可用楼面里）；拖过的功能区自动锁定，被它压住的没锁定的功能区会重新找位置。点一个房间，只画它自己不满足的邻接；上面的开关可以画出全部。</p></details>
     <div id="v3slot-layout"></div>
     <h2>剖面</h2>
-    <div class="controls">
+    <div class="controls dev">
       <label>方向 <select id="sec-dir"><option value="ew">东西向（沿 y 切）</option><option value="ns">南北向（沿 x 切）</option></select></label>
       <label>位置 <input id="sec-pos" type="number" step="1" style="width:64px"> m</label>
       <span class="hint">默认切过选中体块的中线。深灰 = 楼板和屋顶（厚 0.4 m）；彩色 = 功能区；浅蓝斜线 = 挑空；虚线 = 标高。</span>
@@ -520,7 +545,9 @@ const FUNCTIONS = [
       [{name:"垃圾分类间", ft2:160}, {name:"应急物资储藏", ft2:100}, {name:"清洁/储藏", ft2:150}, {name:"清洁间 ×2", ft2:80}]),
     refRange:"", areaNote:"原文全组 5,756 ft²（取较大值）；去掉了只服务泳池的机房、化学品间（1,399）和只服务托儿的机房、电气（408），因为工具里还没有泳池和托儿",
     bandPref:"middle", bandPrefStatus:STATUS.assumed,
-    aspect:{min:1, max:3, status:STATUS.assumed}, splittable:false,
+    aspect:{min:1, max:3, status:STATUS.assumed},
+    // 2026-10-22：可拆成几间（Marpole 原文：空调机房“可分散布置”）；单间下限 100、上限 250 m² 是假设
+    splittable:true, minUnitAreaM2:{ value:100, status:STATUS.assumed }, maxUnitAreaM2:{ value:250, status:STATUS.assumed },
     drawn:true },
   { id:"cafe", name:"咖啡", category:"核心（非必有，第一版加入）", required:false, intensity:"轻、中等停留", group:"lobby",
     rules:["R1","R3"], minStage:{winter:"controlled", summer:"tempered"}, stageNote:"用户决定：按久坐处理",
@@ -636,6 +663,47 @@ const PROGRAM_LATER = [
   { name:"球场小屋（球队更衣、室外卫生间）", m2:114, note:"Marpole 2021 净面积 1,230 ft²；从室外进入，还没做" },
 ];
 const isActive = f => f.drawn && !state.excluded[f.id];
+// 任务书查漏（2026-10-22，skill community-centre-program-check）：四级清单 + 支持空间。
+// A = 温哥华《社区中心战略》目标 9；B = 14 个案例里几乎都有（≥ 11）；C = 常见（5–10，温哥华项目几乎都有）；D = 片区级 / 场地专属（目标 10）。
+// fn = 工具里的功能 id；sub = 已并入某个功能的子房间（按名字关键词在 main / support 里找）；later = PROGRAM_LATER 里的；none = 工具里没有。
+const PROGRAM_CHECK = {
+  tiers: [
+    { id:"A", zh:"必有（温哥华《社区中心战略》目标 9）", items:[
+      { zh:"门厅、接待", fn:"lobby" }, { zh:"体育馆", fn:"gym" }, { zh:"多功能室", fn:"hall", alt:["flex","meeting"] }, { zh:"健身与康养", fn:"fitness" },
+      { zh:"小厨房", fn:"kitchen", sub:"小厨房" }, { zh:"青少年空间", fn:"youth" }, { zh:"老年人空间", fn:"seniors" }, { zh:"包容无障碍的卫生间", fn:"washroom", sub:"通用卫生间" } ] },
+    { id:"B", zh:"案例里几乎都有（14 个里 ≥ 11）", items:[
+      { zh:"更衣室（有体育馆或泳池就要）", fn:"changing" }, { zh:"行政 / 员工办公", fn:"admin" }, { zh:"每个大件的储藏", sub:"体育馆储藏" }, { zh:"门斗与排队区", sub:"聚集与排队空间" }, { zh:"设备与后勤（机房、电气）", fn:"support" } ] },
+    { id:"C", zh:"常见（温哥华项目几乎都有，提示）", items:[
+      { zh:"大厅 / 表演厅（带舞台）", fn:"hall" }, { zh:"商业 / 教学厨房", fn:"kitchen" }, { zh:"托儿 / 学前 / 儿童室", later:"托儿中心" }, { zh:"艺术 / 手工 / 音乐室", fn:"arts", alt:["musicroom"] }, { zh:"咖啡 / 小卖部", fn:"cafe" }, { zh:"泳池（锚，由片区供给定）", later:"室外泳池" } ] },
+    { id:"D", zh:"片区级 / 场地专属（目标 10：每个片区至少一种；按场地）", items:[
+      { zh:"双体育馆、专用艺术工作室、全规模社区厨房、较大健身中心、训练与运动表现、剧场、画廊", none:"片区级，由用户决定" }, { zh:"球场小屋（公园场地）", later:"球场小屋" }, { zh:"室外：直通室外的舞台 / 游戏场 / 篮球场、自行车棚", fn:"covered_play", alt:["plaza","bike","covered_market"] } ] },
+  ],
+  // 最常被忘的支持空间（Marpole 2021 的数字可借用）：在已选功能的子房间里找关键词
+  support: [
+    { zh:"体育馆储藏（≈ 体育馆 8%）", key:"体育馆储藏", ft2:600 }, { zh:"多功能厅 / 活动室储藏", key:"储藏", ft2:250 }, { zh:"机房、空调、电气、泳池机房", key:"机房", ft2:3000 },
+    { zh:"清洁间（每层 / 每组团）", key:"清洁间", ft2:40 }, { zh:"员工卫生间、员工休息", key:"员工卫生间", ft2:300 }, { zh:"急救室、救生员 / 员工办公", key:"急救室", ft2:250 },
+    { zh:"通用 / 家庭卫生间、成人护理台", key:"成人护理台", ft2:145 }, { zh:"门斗、排队、婴儿车停放、饮水", key:"婴儿车", ft2:555 }, { zh:"青少年室内员工办公（无死角）", key:"青少年员工办公室", ft2:100 },
+    { zh:"垃圾分类、IT、通信入口、发电机、电梯机房", key:"垃圾分类", ft2:775 }, { zh:"球场小屋（公园场地）", later:"球场小屋", ft2:1230 } ],
+};
+function programCheck(){
+  const byId = Object.fromEntries(FUNCTIONS.map(f => [f.id, f]));
+  const act = FUNCTIONS.filter(isActive);
+  const hasSub = key => act.find(f => (f.main || []).concat(f.support || []).some(x => x.name.includes(key)));
+  const tiers = PROGRAM_CHECK.tiers.map(t => ({ ...t, items: t.items.map(it => {
+    const ids = [it.fn, ...(it.alt || [])].filter(Boolean), on = ids.filter(id => byId[id] && isActive(byId[id]));
+    if (on.length) return { ...it, state:"ok", by:on.map(id => byId[id].name).join("、") };
+    if (it.sub && hasSub(it.sub)) return { ...it, state:"ok", by:`已并入「${hasSub(it.sub).name}」` };
+    if (it.later) return { ...it, state:"later", by:"工具还不能排布，只能记在“以后加入”" };
+    if (it.none) return { ...it, state:"ask", by:it.none };
+    const off = ids.filter(id => byId[id]);
+    return { ...it, state:"missing", addable:off, by:off.length ? `可以勾上「${off.map(id => byId[id].name).join("、")}」` : "工具里没有这个功能" };
+  }) }));
+  const support = PROGRAM_CHECK.support.map(s => {
+    if (s.later) return { ...s, state:"later" };
+    const f = hasSub(s.key); return f ? { ...s, state:"ok", by:f.name } : { ...s, state:"missing" };
+  });
+  return { tiers, support };
+}
 // 温哥华 22 个社区（local area）边界（2026-10-18）：City of Vancouver Open Data，Local area boundary，Open Government Licence – Vancouver。
 // 原始文件 Assignment_2/03_Data/CityOfVancouver_local-area-boundary.geojson；这里换算成以北纬 49.25°、西经 123.12° 为原点的近似米坐标（取整 1 m），c = 平台给的中心点，km2 = 面积
 const LOCAL_AREAS = [{"name":"Arbutus Ridge","ring":[[-2369,799],[-3261,821],[-3261,837],[-4220,859],[-4222,792],[-4209,767],[-4081,620],[-3997,451],[-3772,172],[-3604,-115],[-3701,-36],[-3792,5],[-3702,-170],[-3674,-208],[-3645,-234],[-3651,-1691],[-2563,-1711],[-2549,-1172],[-2548,-1163],[-2546,-1154],[-2544,-1145],[-2541,-1136],[-2538,-1128],[-2534,-1119],[-2530,-1111],[-2525,-1103],[-2520,-1095],[-2515,-1087],[-2509,-1080],[-2503,-1073],[-2497,-1066],[-2490,-1061],[-2483,-1055],[-2475,-1049],[-2468,-1044],[-2459,-1039],[-2451,-1035],[-2443,-1031],[-2434,-1028],[-2425,-1025],[-2416,-1023],[-2407,-1021],[-2398,-1020],[-2389,-1018],[-2380,-1018],[-2370,-1018],[-2361,-1019],[-2352,-1020],[-2343,-1021],[-2334,-1023],[-2325,-1026],[-2185,-1063],[-2176,-1065],[-2167,-1066],[-2157,-1068],[-2148,-1068],[-2138,-1069],[-2129,-1068],[-2120,-1068],[-2110,-1066],[-2101,-1065],[-2092,-1062],[-2083,-1060],[-2074,-1057],[-2065,-1053],[-2057,-1049],[-2049,-1044],[-2041,-1039],[-2033,-1034],[-2025,-1028],[-2018,-1022],[-2012,-1016],[-2005,-1009],[-1999,-1002],[-1993,-994],[-1988,-987],[-1983,-979],[-1979,-970],[-1975,-962],[-1971,-953],[-1968,-945],[-1966,-935],[-1963,-926],[-1962,-917],[-1961,-908],[-1960,-899],[-1959,-889],[-1958,-822],[-1958,-803],[-1960,-785],[-1962,-766],[-1966,-747],[-1969,-729],[-1975,-711],[-1981,-693],[-1989,-676],[-2353,69],[-2359,83],[-2365,97],[-2370,111],[-2374,126],[-2377,141],[-2379,156],[-2381,172],[-2381,187],[-2381,202],[-2369,799]],"c":[-3028,-353],"km2":3.67},{"name":"Downtown","ring":[[562,4440],[1145,4219],[1505,4341],[1453,2515],[1330,2539],[648,2534],[403,2407],[-84,2160],[-674,2159],[-1285,2799],[-896,2977],[-79,3799],[-1212,4914],[-1067,5064],[-197,4587],[562,4440]],"c":[249,3399],"km2":4.64},{"name":"Dunbar-Southlands","ring":[[-3645,-233],[-3651,-1691],[-4266,-1689],[-4294,-3669],[-4293,-3807],[-4295,-3807],[-4342,-3804],[-4390,-3798],[-4437,-3790],[-4484,-3779],[-4529,-3766],[-4574,-3750],[-4618,-3731],[-4662,-3710],[-4703,-3687],[-4744,-3662],[-4782,-3634],[-4820,-3604],[-4856,-3573],[-4889,-3540],[-4922,-3504],[-4938,-3486],[-4955,-3469],[-4973,-3453],[-4992,-3438],[-5011,-3424],[-5032,-3411],[-5053,-3399],[-5075,-3388],[-5097,-3379],[-5120,-3370],[-5143,-3363],[-5167,-3358],[-5638,-3255],[-5657,-3250],[-5676,-3244],[-5694,-3237],[-5713,-3229],[-5730,-3220],[-5747,-3209],[-5764,-3199],[-5779,-3187],[-5795,-3174],[-5809,-3161],[-6213,-2764],[-6243,-2730],[-6270,-2695],[-6296,-2659],[-6320,-2621],[-6341,-2582],[-6361,-2542],[-6459,-2327],[-6479,-2293],[-6502,-2259],[-6527,-2228],[-6553,-2197],[-6581,-2169],[-6611,-2142],[-6643,-2116],[-7256,-1656],[-7408,-1484],[-7261,-1155],[-6438,-1638],[-6220,-1415],[-5583,-1674],[-5585,-1491],[-5709,-1490],[-5709,-1288],[-5585,-1273],[-5580,-420],[-5708,-419],[-5710,-419],[-5714,-419],[-5717,-419],[-5720,-418],[-5723,-417],[-5726,-417],[-5729,-416],[-5732,-415],[-5735,-414],[-5738,-412],[-5740,-410],[-5743,-409],[-5745,-407],[-6172,-81],[-5886,-3],[-5871,1],[-5855,4],[-5840,6],[-5824,8],[-5808,8],[-5717,8],[-5717,-8],[-5567,-8],[-5562,721],[-6023,731],[-6047,901],[-4650,869],[-4220,859],[-4222,792],[-4209,767],[-4081,620],[-3997,451],[-3886,315],[-3771,171],[-3604,-115],[-3701,-36],[-3792,5],[-3702,-172],[-3671,-211],[-3645,-233]],"c":[-5054,-1331],"km2":9.01},{"name":"Fairview","ring":[[-1888,787],[-1846,2415],[-1842,2428],[-1837,2440],[-1832,2452],[-1827,2465],[-1820,2476],[-1813,2487],[-1805,2498],[-1798,2509],[-1789,2519],[-1779,2528],[-1769,2538],[-1759,2546],[-1748,2554],[-1737,2561],[-1725,2568],[-1401,2744],[-1285,2799],[-674,2159],[-84,2160],[403,2407],[360,759],[-524,785],[-524,770],[-855,777],[-872,791],[-890,803],[-908,815],[-928,826],[-947,836],[-968,845],[-988,852],[-1009,859],[-1030,864],[-1052,869],[-1074,872],[-1096,874],[-1118,875],[-1140,874],[-1162,873],[-1175,872],[-1188,869],[-1200,867],[-1213,863],[-1225,859],[-1238,854],[-1249,849],[-1261,843],[-1272,837],[-1283,829],[-1294,821],[-1304,813],[-1313,804],[-1322,795],[-1330,785],[-1339,775],[-1888,787]],"c":[-803,1607],"km2":3.61},{"name":"Grandview-Woodland","ring":[[3123,4449],[3795,4433],[4169,4370],[4184,4518],[4615,4807],[4608,1346],[3091,1364],[3094,1674],[3123,4449]],"c":[3871,2923],"km2":4.72},{"name":"Hastings-Sunrise","ring":[[4615,4807],[4948,4880],[5331,4884],[6003,4724],[7034,4812],[7032,4757],[7007,1716],[6967,1702],[6929,1686],[6891,1668],[6854,1647],[6819,1626],[6784,1602],[6751,1576],[6719,1549],[6689,1520],[6574,1405],[6562,1392],[6550,1381],[6537,1371],[6523,1361],[6509,1352],[6494,1343],[6480,1336],[6464,1330],[6448,1324],[6432,1319],[6416,1315],[6399,1311],[6383,1309],[6366,1308],[6349,1308],[5505,1312],[5505,1319],[4608,1324],[4608,1346],[4615,4807]],"c":[5794,3088],"km2":8.28},{"name":"Kensington-Cedar Cottage","ring":[[4608,1324],[4605,-754],[4497,-903],[4491,-912],[4485,-921],[4480,-930],[4475,-939],[4471,-949],[4468,-959],[4464,-969],[4462,-979],[4460,-989],[4458,-1000],[4457,-1010],[4457,-1021],[4443,-1900],[4037,-1894],[3870,-1928],[3122,-1916],[2141,-1899],[2191,705],[3067,685],[3067,733],[3082,732],[3091,1364],[4608,1346],[4608,1324]],"c":[3424,-366],"km2":7.2},{"name":"Kerrisdale","ring":[[-4293,-3807],[-4043,-3828],[-3791,-3838],[-3747,-3841],[-3704,-3847],[-3660,-3855],[-3618,-3866],[-3575,-3878],[-3534,-3893],[-3495,-3911],[-3455,-3931],[-3417,-3953],[-3380,-3977],[-3342,-4003],[-3301,-4026],[-3259,-4047],[-3216,-4065],[-3172,-4081],[-3133,-4094],[-3094,-4110],[-3057,-4127],[-3021,-4147],[-2986,-4168],[-2951,-4191],[-2919,-4217],[-2887,-4243],[-2857,-4272],[-2829,-4302],[-2802,-4333],[-2777,-4366],[-2753,-4399],[-2732,-4435],[-2729,-4440],[-2725,-4445],[-2721,-4450],[-2717,-4455],[-2712,-4460],[-2708,-4464],[-2703,-4469],[-2698,-4472],[-2692,-4476],[-2687,-4479],[-2681,-4482],[-2675,-4485],[-2669,-4487],[-2663,-4489],[-2657,-4491],[-2650,-4492],[-2644,-4493],[-2637,-4494],[-2631,-4495],[-2625,-4497],[-2619,-4499],[-2612,-4502],[-2608,-4504],[-2603,-4507],[-2598,-4510],[-2593,-4514],[-2588,-4517],[-2584,-4521],[-2579,-4525],[-2575,-4529],[-2571,-4534],[-2568,-4539],[-2565,-4543],[-2392,-4751],[-2386,-4758],[-2381,-4765],[-2376,-4773],[-2372,-4781],[-2368,-4789],[-2364,-4798],[-2361,-4806],[-2359,-4815],[-2357,-4824],[-2356,-4833],[-2354,-4843],[-2351,-4852],[-2348,-4861],[-2345,-4870],[-2341,-4878],[-2336,-4887],[-2331,-4895],[-2326,-4903],[-2321,-4911],[-2315,-4918],[-2308,-4926],[-2301,-4932],[-2294,-4939],[-2287,-4945],[-2279,-4950],[-2175,-4996],[-2096,-4568],[-2048,-4538],[-2082,-4481],[-2052,-3382],[-1464,-3393],[-1424,-1739],[-2563,-1711],[-3651,-1691],[-4266,-1689],[-4293,-3807]],"c":[-2876,-2912],"km2":6.56},{"name":"Killarney","ring":[[7008,-5511],[5815,-5089],[5645,-5085],[4590,-5063],[4589,-4733],[4590,-4721],[4591,-4708],[4592,-4696],[4594,-4684],[4597,-4673],[4601,-4661],[4605,-4649],[4610,-4638],[4615,-4627],[4621,-4616],[4647,-4567],[4671,-4516],[4690,-4463],[4716,-4212],[4718,-4198],[4720,-4184],[4724,-4171],[4728,-4157],[4733,-4144],[4739,-4131],[4745,-4119],[4753,-4106],[4760,-4094],[4769,-4083],[4959,-3830],[4975,-3807],[4989,-3784],[5003,-3760],[5014,-3735],[5024,-3709],[5033,-3684],[5040,-3657],[5046,-3630],[5081,-2289],[5173,-2289],[5177,-1906],[5326,-1892],[5930,-1893],[5936,-1895],[5943,-1895],[5950,-1896],[5957,-1896],[5964,-1896],[5971,-1896],[5977,-1895],[5984,-1894],[5991,-1892],[5997,-1890],[6004,-1888],[6011,-1885],[6017,-1882],[6023,-1879],[6028,-1876],[6034,-1872],[6039,-1868],[6045,-1863],[6050,-1859],[6055,-1854],[6059,-1849],[6063,-1843],[6067,-1837],[6071,-1832],[6114,-1757],[6358,-1951],[6368,-1958],[6379,-1965],[6390,-1971],[6402,-1977],[6414,-1982],[6426,-1987],[6439,-1990],[6451,-1993],[6463,-1995],[6477,-1997],[6490,-1997],[6502,-1997],[6515,-1997],[7007,-1960],[7029,-4487],[7008,-5511]],"c":[5984,-3645],"km2":6.88},{"name":"Kitsilano","ring":[[-1285,2799],[-1725,2568],[-1737,2562],[-1747,2555],[-1758,2548],[-1768,2541],[-1777,2533],[-1786,2524],[-1795,2514],[-1803,2505],[-1810,2495],[-1817,2484],[-1824,2473],[-1829,2462],[-1834,2451],[-1839,2439],[-1842,2427],[-1846,2415],[-1888,787],[-3261,820],[-3261,837],[-4650,869],[-4645,1079],[-4791,1231],[-4759,2760],[-3905,2691],[-3255,2826],[-2885,2824],[-2373,3350],[-1890,3351],[-1714,3279],[-1545,3128],[-1285,2799]],"c":[-3146,1939],"km2":6.32},{"name":"Marpole","ring":[[947,-5067],[615,-5036],[584,-5034],[552,-5035],[520,-5037],[489,-5042],[458,-5048],[427,-5056],[397,-5066],[204,-5135],[187,-5143],[170,-5152],[153,-5162],[137,-5173],[122,-5185],[107,-5198],[93,-5211],[80,-5225],[67,-5240],[56,-5255],[45,-5271],[35,-5288],[25,-5304],[15,-5319],[3,-5335],[-9,-5349],[-22,-5362],[-36,-5375],[-50,-5387],[-65,-5398],[-81,-5409],[-97,-5419],[-113,-5427],[-130,-5435],[-571,-5618],[-664,-5633],[-757,-5641],[-852,-5644],[-1015,-5645],[-1064,-5645],[-1113,-5642],[-1162,-5636],[-1249,-5622],[-1290,-5608],[-1331,-5592],[-1370,-5574],[-1409,-5553],[-1447,-5531],[-1483,-5507],[-1518,-5481],[-1551,-5453],[-1584,-5424],[-1613,-5392],[-1642,-5360],[-1669,-5325],[-1692,-5298],[-1715,-5271],[-1741,-5246],[-1768,-5222],[-1796,-5200],[-1825,-5179],[-1856,-5161],[-1980,-5090],[-2058,-5049],[-2175,-4996],[-2096,-4568],[-2048,-4538],[-2082,-4481],[-2052,-3382],[-1464,-3393],[1005,-3440],[947,-5067]],"c":[-609,-4399],"km2":5.95},{"name":"Mount Pleasant","ring":[[1405,2115],[1677,1880],[1680,1876],[1683,1874],[1686,1871],[1690,1868],[1693,1866],[1697,1863],[1701,1862],[1705,1860],[1710,1858],[1713,1857],[1718,1856],[1722,1855],[1727,1854],[1731,1854],[1735,1854],[2180,1849],[2204,1847],[2226,1843],[2248,1839],[2271,1833],[2764,1688],[2776,1684],[2788,1681],[2801,1679],[2813,1677],[2826,1676],[2838,1675],[3094,1674],[3082,732],[3067,733],[3067,685],[2191,705],[1366,724],[360,759],[403,2407],[648,2534],[1330,2539],[1453,2515],[1451,2423],[1410,2309],[1405,2115]],"c":[1561,1444],"km2":3.7},{"name":"Oakridge","ring":[[1045,-1866],[1005,-3440],[-1464,-3393],[-1424,-1739],[-585,-1779],[1045,-1866]],"c":[-220,-2608],"km2":3.99},{"name":"Renfrew-Collingwood","ring":[[7008,-1681],[7007,-1960],[6515,-1997],[6502,-1997],[6490,-1997],[6477,-1997],[6463,-1995],[6451,-1993],[6439,-1990],[6426,-1987],[6414,-1982],[6402,-1977],[6390,-1971],[6379,-1965],[6368,-1958],[6358,-1951],[6114,-1757],[6071,-1832],[6067,-1838],[6063,-1844],[6058,-1850],[6053,-1855],[6048,-1860],[6043,-1865],[6037,-1870],[6031,-1874],[6025,-1879],[6018,-1882],[6012,-1886],[6005,-1889],[5998,-1891],[5991,-1893],[5984,-1895],[5977,-1897],[5969,-1898],[5326,-1892],[5177,-1906],[4443,-1900],[4457,-1021],[4457,-1010],[4458,-1000],[4460,-989],[4462,-979],[4464,-969],[4468,-959],[4471,-949],[4475,-939],[4480,-930],[4485,-921],[4491,-912],[4497,-903],[4605,-754],[4608,1324],[5505,1319],[5505,1312],[6349,1308],[6366,1308],[6383,1309],[6399,1312],[6416,1315],[6432,1319],[6448,1324],[6464,1330],[6479,1336],[6494,1344],[6509,1352],[6523,1361],[6537,1371],[6549,1381],[6562,1392],[6574,1405],[6689,1520],[6712,1545],[6737,1569],[6763,1592],[6790,1613],[6818,1633],[6848,1651],[6878,1667],[6909,1682],[6941,1696],[6974,1707],[7007,1716],[7008,-1681]],"c":[5801,-294],"km2":8.04},{"name":"Riley Park","ring":[[1045,-1866],[279,-1825],[291,-1333],[291,-1326],[291,-1318],[290,-1310],[289,-1303],[287,-1295],[285,-1288],[283,-1281],[279,-1273],[276,-1266],[272,-1260],[268,-1253],[137,-1077],[133,-1071],[130,-1066],[127,-1061],[125,-1056],[122,-1050],[120,-1044],[118,-1039],[117,-1033],[116,-1027],[115,-1021],[115,-1015],[114,-1009],[114,-1003],[120,-802],[120,-797],[121,-793],[121,-789],[122,-784],[123,-780],[125,-775],[127,-771],[128,-767],[131,-763],[133,-759],[136,-756],[138,-752],[141,-749],[144,-746],[148,-743],[151,-740],[265,-641],[271,-635],[278,-629],[284,-622],[290,-615],[295,-608],[300,-600],[305,-592],[309,-584],[312,-576],[315,-567],[318,-558],[320,-549],[322,-541],[324,-531],[325,-522],[360,759],[2191,705],[2141,-1899],[1045,-1866]],"c":[1225,-579],"km2":4.89},{"name":"Shaughnessy","ring":[[-2563,-1711],[-2549,-1172],[-2549,-1163],[-2548,-1155],[-2547,-1146],[-2545,-1138],[-2542,-1129],[-2539,-1121],[-2537,-1113],[-2533,-1105],[-2529,-1097],[-2524,-1090],[-2519,-1082],[-2514,-1075],[-2508,-1069],[-2503,-1062],[-2496,-1056],[-2489,-1050],[-2483,-1045],[-2476,-1040],[-2468,-1036],[-2461,-1031],[-2452,-1028],[-2445,-1024],[-2436,-1021],[-2428,-1019],[-2419,-1017],[-2411,-1015],[-2402,-1015],[-2393,-1014],[-2385,-1014],[-2376,-1014],[-2367,-1015],[-2359,-1016],[-2350,-1018],[-2341,-1020],[-2333,-1023],[-2325,-1026],[-2185,-1063],[-2176,-1065],[-2167,-1066],[-2157,-1067],[-2148,-1068],[-2138,-1069],[-2129,-1068],[-2120,-1067],[-2110,-1066],[-2101,-1064],[-2092,-1062],[-2083,-1060],[-2074,-1056],[-2065,-1053],[-2057,-1049],[-2049,-1044],[-2041,-1039],[-2033,-1034],[-2025,-1028],[-2019,-1022],[-2012,-1016],[-2005,-1009],[-1999,-1002],[-1993,-994],[-1988,-987],[-1983,-979],[-1979,-970],[-1975,-962],[-1971,-953],[-1968,-945],[-1966,-935],[-1963,-926],[-1962,-917],[-1961,-908],[-1960,-899],[-1959,-889],[-1958,-822],[-1958,-803],[-1960,-785],[-1962,-766],[-1966,-747],[-1969,-729],[-1975,-711],[-1981,-693],[-1989,-676],[-2353,69],[-2359,83],[-2365,97],[-2370,111],[-2374,126],[-2377,141],[-2379,156],[-2381,172],[-2381,187],[-2381,202],[-2369,799],[-1888,787],[-1339,775],[-1330,785],[-1322,795],[-1312,804],[-1303,813],[-1293,821],[-1283,829],[-1272,837],[-1261,843],[-1249,849],[-1237,855],[-1225,860],[-1213,864],[-1200,867],[-1187,870],[-1174,872],[-1161,874],[-1138,875],[-1115,875],[-1091,874],[-1067,871],[-1044,867],[-1021,862],[-999,856],[-976,848],[-954,839],[-933,829],[-913,818],[-893,805],[-873,791],[-855,777],[-524,770],[-585,-1779],[-1424,-1739],[-2563,-1711]],"c":[-1436,-477],"km2":4.45},{"name":"South Cambie","ring":[[291,-1333],[279,-1825],[-585,-1779],[-524,770],[-524,785],[360,759],[325,-522],[324,-531],[322,-541],[320,-549],[318,-558],[315,-567],[312,-576],[309,-584],[305,-592],[300,-600],[295,-608],[290,-615],[284,-622],[278,-629],[271,-635],[265,-641],[135,-754],[132,-758],[130,-763],[128,-767],[126,-772],[124,-777],[123,-782],[122,-787],[121,-792],[120,-797],[120,-802],[114,-1003],[114,-1009],[115,-1015],[115,-1021],[116,-1027],[117,-1033],[118,-1039],[120,-1044],[122,-1050],[125,-1056],[127,-1061],[130,-1066],[133,-1071],[137,-1077],[268,-1253],[272,-1259],[275,-1264],[279,-1270],[281,-1276],[284,-1282],[286,-1288],[288,-1294],[289,-1301],[290,-1307],[291,-1314],[292,-1320],[292,-1327],[291,-1333]],"c":[-131,-491],"km2":2.16},{"name":"Strathcona","ring":[[1505,4341],[1896,4479],[3123,4449],[3094,1674],[2838,1675],[2819,1677],[2801,1680],[2782,1683],[2764,1688],[2271,1833],[2256,1838],[2241,1841],[2226,1845],[2211,1847],[2196,1849],[2180,1849],[1735,1854],[1730,1855],[1723,1856],[1718,1857],[1712,1859],[1707,1861],[1701,1864],[1696,1866],[1691,1869],[1686,1873],[1681,1876],[1677,1880],[1405,2115],[1410,2309],[1451,2423],[1453,2515],[1505,4341]],"c":[2308,3119],"km2":4.34},{"name":"Sunset","ring":[[947,-5067],[1005,-3440],[1045,-1866],[2141,-1899],[3122,-1916],[3094,-3319],[3124,-3406],[3114,-4685],[3088,-4691],[3062,-4698],[3036,-4707],[3011,-4716],[2987,-4727],[2963,-4740],[2910,-4767],[2854,-4791],[2798,-4811],[2297,-4999],[2212,-5036],[2200,-5042],[2187,-5049],[2175,-5054],[2162,-5059],[2149,-5063],[2135,-5066],[2122,-5069],[2108,-5071],[2095,-5072],[2081,-5072],[1178,-5076],[1085,-5077],[992,-5072],[947,-5067]],"c":[2032,-3454],"km2":6.53},{"name":"Victoria-Fraserview","ring":[[4590,-5063],[4472,-5061],[4400,-5058],[4328,-5051],[4258,-5041],[4187,-5027],[4118,-5008],[4049,-4986],[3983,-4960],[3917,-4930],[3853,-4897],[3792,-4860],[3739,-4826],[3719,-4813],[3697,-4802],[3675,-4792],[3652,-4783],[3629,-4776],[3315,-4687],[3286,-4682],[3257,-4679],[3229,-4676],[3200,-4676],[3171,-4678],[3143,-4681],[3114,-4685],[3124,-3406],[3094,-3319],[3122,-1916],[3870,-1928],[4037,-1894],[4443,-1900],[5177,-1906],[5173,-2289],[5081,-2289],[5046,-3630],[5040,-3657],[5033,-3684],[5024,-3709],[5014,-3735],[5003,-3760],[4989,-3784],[4975,-3807],[4959,-3830],[4769,-4083],[4760,-4094],[4753,-4106],[4745,-4119],[4739,-4131],[4733,-4144],[4728,-4157],[4724,-4171],[4720,-4184],[4718,-4198],[4716,-4212],[4690,-4463],[4671,-4516],[4647,-4567],[4621,-4616],[4615,-4627],[4610,-4638],[4605,-4649],[4601,-4661],[4597,-4673],[4594,-4684],[4592,-4696],[4591,-4708],[4590,-4721],[4589,-4733],[4590,-5063]],"c":[4059,-3315],"km2":5.46},{"name":"West End","ring":[[-1285,2799],[-1545,3128],[-1648,3463],[-1856,3798],[-1846,4105],[-2017,4301],[-1576,4744],[-1315,4810],[-1212,4914],[-79,3799],[-896,2977],[-1285,2799]],"c":[-1122,3870],"km2":2.24},{"name":"West Point Grey","ring":[[-7590,3197],[-6188,3101],[-5044,2787],[-4759,2760],[-4760,2571],[-4792,1231],[-4645,1079],[-4650,869],[-6047,901],[-6931,921],[-6910,1919],[-7058,1916],[-7149,1907],[-7239,1891],[-7239,2081],[-7404,2049],[-7394,2240],[-7580,2461],[-7619,2725],[-7599,3084],[-7590,3197]],"c":[-6065,2034],"km2":5.26}];
@@ -659,8 +727,16 @@ const ASSUMPTIONS = {
   site:            { w:90, d:52, status:STATUS.userDecided },
   snapM:           { value:1, status:STATUS.userDecided },
   defaultStage:    { value:"justEnough", status:STATUS.userDecided, note:"功能区的阶段 = 它冬季的最低阶段（“刚好够”，工具自动指派；用户 2026-10-20 决定，取代“新区域默认 tempered”）" },
-  entryFacade:     { value:"south", status:STATUS.userDecided, note:"默认南立面，第一版不可挪" },
-  stageSequence:   { status:STATUS.assumed, note:"渐变序列：功能区按 buffered → tempered → controlled 排开，controlled 聚成一团、靠冬季向阳的一侧（图景由用户 2026-10-20 决定）。周长各段按长度加权：贴同阶段 1、相差一级 0.7、跳级 0.3；controlled 贴向阳外墙 1、贴背阳外墙 0.3；其他阶段贴外墙 1；还没有邻居的空边 0.5。数值是假设" },
+  entryFacade:     { value:"south", status:STATUS.userDecided, note:"默认南立面；2026-10-22 起可在“流线骨架”里改" },
+  circSkeleton:    { status:STATUS.userDecided, note:"流线骨架先于房间（用户 2026-10-22）：按类型在最低一层最大的封闭空间里画出门厅 / 街道，作为 buffered 的实体，房间围着它放；它顶替门厅功能。类型和宽度来自案例（Circulation_Patterns.md 第 1、4（补 3）节）" },
+  circWidth:       { B1:10, B2:10, A1:6, A2:5, status:STATUS.assumed, note:"带宽：B1 穿越式门厅约 10 m（Churchill 目测）；B2 门厅带 10 m（Clayton，目测）；A1 街道 6 m、A2 单侧街 5 m（Sport England 主走廊 4–5 m 上浮，假设）" },
+  circDepth:       { value:0.5, status:STATUS.assumed, note:"不穿越时，门厅 / 街道伸进体块的深度 = 进深的 50%（假设）" },
+  coreExtra:       { value:30, status:STATUS.assumed, note:"核（2026-10-22）= 公共卫生间 + 主楼梯约 20 m² + 电梯约 7 m² + 清洁间约 3 m²；楼梯、电梯、清洁间的数字是假设（任务书里它们算在建筑系数里）" },
+  coreRule:        { status:STATUS.assumed, note:"核贴着门厅 / 街道骨架（共墙 ≥ 3 m，硬约束，案例规则 17、18、21），最好不占外墙（不需要窗）；上下层同一位置（规则 20）。强度来自 21 张平面，具体数值为假设" },
+  plantRule:       { status:STATUS.assumed, note:"机房贴外墙 ≥ 3 m（要有检修 / 服务门，硬约束，规则 22）；最好贴入口对面那面墙（背面），其次侧墙；最好贴体育馆（无泳池时最大的负荷，规则 22 的替代）。对应关系为假设" },
+  massOptions:     { barDepth:27, canopyDepth:12, status:STATUS.assumed, note:"体块方案生成（2026-10-22）：向阳长条进深 27 m（5 m 单侧街 + 21 m 体育馆短边 + 1 m 余量）；紧凑方案长宽比 1.25；单层铺开 1.5；公园一侧的有顶体块进深 12 m；都放在场地形心附近。全是假设" },
+  objTouch:        { value:3, status:STATUS.assumed, note:"核贴骨架、机房贴外墙的最短共墙长度（米），沿用邻接的 3 m" },
+  stageSequence:   { status:STATUS.assumed, note:"渐变序列：功能区按 buffered → tempered → controlled 排开，controlled 聚成一团、靠冬季向阳的一侧（图景由用户 2026-10-20 决定）。周长各段按长度加权：贴同阶段 1、贴门厅 / 街道骨架 1、相差一级 0.7、跳级 0.3；controlled 贴向阳外墙 1、贴背阳外墙 0.3；其他阶段贴外墙 1；还没有邻居的空边 0.5。数值是假设" },
   warmWallRank:    { value:0.5, status:STATUS.assumed, note:"外墙冬季总辐射在这栋楼外墙里排名 ≥ 50% 算“向阳”（分带依据下：南立面算向阳）" },
   facadeContact:   { status:STATUS.userDecided, note:"偏好南带或北带的房间，贴着对应立面才算完全适配（2026-10-17）；没贴着时按空隙线性打折：系数 = 1 − 空隙 ÷ 带深度", discountStatus:STATUS.assumed },
   simplicityRule:  { status:STATUS.assumed, note:"前几项都相同时，周长中贴着外墙或已放功能区的比例越高越好（紧凑，2026-10-18 改）；仍相同时取最西、最南的位置" },
@@ -722,6 +798,10 @@ const state = {
   selectedFace: null, // 三维里选中的面：south / north / east / west / top / bottom（阶段 5）
   isolate: null,      // 2026-10-18：双击体块单独编辑，只显示这个体块
   whiteModel: false,  // 2026-10-18：三维只看体块白模
+  // 流线骨架（2026-10-22，用户决定：先画门厅 / 街道，再放房间）。type：none = 旧做法（门厅是贴入口墙的一个房间）；
+  // B1 穿越式门厅（垂直于入口墙的宽带）；B2 门厅带（沿入口墙的带，Clayton）；A1 双侧街（垂直于入口墙的窄街）；A2 单侧街（沿入口墙的窄街，房间在另一侧）。
+  // entry：入口在哪一面；through：是否通到对面（第二个入口）；width：带宽（m，默认按类型，见 CIRC_TYPES）
+  circ: { type:"B1", entry:"south", through:true, width:null },
   showAdj: false,     // 2026-10-20：默认只画选中房间不满足的邻接；打开后画全部不满足的
   showSunWalls: false,   // 2026-10-20：外墙受晒色带默认关闭
   strategy: "climate", // 2026-10-18：当前的排布方式（设计师在“生成几种方案”里选）
@@ -985,6 +1065,53 @@ function analyzeSpaces(){
   matchSpaceIds(spaces);
   return { spaces, warnings, levelInfo };
 }
+// ===== 流线骨架（2026-10-22）=====
+const CIRC_TYPES = {
+  none: { zh:"不用骨架（门厅是贴入口墙的一个房间，旧做法）", shape:null },
+  B1:   { zh:"B1 穿越式门厅：垂直于入口墙的宽带，常两端都有入口（Churchill、Hillcrest）", shape:"stem" },
+  B2:   { zh:"B2 门厅带：沿入口墙的一条带，大件在两翼（Clayton）", shape:"bar" },
+  A1:   { zh:"A1 双侧街：垂直于入口墙的窄街，大件分列两侧（Sixteen Mile、Eastside）", shape:"stem" },
+  A2:   { zh:"A2 单侧街：沿入口墙的窄街，房间在另一侧、街朝外（Western North York、East Bayfront）", shape:"bar" },
+};
+const SIDE_ZH2 = { south:"南", north:"北", east:"东", west:"西" };
+const circWidth = () => state.circ.width || ASSUMPTIONS.circWidth[state.circ.type] || 10;
+// 在一个空间的外接框里算骨架矩形（吸附 1 m）；stem = 从入口墙垂直伸进去的带，bar = 沿入口墙的带
+function skeletonRect(sp){
+  const c = state.circ, T = CIRC_TYPES[c.type]; if (!T || !T.shape) return null;
+  const b = sp.bbox, w = Math.round(circWidth()), dep = ASSUMPTIONS.circDepth.value;
+  const ns = c.entry === "south" || c.entry === "north";
+  if (T.shape === "bar") return ns ? { x0:b.x0, x1:b.x1, y0:c.entry === "south" ? b.y0 : b.y1 - w, y1:c.entry === "south" ? b.y0 + w : b.y1 }
+                                   : { y0:b.y0, y1:b.y1, x0:c.entry === "west" ? b.x0 : b.x1 - w, x1:c.entry === "west" ? b.x0 + w : b.x1 };
+  if (ns){
+    const xc = Math.round((b.x0 + b.x1) / 2 - w / 2), L = c.through ? b.d : Math.max(w, Math.round(b.d * dep));
+    return { x0:xc, x1:xc + w, y0:c.entry === "south" ? b.y0 : b.y1 - L, y1:c.entry === "south" ? b.y0 + L : b.y1 };
+  }
+  const yc = Math.round((b.y0 + b.y1) / 2 - w / 2), L = c.through ? b.w : Math.max(w, Math.round(b.w * dep));
+  return { y0:yc, y1:yc + w, x0:c.entry === "west" ? b.x0 : b.x1 - L, x1:c.entry === "west" ? b.x0 + L : b.x1 };
+}
+// 把骨架从空间的可用楼面里挖掉，返回实际挖掉的格子的外接框和面积（空间是 L 形时只挖落在可用楼面里的部分）
+function carveSkeleton(sp){
+  const r = skeletonRect(sp); if (!r) return null;
+  const { ix0, iy0, ix1, iy1 } = rectCells(r);
+  let n = 0, x0 = GW, y0 = GD, x1 = 0, y1 = 0;
+  for (let j = iy0; j < iy1; j++) for (let i = ix0; i < ix1; i++){
+    const idx = cellIdx(i, j); if (!sp.usable[idx]) continue;
+    sp.usable[idx] = 0; n++; x0 = Math.min(x0, i); y0 = Math.min(y0, j); x1 = Math.max(x1, i + 1); y1 = Math.max(y1, j + 1);
+  }
+  if (!n) return null;
+  refreshSpace(sp);   // 骨架的边不是外墙（owner 没变），所以贴着骨架的房间不会把它当立面
+  sp.skeletonArea = n;
+  return { rect:{ x0, y0, x1, y1 }, area:n };
+}
+// 入口标记：骨架模式下按入口面（穿越时对面也有）；旧做法只在南墙
+function entrySides(){
+  const c = state.circ;
+  if (!CIRC_TYPES[c.type] || !CIRC_TYPES[c.type].shape) return ["south"];
+  const opp = { south:"north", north:"south", east:"west", west:"east" };
+  return c.through && CIRC_TYPES[c.type].shape === "stem" ? [c.entry, opp[c.entry]] : [c.entry];
+}
+const skeletonOn = () => !!(CIRC_TYPES[state.circ.type] && CIRC_TYPES[state.circ.type].shape);
+
 // 某个空间往上占用 n 个层段时，每个格子的净高（n = 1 就是这一层自己的净高）
 function columnClear(sp, n){
   if (n === 1) return sp.info.clear;
@@ -1383,7 +1510,7 @@ function wallIsWarm(ori, pos, a0, a1, sp){
 }
 function stageOrderOf(fn, sp, r, placed){
   const stage = stageOfFn(fn, sp), s = STAGE_INDEX[stage], ctrl = stage === "controlled";
-  const out = { same:0, step:0, jump:0, ext:0, cold:0 };
+  const out = { same:0, step:0, jump:0, ext:0, cold:0, street:0 };
   const sides = [
     { ori:"S", pos:r.y0, a0:r.x0, a1:r.x1, walls:sp.walls.south, nb:q => Math.abs(q.y1 - r.y0) < 1e-3, b0:"x0", b1:"x1" },
     { ori:"N", pos:r.y1, a0:r.x0, a1:r.x1, walls:sp.walls.north, nb:q => Math.abs(q.y0 - r.y1) < 1e-3, b0:"x0", b1:"x1" },
@@ -1394,6 +1521,7 @@ function stageOrderOf(fn, sp, r, placed){
     for (const q of placed){
       if (!sd.nb(q)) continue;
       const L = overlapLen(sd.a0, sd.a1, q[sd.b0], q[sd.b1]); if (L <= EPS) continue;
+      if (q.skeleton){ out.street += L; continue; }   // 2026-10-22：贴门厅 / 街道的边按 1 计（大件要从门厅看见、房间沿街道排——案例规则 5、10）
       const d = Math.abs(STAGE_INDEX[roomStageOf(q)] - s);
       out[d === 0 ? "same" : d === 1 ? "step" : "jump"] += L;
     }
@@ -1403,9 +1531,9 @@ function stageOrderOf(fn, sp, r, placed){
       if (ctrl && !wallIsWarm(sd.ori, sd.pos, o0, o1, sp)) out.cold += o1 - o0; else out.ext += o1 - o0;
     }
   }
-  const len = out.same + out.step + out.jump + out.ext + out.cold, perim = 2 * ((r.x1 - r.x0) + (r.y1 - r.y0));
+  const len = out.same + out.step + out.jump + out.ext + out.cold + out.street, perim = 2 * ((r.x1 - r.x0) + (r.y1 - r.y0));
   const open = Math.max(0, perim - len);
-  const fit = perim > EPS ? (out.same + out.ext + STAGE_SEQ.step * out.step + STAGE_SEQ.jump * out.jump + STAGE_SEQ.cold * out.cold + STAGE_SEQ.open * open) / perim : 0.5;
+  const fit = perim > EPS ? (out.same + out.ext + out.street + STAGE_SEQ.step * out.step + STAGE_SEQ.jump * out.jump + STAGE_SEQ.cold * out.cold + STAGE_SEQ.open * open) / perim : 0.5;
   return { stage, fit, q:Math.round(fit / ASSUMPTIONS.gradientStep.value) * ASSUMPTIONS.gradientStep.value, ...out, open, len, perim };
 }
 
@@ -1488,7 +1616,8 @@ function scoreRect(r, fn, sp, placed){
   const stageFit = seq.fit, stageQ = seq.q;
   const floorFit = floorFitOf(fn, sp);
   const adjFit = adjacencyFit(fn, r, sp, null);
-  return { floorFit, adjFit, bandFit, sun, frac, gap, bandDepth, facadeFactor, seq, stageFit, stageQ, shapeOk, ratio, flush, contact };
+  const objFit = objectFit(fn, r, sp, placed);
+  return { floorFit, objFit, adjFit, bandFit, sun, frac, gap, bandDepth, facadeFactor, seq, stageFit, stageQ, shapeOk, ratio, flush, contact };
 }
 // 邻接（2026-10-18）：两个功能区之间满不满足某条关系
 let LAYOUT_ROOMS = [];   // 排布进行中已放好的所有功能区（各层），供邻接评分用
@@ -1557,15 +1686,15 @@ function adjacencyReport(rooms){
 const STRATEGIES = [
 // 2026-10-20（用户决定）：“渐变序列”排在受晒 / 带适配之前——平面先按阶段排开，再按光排。
   { id:"climate",  name:"渐变优先", desc:"楼层 > 渐变序列 > 受晒 / 带适配 > 形状 > 紧凑；不考虑邻接（默认）",
-    keys:["floorFit","stageQ","bandFit","shapeOk","contact"], cluster:false },
+    keys:["floorFit","objFit","stageQ","bandFit","shapeOk","contact"], cluster:false },
   { id:"sunfirst", name:"受晒优先（上一版）", desc:"楼层 > 受晒 / 带适配 > 渐变序列 > 形状 > 紧凑；不考虑邻接（2026-10-20 之前的顺序，渐变序列放在受晒后面）",
-    keys:["floorFit","bandFit","stageQ","shapeOk","contact"], cluster:false },
+    keys:["floorFit","objFit","bandFit","stageQ","shapeOk","contact"], cluster:false },
   { id:"adjacent", name:"邻接优先", desc:"楼层 > 邻接 > 渐变序列 > 受晒 / 带适配 > 形状 > 紧凑；相关功能成组放置",
-    keys:["floorFit","adjFit","stageQ","bandFit","shapeOk","contact"], cluster:true },
+    keys:["floorFit","objFit","adjFit","stageQ","bandFit","shapeOk","contact"], cluster:true },
   { id:"compact",  name:"紧凑优先", desc:"楼层 > 紧凑 > 渐变序列 > 受晒 / 带适配 > 形状；不考虑邻接",
-    keys:["floorFit","contact","stageQ","bandFit","shapeOk"], cluster:false },
+    keys:["floorFit","objFit","contact","stageQ","bandFit","shapeOk"], cluster:false },
   { id:"adjcomp",  name:"邻接 + 紧凑", desc:"楼层 > 邻接 > 紧凑 > 渐变序列 > 受晒 / 带适配 > 形状；相关功能成组放置",
-    keys:["floorFit","adjFit","contact","stageQ","bandFit","shapeOk"], cluster:true },
+    keys:["floorFit","objFit","adjFit","contact","stageQ","bandFit","shapeOk"], cluster:true },
 ];
 const JUDGE_KEYS = [...STRATEGIES[0].keys];
 // 比较两组评分：1 = a 更好，−1 = b 更好，0 = 一样
@@ -1608,7 +1737,7 @@ function compactRooms(rooms, levelInfo){
           if (r.fn.entry && facadeGap(sp, nr, "south") > EPS) continue;
           if (r.fn.minClearHeight && roomClear(nr, sp.info.clear) < r.fn.minClearHeight.value - EPS) continue;
           const sc = scoreRect(nr, r.fn, sp, others);
-          const notWorse = ["floorFit","adjFit","stageQ","bandFit"].every(k => sc[k] >= base[k] - EPS);
+          const notWorse = ["floorFit","objFit","adjFit","stageQ","bandFit"].every(k => sc[k] >= base[k] - EPS);
           if (notWorse && sc.contact > base.contact + EPS && (!best || sc.contact > best.sc.contact + EPS)) best = { nr, sc };
           break;
         }
@@ -1619,6 +1748,33 @@ function compactRooms(rooms, levelInfo){
     }
     if (!movedAny) break;
   }
+}
+// 两个物件的软评判（2026-10-22，案例规则 17–24）：普通房间恒为 1，不影响它们
+function objectFit(fn, r, sp, placed){
+  if (!skeletonOn()) return 1;
+  const t = ASSUMPTIONS.objTouch.value;
+  if (fn.id === "washroom"){   // 核：贴骨架；最好不占外墙
+    const sk = placed.find(q => q.skeleton); if (!sk) return 1;
+    const touch = sharedEdge(r, sk) >= t - EPS ? 1 : 0;
+    return touch ? (exteriorTouch(r, sp) > EPS ? 0.7 : 1) : 0;
+  }
+  if (fn.id === "support"){   // 机房：背面外墙 > 侧墙；贴体育馆
+    const opp = { south:"north", north:"south", east:"west", west:"east" }[state.circ.entry];
+    const wallLen = k => { let L = 0; for (const w of sp.walls[k]){ const pos = (k === "south") ? r.y0 : k === "north" ? r.y1 : k === "west" ? r.x0 : r.x1; if (Math.abs(w.pos - pos) < 1e-3) L += overlapLen(k === "south" || k === "north" ? r.x0 : r.y0, k === "south" || k === "north" ? r.x1 : r.y1, w.a0, w.a1); } return L; };
+    const back = wallLen(opp) >= t - EPS ? 1 : wallLen(state.circ.entry) >= t - EPS ? 0 : (exteriorTouch(r, sp) >= t - EPS ? 0.5 : 0);
+    const gym = placed.find(q => q.fnId === "gym" && q.levelId === sp.levelId);
+    const big = gym ? (sharedEdge(r, gym) >= t - EPS ? 1 : 0) : 1;
+    return 0.5 * back + 0.5 * big;
+  }
+  return 1;
+}
+// 硬约束：核必须贴骨架；机房必须贴外墙（有服务门）
+function objectHardOk(fn, r, sp, placed){
+  if (!skeletonOn()) return true;
+  const t = ASSUMPTIONS.objTouch.value;
+  if (fn.id === "washroom"){ const sk = placed.find(q => q.skeleton); return sk ? sharedEdge(r, sk) >= t - EPS : !LAYOUT_ROOMS.some(q => q.skeleton); }
+  if (fn.id === "support") return exteriorTouch(r, sp) >= t - EPS;
+  return true;
 }
 function searchBest(fn, area, sp, placed, P){
   const bbox = sp.bbox;
@@ -1634,6 +1790,7 @@ function searchBest(fn, area, sp, placed, P){
       if (!insideP(r, P)) continue;
       if (fn.entry && facadeGap(sp, r, "south") > EPS) continue;
       if (placed.some(q => overlaps(r, q))) continue;
+      if (!objectHardOk(fn, r, sp, placed)) continue;
       const sc = scoreRect(r, fn, sp, placed);
       if (!best || better(sc, best.score, r, best.rect)) best = { rect:r, score:sc, shape:sh };
     }
@@ -1663,6 +1820,7 @@ function searchBestAll(fn, area, spaces, rooms, occ){
   for (const sp of spaces){
     if (!sp.area || !spaceOk(fn, sp)) continue;
     if ((fn.entry || (fn.floorReq && fn.floorReq.value === "mustGround")) && sp.levelIdx !== 0) continue;
+    if (skeletonOn() && fn.id === "washroom" && sp.levelIdx !== 0) continue;   // 核只放首层，上层由 stackCore 对位（2026-10-22）
     if (state.levelPins[fn.id] && sp.levelId !== state.levelPins[fn.id]) continue;   // 用户指定的楼层
     const placed = rooms.filter(q => q.spaceId === sp.id);
     for (let n = 1; sp.levelIdx + n <= nL; n++){
@@ -1700,9 +1858,11 @@ function maxReachableClear(fn, spaces){
 let CLUSTER_ORDER = false;
 function placementOrder(){
   const byId = Object.fromEntries(FUNCTIONS.map(f=>[f.id,f]));
-  const bySize = (a,b) => effectiveArea(b) - effectiveArea(a) || FUNCTIONS.indexOf(a) - FUNCTIONS.indexOf(b);
-  const fixed = ["lobby","gym","fitness","cafe"];
-  const base = [byId.lobby, byId.gym, byId.fitness,
+  // 2026-10-22：必须首层的功能先放（首层被骨架和核占去一部分后，容易被大房间挤掉），同级再按面积从大到小
+  const mg = f => f.floorReq && f.floorReq.value === "mustGround" ? 1 : 0;
+  const bySize = (a,b) => mg(b) - mg(a) || effectiveArea(b) - effectiveArea(a) || FUNCTIONS.indexOf(a) - FUNCTIONS.indexOf(b);
+  const fixed = ["lobby","gym","fitness","cafe", ...(skeletonOn() ? ["washroom"] : [])];
+  const base = [byId.lobby, ...(skeletonOn() ? [byId.washroom] : []), byId.gym, byId.fitness,
     ...FUNCTIONS.filter(f => isActive(f) && f.required && !fixed.includes(f.id)).sort(bySize),
     ...FUNCTIONS.filter(f => isActive(f) && !f.required && !fixed.includes(f.id)).sort(bySize),
     byId.cafe].filter(f => f && isActive(f));   // 第 1 步没勾选的功能不排
@@ -1756,7 +1916,23 @@ function generateLayout(){
     for (let j = iy0; j < iy1; j++) for (let i = ix0; i < ix1; i++) o[cellIdx(i, j)] = 1; };
   const rooms = [], unplaced = [], flagged = [];
   LAYOUT_ROOMS = rooms;
-  const items = placementOrder();
+  let items = placementOrder();
+  // 流线骨架（2026-10-22）：先在最低一层最大的封闭空间里挖出门厅 / 街道，作为一个 buffered 的“房间”顶替门厅功能；房间围着它放
+  let skeleton = null;
+  if (skeletonOn()){
+    const lobbyFn = FUNCTIONS.find(f => f.id === "lobby");
+    const ground = spaces.filter(sp => sp.levelIdx === 0 && isIndoorSpace(sp) && sp.area).sort((a, b) => b.area - a.area)[0];
+    const cut = ground ? carveSkeleton(ground) : null;
+    if (cut && lobbyFn){
+      const sp = ground, w = cut.rect.x1 - cut.rect.x0, h = cut.rect.y1 - cut.rect.y0;
+      skeleton = { id:"lobby", fnId:"lobby", label:`${CIRC_TYPES[state.circ.type].shape === "bar" ? "门厅带" : state.circ.type.startsWith("A") ? "街道" : "门厅"}（骨架）`, fn:lobbyFn, area:cut.area, order:0,
+        ...cut.rect, score:scoreRect(cut.rect, lobbyFn, sp, []), shape:{ w, h, ratio:Math.max(w, h) / Math.min(w, h) }, spaceId:sp.id, levelId:sp.levelId, elevation:sp.elevation, space:sp, spans:[sp.levelId],
+        stage:"buffered", kept:true, locked:true, skeleton:true, split:null };
+      skeleton.clear = roomClear(skeleton, sp.info.clear); skeleton.topBoundary = sp.elevation + skeleton.clear + ASSUMPTIONS.slabThickness.value;
+      rooms.push(skeleton);
+      items = items.filter(it => it.fn.id !== "lobby");
+    } else if (lobbyFn && isActive(lobbyFn)) warnings.push("流线骨架：最低一层没有封闭体块的空间，门厅按旧做法放。");
+  }
   const place = (base, b, extra) => {
     const sp = b.space, spans = lvls.slice(sp.levelIdx, sp.levelIdx + b.n).map(l => l.id);
     const r = { ...base, ...b.rect, ...extra, score:b.score, shape:b.shape, spaceId:sp.id, levelId:sp.levelId, elevation:sp.elevation, space:sp, spans };
@@ -1777,6 +1953,18 @@ function generateLayout(){
       ups.forEach(refreshSpace);   // 同一层的空间都重算外墙（挑空边不算墙）
     }
     return r;
+  };
+  // 核上下对位（2026-10-22，规则 20）：首层的核放好后，在每个上层空间里同一位置再放一个“核（上层）”；那里没有楼面就提示
+  const stackCore = base => {
+    for (const up of spaces.filter(sp => sp.levelIdx > 0 && isIndoorSpace(sp))){
+      const { ix0, iy0, ix1, iy1 } = rectCells(base), o = occ.get(up.levelId);
+      let ok = true;
+      for (let j = iy0; j < iy1 && ok; j++) for (let i = ix0; i < ix1; i++){ const idx = cellIdx(i, j); if (!up.usable[idx] || o[idx]){ ok = false; break; } }
+      if (!ok){ if (up.levelIdx === 1) warnings.push(`核在 ${up.levelName} 处上下不对位：那里没有可用楼面（或已被占用）。`); continue; }
+      const r = { ...base, id:`core_${up.levelId}`, label:"核（上层）：楼梯、电梯、卫生间", spaceId:up.id, levelId:up.levelId, levelName:up.levelName, elevation:up.elevation, space:up, spans:[up.levelId], kept:true, locked:true, core:true, fresh:false, pushed:false };
+      r.score = scoreRect(r, base.fn, up, rooms.filter(q => q.spaceId === up.id)); r.clear = roomClear(r, up.info.clear); r.topBoundary = up.elevation + r.clear + ASSUMPTIONS.slabThickness.value;
+      markOcc(up.levelId, r); rooms.push(r);
+    }
   };
   // 总面积本来就不够时，被挤出去的功能一律标“面积不够”，细节里再说总面积的缺口和这个功能自己的问题（用户 2026-10-18 决定）
   // 2026-10-19：总面积只比较室内功能和封闭体块里的空间（半室外功能另算）
@@ -1850,15 +2038,18 @@ function generateLayout(){
   const hadMemory = Object.keys(state.memory).length > 0;
   const keptIds = new Set(), flaggedIds = new Set();
   items.forEach((it, k) => {
-    const fn = it.fn, area = effectiveArea(fn), mem = state.memory[it.id];
+    const fn = it.fn, area = effectiveArea(fn) + (skeleton && fn.id === "washroom" ? ASSUMPTIONS.coreExtra.value : 0), mem = state.memory[it.id];
+    if (skeleton && fn.id === "lobby") return;
     if (!mem || mem.pushedBy || fn.splittable || mem.fnId !== fn.id || Math.abs(mem.area - area) > EPS) return;   // 被推开的到第二遍重新找位置
     const base = { id:it.id, fnId:fn.id, label:it.label, fn, area, order:k + 1 };
     const c = checkKept(fn, mem, it.label);
     if (c.ok){
       const placed = rooms.filter(q => q.spaceId === c.sp.id);
       const w = c.rect.x1 - c.rect.x0, h = c.rect.y1 - c.rect.y0;
-      rooms.push(place(base, { rect:c.rect, score:scoreRect(c.rect, fn, c.sp, placed), shape:{ w, h, ratio:Math.max(w,h)/Math.min(w,h) }, space:c.sp, n:c.n, col:c.col },
-                       { area, split:null, kept:true, locked:!!mem.locked }));
+      const isCore = skeleton && fn.id === "washroom";
+      const kr = place(isCore ? { ...base, label:"核：楼梯、电梯、卫生间" } : base, { rect:c.rect, score:scoreRect(c.rect, fn, c.sp, placed), shape:{ w, h, ratio:Math.max(w,h)/Math.min(w,h) }, space:c.sp, n:c.n, col:c.col },
+                       { area, split:null, kept:true, locked:isCore || !!mem.locked, ...(isCore ? { core:true } : {}) });
+      rooms.push(kr); if (isCore) stackCore(kr);
       keptIds.add(it.id);
     } else {
       flagged.push({ ...base, ...c.rect, levelId:mem.levelId, levelName:c.levelName || mem.levelId, reasons:c.reasons, locked:!!mem.locked });
@@ -1869,7 +2060,7 @@ function generateLayout(){
   // ---- 第二遍：其余的功能，按“大件优先”放进剩下的空间 ----
   items.forEach((it, k) => {
     if (keptIds.has(it.id) || flaggedIds.has(it.id)) return;
-    const fn = it.fn, area = effectiveArea(fn), order = k + 1;
+    const fn = it.fn, area = effectiveArea(fn) + (skeleton && fn.id === "washroom" ? ASSUMPTIONS.coreExtra.value : 0), order = k + 1;   // 核 = 卫生间 + 楼梯电梯清洁间
     // 2026-10-19：只看这个功能能用的空间（室内 → 封闭体块；半室外 → 非封闭且阶段够）
     const pool = spaces.filter(sp => spaceOk(fn, sp)), poolIds = new Set(pool.map(sp => sp.id));
     const used = rooms.filter(r => poolIds.has(r.spaceId)).reduce((s,r)=>s+r.area,0);
@@ -1926,7 +2117,10 @@ function generateLayout(){
       }
       const best = searchBestAll(fn, area, spaces, rooms, occ);
       if (best){
-        rooms.push(place(base, best, { area, split:null, ...fresh }));
+        const isCore = skeleton && fn.id === "washroom";
+        const r = place(isCore ? { ...base, label:"核：楼梯、电梯、卫生间" } : base, best, { area, split:null, ...fresh, ...(isCore ? { core:true, locked:true } : {}) });
+        rooms.push(r);
+        if (isCore) stackCore(r);
         return;
       }
     }
@@ -1970,7 +2164,8 @@ function generateLayout(){
   }
 
   // ---- 记住这一次的位置：保留的和新放的更新；标红的保持原位置不变；放不下的忘掉 ----
-  for (const r of rooms) if (!r.split) state.memory[r.id] = { fnId:r.fnId, area:r.area, levelId:r.levelId, x0:r.x0, y0:r.y0, x1:r.x1, y1:r.y1, locked:!!(state.memory[r.id] && state.memory[r.id].locked) };
+  for (const r of rooms) if (!r.split && !r.skeleton && !r.id.startsWith("core_")) state.memory[r.id] = { fnId:r.fnId, area:r.area, levelId:r.levelId, x0:r.x0, y0:r.y0, x1:r.x1, y1:r.y1, locked:!!(state.memory[r.id] && state.memory[r.id].locked) };
+  if (skeleton) delete state.memory.lobby;   // 骨架每次按设置重画，不记位置
   for (const u of unplaced) delete state.memory[u.id];
 
   // 楼板（阶段 4，由空间推出）：每个标高处，有楼面（可用或净高不足的格子）的地方才有楼板；挑空处没有
@@ -1978,7 +2173,8 @@ function generateLayout(){
   const net = FUNCTIONS.filter(f => isActive(f) && !f.outdoor).reduce((s,f)=>s+effectiveArea(f)*f.count,0);   // 半室外功能不算建筑面积（2026-10-19）
   const groupGross = FUNCTIONS.filter(f => isActive(f) && !f.outdoor).reduce((s,f)=>s+effectiveArea(f)*f.count*groupFactorOf(f),0);
   const usableArea = spaces.reduce((s, sp) => s + sp.area, 0);
-  state.layout = { spaces, warnings, levelInfo, slabs, usableArea, usableStart, rooms, unplaced, flagged, net, groupGross, gross: groupGross * ASSUMPTIONS.buildingFactor.value, adjacency: adjacencyReport(rooms) };
+  state.layout = { spaces, warnings, levelInfo, slabs, usableArea, usableStart, rooms, unplaced, flagged, net, groupGross, gross: groupGross * ASSUMPTIONS.buildingFactor.value, adjacency: adjacencyReport(rooms),
+    skeletonArea: skeleton ? skeleton.area : 0, coreExtra: skeleton ? ASSUMPTIONS.coreExtra.value : 0 };   // 2026-10-22：骨架和核也占可用楼面
 }
 // 用户操作（阶段 6）
 function acceptSuggestion(id){
@@ -2061,7 +2257,7 @@ function generateOptions(){
     const L = state.layout, levels = sortedLevels().filter(l => L.rooms.some(r => r.spans.includes(l.id)) || L.spaces.some(sp => sp.levelId === l.id));
     const svgs = levels.map(l => { state.viewLevel = l.id; renderPlan(); const g = svg.cloneNode(true); g.removeAttribute("id"); g.querySelector("g")?.remove(); g.style.width = "100%"; return { name:l.name, svg:g.outerHTML }; });
     OPTIONS.push({ st, metrics:layoutMetrics(L), svgs,
-      memory:Object.fromEntries(L.rooms.filter(r => !r.split).map(r => [r.id, { fnId:r.fnId, area:r.area, levelId:r.levelId, x0:r.x0, y0:r.y0, x1:r.x1, y1:r.y1, locked:!!(locked[r.id]) }])) });
+      memory:Object.fromEntries(L.rooms.filter(r => !r.split && !r.skeleton && !r.id.startsWith("core_")).map(r => [r.id, { fnId:r.fnId, area:r.area, levelId:r.levelId, x0:r.x0, y0:r.y0, x1:r.x1, y1:r.y1, locked:!!(locked[r.id]) }])) });
   }
   // 恢复原来的状态
   state.memory = keepMemory; state.spaceMemory = keepSpaceMem; state.viewLevel = keepView; state.selected = keepSel; applyStrategy(keepStrategy);
@@ -2093,6 +2289,116 @@ function showOptions(){
   document.body.appendChild(ov);
   document.getElementById("opt-close").onclick = () => ov.remove();
   ov.querySelectorAll("[data-opt]").forEach(b => b.onclick = () => pickOption(+b.dataset.opt));
+}
+// ===== 体块方案生成（2026-10-22，用户要求：进入第 4 步时自动给几个体块起点）=====
+// 四个方案各优先一件事；面积从第 2 步的总建筑面积反推，位置放在场地形心附近（真实场地）或示意场地中央；入口默认朝街（有道路数据时取最近的道路方向，否则朝南）。
+// 尺寸、进深、层数都是假设，见 ASSUMPTIONS.massOptions。
+function siteCentre(){
+  if (state.sitePolys){ const big = state.sitePolys.reduce((a, r) => !a || ringArea(r) > ringArea(a) ? r : a, null); return ringCentroid(big); }
+  return [SITE.w / 2, SITE.d / 2];
+}
+function streetSide(){
+  const c = state.context; if (!c || c.status !== "ok" || !c.streets || !c.streets.length) return "south";
+  const sc = siteCentre(); let best = null;
+  for (const st of c.streets) for (const p of st.pts){ const d = Math.hypot(p[0] - sc[0], p[1] - sc[1]); if (!best || d < best.d) best = { d, p }; }
+  const dx = best.p[0] - sc[0], dy = best.p[1] - sc[1];
+  return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "east" : "west") : (dy > 0 ? "north" : "south");
+}
+const OPP_SIDE = { south:"north", north:"south", east:"west", west:"east" };
+function massOptionDefs(){
+  const L = state.layout, gross = L.gross, S = ASSUMPTIONS, H = S.storeyHeight.value;
+  const gymH = Math.max(...FUNCTIONS.filter(f => isActive(f) && f.minClearHeight).map(f => f.minClearHeight.value), 0) + S.slabThickness.value;
+  const entry = streetSide(), park = OPP_SIDE[entry], ns = entry === "south" || entry === "north";
+  const c = siteCentre(), lim = { w:Math.max(20, SITE.w - 4), d:Math.max(20, SITE.d - 4) };
+  const rect = (w, d) => { w = Math.min(Math.round(w), lim.w); d = Math.min(Math.round(d), lim.d); return { x0:Math.round(clamp(c[0] - w / 2, 2, SITE.w - w - 2)), y0:Math.round(clamp(c[1] - d / 2, 2, SITE.d - d - 2)), w, d }; };
+  const lv2 = () => [{ id:"L01", name:"Level 01", elevation:0 }, { id:"L02", name:"Level 02", elevation:H }];
+  const lv1 = () => [{ id:"L01", name:"Level 01", elevation:0 }];
+  const tall = Math.max(2 * H, gymH);
+  // 两层方案的占地 = （总建筑面积 + 挑空功能的面积）÷ 2：挑空的功能（体育馆）占掉两层，上层那份不能再用
+  const voidArea = FUNCTIONS.filter(f => isActive(f) && !f.outdoor && f.minClearHeight && f.minClearHeight.value > H - S.slabThickness.value + EPS).reduce((t, f) => t + effectiveArea(f) * f.count, 0);
+  const F2 = (gross + voidArea) / 2;
+  const A = (() => {
+    const d = S.massOptions.barDepth, F = F2, w = F / d, r = ns ? rect(w, d) : rect(d, w);
+    return { id:"A", name:"向阳长条", why:"冬季阳光：久坐功能都能贴向阳墙；A2 单侧街沿入口墙", masses:[newMass(r.x0, r.y0, r.w, r.d, 0, tall)], levels:lv2(), circ:{ type:"A2", entry, through:false, width:null } };
+  })();
+  const B = (() => {
+    const F = F2, w = Math.sqrt(F * 1.25), d = F / w, r = rect(w, d);
+    return { id:"B", name:"穿越紧凑", why:"主动调节最小化：外墙最少、controlled 聚成核；B1 穿越式门厅，街道一侧和另一侧各一个入口", masses:[newMass(r.x0, r.y0, r.w, r.d, 0, tall)], levels:lv2(), circ:{ type:"B1", entry, through:true, width:null } };
+  })();
+  const C = (() => {
+    const F = F2, w = Math.sqrt(F * 1.25), d = F / w, cd = S.massOptions.canopyDepth;
+    // 主体 + 雨篷当成一块先定位，再切开：雨篷在公园一侧
+    const R = ns ? rect(w, d + cd) : rect(w + cd, d);
+    let main, cm;
+    if (park === "north"){ main = newMass(R.x0, R.y0, R.w, R.d - cd, 0, tall); cm = newMass(R.x0, R.y0 + R.d - cd, R.w, cd, 0, H); }
+    else if (park === "south"){ main = newMass(R.x0, R.y0 + cd, R.w, R.d - cd, 0, tall); cm = newMass(R.x0, R.y0, R.w, cd, 0, H); }
+    else if (park === "east"){ main = newMass(R.x0, R.y0, R.w - cd, R.d, 0, tall); cm = newMass(R.x0 + R.w - cd, R.y0, cd, R.d, 0, H); }
+    else { main = newMass(R.x0 + cd, R.y0, R.w - cd, R.d, 0, tall); cm = newMass(R.x0, R.y0, cd, R.d, 0, H); }
+    const E = enclosureOf(cm); E.walls = { south:false, north:false, east:false, west:false }; E.walls[ns ? "east" : "south"] = true;
+    return { id:"C", name:"公园一侧敞开", why:"渐变多一层：主体 + 有顶敞开的 buffered 体块朝公园一侧（集市廊、游戏场）；B2 门厅带贴入口墙", masses:[main, cm], levels:lv2(), circ:{ type:"B2", entry, through:false, width:null } };
+  })();
+  const D = (() => {
+    const F = gross, w = Math.sqrt(F * 1.5), d = F / w, r = ns ? rect(w, d) : rect(d, w);
+    return { id:"D", name:"单层铺开", why:"最简单：全部首层、没有楼梯；层高按体育馆的净高要求；B1 门厅不穿越", masses:[newMass(r.x0, r.y0, r.w, r.d, 0, Math.max(H, gymH))], levels:lv1(), circ:{ type:"B1", entry, through:false, width:null } };
+  })();
+  return [A, B, C, D];
+}
+let MASS_OPTIONS = [];
+function evaluateMassOptions(){
+  const keep = { masses:state.masses, levels:state.levels, circ:{ ...state.circ }, memory:state.memory, spaceMemory:state.spaceMemory, viewLevel:state.viewLevel, selected:state.selected, selectedMass:state.selectedMass, layout:state.layout, layoutStarted:state.layoutStarted };
+  const keepSeq = massSeq;
+  const defs = massOptionDefs();
+  MASS_OPTIONS = [];
+  for (const o of defs){
+    o.masses.forEach((m, i) => { m.id = `M${i + 1}`; });
+    state.masses = o.masses; state.levels = o.levels; state.circ = { ...o.circ }; state.memory = {}; state.spaceMemory = null; state.selected = null; state.selectedMass = "M1"; state.layoutStarted = false;
+    generateLayout();
+    const L = state.layout, m = layoutMetrics(L);
+    const ext = L.spaces.reduce((t, sp) => t + ["south","north","east","west"].reduce((u, k) => u + sp.walls[k].reduce((v, w) => v + (w.a1 - w.a0), 0), 0), 0);
+    const foot = o.masses.reduce((t, mm) => t + bboxOf(mm.points).area, 0);
+    const outside = (L.warnings.find(w => w.includes("超出场地")) || "").match(/([\d,]+) m²/);
+    const levels = sortedLevels().filter(l => L.rooms.some(r => r.spans.includes(l.id)) || L.spaces.some(sp => sp.levelId === l.id));
+    const svgs = levels.map(l => { state.viewLevel = l.id; renderPlan(); const g = svg.cloneNode(true); g.removeAttribute("id"); g.querySelector("g")?.remove(); g.style.width = "100%"; return { name:l.name, svg:g.outerHTML }; });
+    MASS_OPTIONS.push({ def:o, metrics:{ ...m, foot, ext:Math.round(ext), usable:L.usableStart, need:L.net + L.skeletonArea + L.coreExtra, outside:outside ? outside[1] : null, placed:L.rooms.filter(r => !r.skeleton && !r.id.startsWith("core_")).length, unplacedN:L.unplaced.length }, svgs,
+      masses:JSON.parse(JSON.stringify(o.masses)), levels:JSON.parse(JSON.stringify(o.levels)), circ:{ ...o.circ } });
+  }
+  Object.assign(state, keep); massSeq = keepSeq;
+  renderPlan();
+}
+function showMassOptions(auto){
+  evaluateMassOptions();
+  document.getElementById("mopt-overlay")?.remove();
+  const ov = document.createElement("div"); ov.id = "mopt-overlay";
+  ov.style.cssText = "position:fixed;inset:0;background:#fff;z-index:1000;overflow:auto;padding:14px 18px";
+  const hasStreets = state.context && state.context.status === "ok" && state.context.streets && state.context.streets.length;
+  ov.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:16px;color:var(--ink);text-transform:none;letter-spacing:0">四个体块起点：每个优先一件事，选一个再推拉</h2><button id="mopt-close">${auto ? "自己建体块" : "关闭（不改）"}</button></div>
+    <p class="hint">面积从第 2 步的总建筑面积（${fmt(state.layout.gross)} m²）反推；入口朝${SIDE_ZH2[streetSide()]}（${hasStreets ? "按最近的道路" : "没有道路数据，默认朝南"}）；位置在场地形心附近。进深、长宽比、层数是假设 ${statusBadge(ASSUMPTIONS.massOptions.status)}。指标按当前排布方式算；选定后仍可推拉、换骨架类型。</p>
+    <div style="display:grid;grid-template-columns:repeat(${MASS_OPTIONS.length},minmax(220px,1fr));gap:12px">${MASS_OPTIONS.map((o, i) => `<div class="card">
+      <div class="title"><span class="name">${o.def.id} · ${o.def.name}</span><button class="primary" data-mopt="${i}">用这个</button></div>
+      <div class="meta">${o.def.why}</div>
+      <div class="kv" style="margin:6px 0">
+        <div>体块</div><div>${o.masses.map(m => { const b = bboxOf(m.points); return `${b.w} × ${b.d} m，高 ${fmt(m.top - m.base,1)}`; }).join("；")}；${o.levels.length} 层</div>
+        <div>楼面 / 需要</div><div>${fmt(o.metrics.usable)} / ${fmt(o.metrics.need)} m²${o.metrics.outside ? `<span style="color:var(--flag)">（超出场地 ${o.metrics.outside} m²）</span>` : ""}</div>
+        <div>放下</div><div>${o.metrics.placed} 个${o.metrics.unplacedN ? `，未放入 ${o.metrics.unplaced.join("、")}` : ""}</div>
+        <div>必须相邻</div><div>${o.metrics.must}</div>
+        <div>渐变序列 / 受晒</div><div>${o.metrics.seq}% / ${o.metrics.band}%</div>
+        <div>controlled</div><div>${o.metrics.stages.pct("controlled")}% · ${o.metrics.stages.ctrlText}</div>
+        <div>外墙总长</div><div>${fmt(o.metrics.ext)} m</div>
+      </div>
+      ${o.svgs.map(v => `<div class="hint" style="margin-top:6px">${v.name}</div>${v.svg}`).join("")}
+    </div>`).join("")}</div>`;
+  document.body.appendChild(ov);
+  document.getElementById("mopt-close").onclick = () => ov.remove();
+  ov.querySelectorAll("[data-mopt]").forEach(b => b.onclick = () => pickMassOption(+b.dataset.mopt));
+}
+function pickMassOption(i){
+  const o = MASS_OPTIONS[i]; if (!o) return;
+  state.masses = JSON.parse(JSON.stringify(o.masses)); state.levels = JSON.parse(JSON.stringify(o.levels)); state.circ = { ...o.circ };
+  massSeq = state.masses.length; state.selectedMass = "M1"; state.selectedFace = null; state.section.pos = null; state.viewLevel = "L01";
+  state.memory = {}; state.spaceMemory = null; state.selected = null;
+  document.getElementById("mopt-overlay")?.remove();
+  regenerate();
+  if (window.frame3D) window.frame3D();
 }
 function pickOption(i){
   const o = OPTIONS[i]; if (!o) return;
@@ -2249,10 +2555,17 @@ function renderPlan(){
     }
     if (r.locked) lockMark(grp, r.x0, r.y1);
     svg.appendChild(grp);
-    if (r.fn.entry){   // 入口：南墙外一个小三角和“入口”
-      const cx = toSX((r.x0+r.x1)/2), y = toSY(r.y0);
-      svg.appendChild(el("polygon",{points:`${cx},${y+5} ${cx-5},${y+13} ${cx+5},${y+13}`,fill:INK,"pointer-events":"none"}));
-      svg.appendChild(el("text",{x:cx+9,y:y+13,"font-size":9,fill:INK,"pointer-events":"none"},"入口"));
+    if (r.fn.entry){   // 入口：入口墙外一个小三角和“入口”（骨架模式按入口面，穿越时两端都有）
+      for (const sd of entrySides()){
+        const cx = toSX((r.x0+r.x1)/2), cy = toSY((r.y0+r.y1)/2);
+        let pts, tx, ty;
+        if (sd === "south"){ const y = toSY(r.y0); pts = `${cx},${y+5} ${cx-5},${y+13} ${cx+5},${y+13}`; tx = cx+9; ty = y+13; }
+        else if (sd === "north"){ const y = toSY(r.y1); pts = `${cx},${y-5} ${cx-5},${y-13} ${cx+5},${y-13}`; tx = cx+9; ty = y-6; }
+        else if (sd === "west"){ const x = toSX(r.x0); pts = `${x-5},${cy} ${x-13},${cy-5} ${x-13},${cy+5}`; tx = x-34; ty = cy+14; }
+        else { const x = toSX(r.x1); pts = `${x+5},${cy} ${x+13},${cy-5} ${x+13},${cy+5}`; tx = x+14; ty = cy+14; }
+        svg.appendChild(el("polygon",{points:pts,fill:INK,"pointer-events":"none"}));
+        svg.appendChild(el("text",{x:tx,y:ty,"font-size":9,fill:INK,"pointer-events":"none"},"入口"));
+      }
     }
   }
   // 建议位置（阶段 6）：深蓝细虚线
@@ -2309,6 +2622,7 @@ svg.addEventListener("pointerdown", ev => {
   const g = ev.target.closest("[data-room]"); if (!g || ev.button !== 0) return;
   const L = state.layout, id = g.dataset.room;
   const r = L.rooms.find(x => x.id === id) || L.flagged.find(x => x.id === id); if (!r) return;
+  if (r.skeleton || r.core){ suppressClick = false; return; }   // 骨架不能拖，只能在“流线骨架”面板里改
   roomDrag = { id, r, g, start:pointerToModel(ev), dx:0, dy:0, moved:false };
   svg.setPointerCapture(ev.pointerId); ev.preventDefault();
 });
@@ -2410,7 +2724,7 @@ function renderLeft(){
 
   // 已放入：每个功能区一行（名称、楼层、锁）；点击在平面上选中它
   const lvName = id => (state.levels.find(l => l.id === id) || {}).name || id;
-  const row = (id, sw, name, right, why) => `<div class="fnrow ${state.selected === id ? "sel" : ""}" data-pickfn="${id}"><span><span class="swatch" style="background:${sw}"></span>${name}${why ? `<span class="why">${why}</span>` : ""}</span><span class="meta">${right}</span></div>`;
+  const row = (id, sw, name, right, why) => `<div class="fnrow ${state.selected === id ? "sel" : ""}" data-pickfn="${id}" role="button" tabindex="0"><span><span class="swatch" style="background:${sw}"></span>${name}${why ? `<span class="why">${why}</span>` : ""}</span><span class="meta">${right}</span></div>`;
   // 按楼层分组，每层一条分隔线（用户 2026-10-18：不用下拉，只要分隔）；挑空的功能区归在它的底层
   document.getElementById("function-list").innerHTML = L.rooms.length
     ? sortedLevels().map(lv => {
@@ -2433,11 +2747,11 @@ function renderLeft(){
   document.getElementById("unplaced").innerHTML = L.unplaced.length ? L.unplaced.map(u =>
     row(u.id, STAGE_COLORS[u.fn.minStage.winter], u.label, `<span class="badge tocheck">${UNPLACED_REASONS[u.reason]}</span>`, shortReason(u))).join("")
     : `<p class="hint">所有功能都已放入。</p>`;
-  document.querySelectorAll("#left [data-pickfn]").forEach(el2 => el2.onclick = () => {
+  document.querySelectorAll("#left [data-pickfn]").forEach(el2 => { const go = () => {
     const id = el2.dataset.pickfn, r = state.layout.rooms.find(x => x.id === id);
     state.selected = id;
     if (r && r.levelId !== state.viewLevel){ state.viewLevel = r.levelId; regenerate(); } else { renderPlan(); renderLeft(); renderSidebar(); }
-  });
+  }; el2.onclick = go; el2.onkeydown = e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); } }; });
 }
 
 /* =====================================================================
@@ -2505,7 +2819,36 @@ function renderSidebar(){
     bindSettings(box); return;
   }
   if (!r){ box.innerHTML = `<p class="hint">点击平面上的功能区，或左侧列表里的功能，这里可以调整它，并解释它为什么放在这里。</p>`; return; }
+  if (r.skeleton){   // 流线骨架（2026-10-22）：不能改面积、楼层、锁定；在第 4 步的“流线骨架”面板里改类型和入口
+    const sq = r.score.seq, c = state.circ;
+    box.innerHTML = `<div class="sec"><h3>${r.label}</h3>
+      <p class="hint" style="margin:0 0 6px">${r.space.levelName} · ${fmt(r.area)} m² · ${r.x1 - r.x0} × ${r.y1 - r.y0} m · 阶段 buffered（门厅的冬季最低阶段）</p>
+      <div class="kv"><div>类型</div><div>${CIRC_TYPES[c.type].zh}</div><div>入口</div><div>${entrySides().map(sd => SIDE_ZH2[sd] + "面").join("、")}</div><div>带宽</div><div>${Math.round(circWidth())} m ${statusBadge(ASSUMPTIONS.circWidth.status)}</div>
+        <div>顶替</div><div>门厅功能（任务书 ${fmt(r.fn.areaM2)} m²，骨架 ${fmt(r.area)} m²）；贴着它的功能区按“贴门厅”算邻接</div>
+        <div>渐变序列</div><div>周长 ${fmt(sq.perim)} m：贴同阶段 ${fmt(sq.same)}、相差一级 ${fmt(sq.step)}、跳级 ${fmt(sq.jump)}、外墙 ${fmt(sq.ext)} m</div></div>
+      <p class="hint">${ASSUMPTIONS.circSkeleton.note} ${statusBadge(ASSUMPTIONS.circSkeleton.status)}。类型、入口面、宽度在第 4 步左侧“流线骨架”面板里改；骨架不能拖动。</p></div>`;
+    return;
+  }
   const fn = r.fn, sc = r.score, sp = r.space;
+  if (state.uiMode === "user"){   // 使用者模式（2026-10-22）：名字、面积、阶段、邻接、一句为什么
+    const stg = roomStageOf(r), chkU = stageCheck(stg, fn.minStage.winter);
+    const nm = id => (FUNCTIONS.find(f => f.id === id) || {}).name || id;
+    const adj = (state.layout.adjacency || []).filter(a => a.rule.a === fn.id || a.rule.b === fn.id);
+    const why = [];
+    if (sc.seq && sc.seq.street > 0) why.push("贴着门厅 / 街道");
+    if (sc.sun && sc.sun.ex.len && fn.bandPref === "south") why.push(`贴着冬季受晒较多的外墙（排前 ${fmt(sc.sun.rt * 100)}%）`);
+    if (sc.sun && !sc.sun.ex.len && fn.bandPref === "middle") why.push("不需要外窗，放在里面");
+    if (fn.floorReq && fn.floorReq.value !== "mustGround" && sc.floorFit) why.push(fn.floorReq.zh);
+    if (r.spans.length > 1) why.push(`挑空到 ${fmt(r.topBoundary,1)} m`);
+    box.innerHTML = `<div class="sec"><h3>${r.label}</h3>
+      <p style="margin:0 0 8px;color:var(--muted)">${sp.levelName} · ${fmt(r.area)} m² · ${fmt(r.x1 - r.x0,0)} × ${fmt(r.y1 - r.y0,0)} m</p>
+      <div class="check ${chkU.cls}">冬季阶段 ${stg}：${chkU.text}</div>
+      ${adj.length ? `<ul style="padding-left:18px;margin:8px 0">${adj.map(a => `<li><b style="color:${a.ok ? "var(--ok)" : "var(--flag)"}">${a.missing ? "— " : a.ok ? "✓ " : "✗ "}</b>${ADJ_ZH[a.rule.kind]}：${a.rule.kind === "exterior" ? "室外" : nm(a.rule.a === fn.id ? a.rule.b : a.rule.a)}</li>`).join("")}</ul>` : ""}
+      ${why.length ? `<p style="margin:8px 0 0">为什么在这里：${why.join("；")}。</p>` : ""}
+      <div class="btnrow"><button data-ulock="${r.id}">${r.locked ? "解锁" : "锁定位置"}</button></div></div>`;
+    const lb = box.querySelector("[data-ulock]"); if (lb) lb.onclick = () => { const m = state.memory[r.id]; if (m) m.locked = !m.locked; regenerate(); };
+    return;
+  }
   // 2026-10-20（用户决定）：功能区的阶段按“刚好够”自动指派 = 冬季最低阶段；半室外功能 = 所在空间由围合方式推出的阶段；手动指派的优先
   const derived = stageOfFn(fn, sp), assigned = state.stages[r.id] || derived;
   const dm = sp && state.masses.find(m => m.id === sp.masses[0]), dInfo = dm ? massStageInfo(dm) : null;
@@ -2591,7 +2934,7 @@ function renderSidebar(){
         <li><b>楼层适配：</b>${fn.floorReq ? `${fn.floorReq.zh} ${statusBadge(fn.floorReq.status)}（${fn.floorReq.note}），现在在 ${sp.levelName}：${fn.floorReq.value === "mustGround" ? "硬约束，满足" : sc.floorFit ? "符合" : "不符合"}。` : "没有楼层要求（原文未写）。"}${statusBadge(ASSUMPTIONS.floorPrefFirst.status)} 楼层偏好排在最前面（用户 2026-10-18 确认）。</li>
         ${sc.sun ? `<li><b>受晒适配：</b>偏好 ${SUN_PREF[fn.bandPref].zh} ${statusBadge(fn.bandPrefStatus)}（由原来的“${pref.zh}”对应过来），<b>${fmt(sc.bandFit*100)}%</b>。${sc.sun.ex.len ? `贴着外墙 ${fmt(sc.sun.ex.len)} m，这段外墙${SUN_PERIODS[state.climate.period].label}平均总辐射 ${fmt(sc.sun.ex.tot, 1)} kWh/m²（其中直射 ${fmt(sc.sun.ex.dir, 1)}），总辐射在这栋楼外墙里排第 ${fmt(sc.sun.rt * 100)}%、直射排第 ${fmt(sc.sun.rd * 100)}%。` : "没有贴外墙。"} ${statusBadge(STATUS.assumed)}</li>` : ""}
         <li style="${sc.sun ? "display:none" : ""}"><b>带适配：</b>偏好 ${pref.zh} ${statusBadge(fn.bandPrefStatus)}${fn.bandPrefNote?`（${fn.bandPrefNote}）`:""}，<b>${fmt(sc.bandFit*100)}%</b>。带内面积比例：南 ${fmt(sc.frac.south*100)}% · 中 ${fmt(sc.frac.middle*100)}% · 北 ${fmt(sc.frac.north*100)}%。${fn.bandPref!=="middle" ? (sc.gap<=EPS ? `贴着${fn.bandPref==="south"?"南":"北"}立面，算完全适配。` : `离${fn.bandPref==="south"?"南":"北"}立面空 ${fmt(sc.gap,1)} m，按空隙打折（系数 ${fmt(sc.facadeFactor,2)}）。`) + ` ${statusBadge(ASSUMPTIONS.facadeContact.status)}` : "服务空间没有对应的立面，不打折。"}</li>
-        <li><b>渐变序列：</b>这个功能区是 <b>${seq.stage}</b>。放入时周长 ${fmt(seq.perim)} m 里：贴同阶段 ${fmt(seq.same)} m、相差一级 ${fmt(seq.step)} m、跳级 ${fmt(seq.jump)} m、${seqCtrl ? "向阳" : ""}外墙 ${fmt(seq.ext)} m${seqCtrl ? `、背阳外墙 ${fmt(seq.cold)} m` : ""}、空边 ${fmt(seq.open)} m（按 0.5 计）；序列适配 <b>${fmt(seq.fit*100)}%</b>。${statusBadge(ASSUMPTIONS.stageSequence.status)} ${ASSUMPTIONS.stageSequence.note}。${seqCtrl ? `向阳 = ${ASSUMPTIONS.warmWallRank.note} ${statusBadge(ASSUMPTIONS.warmWallRank.status)}` : ""}</li>
+        <li><b>渐变序列：</b>这个功能区是 <b>${seq.stage}</b>。放入时周长 ${fmt(seq.perim)} m 里：贴同阶段 ${fmt(seq.same)} m、贴门厅 / 街道 ${fmt(seq.street || 0)} m、相差一级 ${fmt(seq.step)} m、跳级 ${fmt(seq.jump)} m、${seqCtrl ? "向阳" : ""}外墙 ${fmt(seq.ext)} m${seqCtrl ? `、背阳外墙 ${fmt(seq.cold)} m` : ""}、空边 ${fmt(seq.open)} m（按 0.5 计）；序列适配 <b>${fmt(seq.fit*100)}%</b>。${statusBadge(ASSUMPTIONS.stageSequence.status)} ${ASSUMPTIONS.stageSequence.note}。${seqCtrl ? `向阳 = ${ASSUMPTIONS.warmWallRank.note} ${statusBadge(ASSUMPTIONS.warmWallRank.status)}` : ""}</li>
         <li><b>形状：</b>${fmt(w,1)} × ${fmt(h,1)} m，长宽比 1:${fmt(sc.ratio,2)}，允许 1:${fn.aspect.min}–1:${fn.aspect.max} ${statusBadge(fn.aspect.status)}，${sc.shapeOk?"在范围内":"超出范围"}。${fn.minShortSide?`短边至少 ${fn.minShortSide.value} m ${statusBadge(fn.minShortSide.status)}：${Math.min(w,h)>=fn.minShortSide.value-EPS?"满足":"不满足"}；无柱矩形、不可拆分。`:""}</li>
         <li><b>入口：</b>${fn.entry ? (facadeGap(sp, r, "south")<=EPS ? "紧贴南面外墙（默认入口），满足硬约束。" : "没有贴在南面外墙。") : "不适用（只有门厅要求贴入口）。"}</li>
         <li><b>紧凑：</b>周长的 ${fmt(sc.contact*100)}% 贴着外墙或别的功能区（放入时计算）。${statusBadge(ASSUMPTIONS.simplicityRule.status)} ${ASSUMPTIONS.simplicityRule.note}</li>
@@ -2659,18 +3002,19 @@ function renderMassPanel(){
     <h3>体块</h3>
     <div class="chips">${state.masses.map(x => `<button class="chip ${x.id===m.id?"on":""}" data-pick="${x.id}" title="${massStage(x)}"><span class="swatch" style="background:${STAGE_COLORS[massStage(x)]}"></span>${x.id}</button>`).join("")}
       <button data-addmass>＋ 添加体块</button>
+      <button data-massopts title="按第 2 步的面积生成四个体块起点，各优先一件事">生成体块方案</button>
       ${state.masses.length>1?`<button class="link" data-delmass>删除 ${m.id}</button>`:""}</div>
     <div class="fields">
       ${f("x","西边 X",b.x0,1)}${f("w","宽（东西）",b.w,1)}${f("base","底标高",m.base,0.1)}
       ${f("y","南边 Y",b.y0,1)}${f("d","深（南北）",b.d,1)}${f("top","顶标高",m.top,0.1)}
-      <label class="chk"><input type="checkbox" data-void ${m.void?"checked":""}> 挑空：在这个体块最低的一层之上不切楼板（例如中庭、挑空门厅）；挑空的空间可以放多个功能</label>
+      <label class="chk dev"><input type="checkbox" data-void ${m.void?"checked":""}> 挑空：在这个体块最低的一层之上不切楼板（例如中庭、挑空门厅）；挑空的空间可以放多个功能</label>
     </div>
     <div class="encl">
       <div><b>围合方式</b> <span class="hint">（2026-10-19；阶段按你定义的五个阶段推出）</span></div>
       <label class="chk"><input type="checkbox" data-encl="roof" ${E.roof?"checked":""}> 屋顶</label>
       <span class="hint">墙：</span>${SIDES.map(s => `<label class="chk inl"><input type="checkbox" data-wall="${s}" ${E.walls[s]?"checked":""}> ${SIDE_ZH[s]}</label>`).join("")}
       <div class="stage-out"><span class="swatch" style="background:${STAGE_COLORS[st.stage]}"></span><b>${st.stage}</b> — ${st.why}</div>
-      ${windHint(m)}
+      <div class="dev">${windHint(m)}</div>
       <div class="hint">有屋顶：四面有墙 = tempered（封闭体块；里面需要机械调节的功能区各自是 controlled，不按整个体块勾选——用户 2026-10-20 决定）；至少两面有墙 = buffered（用户 2026-10-19 定）；少于两面 = protected。没有屋顶 = exposed（也可以加墙，例如院墙；阶段不变）。贴着封闭体块 ≥ ${ASSUMPTIONS.minContactWidth.value} m 的一面也算有墙。非封闭体块只在最低一层有地面，只放半室外与室外功能；室内功能只放进封闭体块。</div>
     </div>
     <p class="hint" style="margin:6px 0 0">也可以在三维里点一个面、拖箭头推拉。单位米；位置和尺寸吸附 1 m，标高取 0.1 m。高 ${fmt(m.top-m.base,1)} m。体块各自独立；接触宽度 ≥ ${ASSUMPTIONS.minContactWidth.value} m 的体块在空间上连成一个空间。</p>`;
@@ -2680,6 +3024,7 @@ function renderMassPanel(){
     if (dbl && window.enterIsolate){ window.enterIsolate(id); return; }   // 双击：单独编辑这个体块（和三维里双击一样）
     state.selectedMass = id; state.selectedFace = null; state.section.pos = null; if (state.isolate) state.isolate = id; regenerate(); });
   document.querySelector("[data-addmass]").onclick = addMass;
+  const mo = document.querySelector("[data-massopts]"); if (mo) mo.onclick = () => showMassOptions(false);
   document.querySelector("[data-void]").onchange = e => { m.void = e.target.checked; regenerate(); };
   document.querySelectorAll("[data-encl]").forEach(cb => cb.onchange = () => {
     E[cb.dataset.encl] = cb.checked;
@@ -2704,13 +3049,29 @@ function renderMassPanel(){
 }
 
 // 标高面板（阶段 2）：与 Revit 一致，每个标高可单独改标高值；默认层高只在添加新标高时用
+// 流线骨架面板（2026-10-22）：类型、入口面、是否穿越、带宽
+function renderCircPanel(){
+  const box = document.getElementById("circ-panel"); if (!box) return;
+  const c = state.circ, on = skeletonOn(), sk = state.layout && state.layout.rooms.find(r => r.skeleton);
+  box.innerHTML = `<h3>流线骨架</h3>
+    <p class="hint" style="margin:0 0 6px">先画门厅 / 街道，房间围着它放（用户 2026-10-22）。类型来自 26 个案例的归类，宽度是目测值 ${statusBadge(ASSUMPTIONS.circWidth.status)}。</p>
+    <label style="display:block;margin:4px 0">类型 <select id="circ-type" style="max-width:100%">${Object.entries(CIRC_TYPES).map(([k, v]) => `<option value="${k}" ${k === c.type ? "selected" : ""}>${v.zh}</option>`).join("")}</select></label>
+    <div class="lvrow"><span>入口在</span>${["south","east","north","west"].map(sd => `<label class="chk inl"><input type="radio" name="circ-entry" value="${sd}" ${c.entry === sd ? "checked" : ""} ${on ? "" : "disabled"}> ${SIDE_ZH2[sd]}</label>`).join("")}</div>
+    <div class="lvrow"><label class="chk"><input type="checkbox" id="circ-through" ${c.through ? "checked" : ""} ${on && CIRC_TYPES[c.type].shape === "stem" ? "" : "disabled"}> 穿越到对面（第二个入口）</label></div>
+    <div class="lvrow"><span>带宽</span><input type="number" step="1" min="3" max="20" id="circ-width" aria-label="骨架带宽（米）" autocomplete="off" value="${Math.round(circWidth())}" ${on ? "" : "disabled"}> m <span class="hint">默认 ${ASSUMPTIONS.circWidth[c.type] || "—"}</span></div>
+    ${sk ? `<div class="hint">现在：${sk.label} ${fmt(sk.area)} m²，在 ${sk.space.levelName}，阶段 buffered；门厅功能由它顶替（任务书门厅 ${fmt(FUNCTIONS.find(f => f.id === "lobby").areaM2)} m²）。</div>` : on ? `<div class="hint" style="color:var(--warn)">最低一层没有封闭空间，骨架没画出来。</div>` : ""}`;
+  box.querySelector("#circ-type").onchange = e => { c.type = e.target.value; c.width = null; state.memory = {}; regenerate(); };
+  box.querySelectorAll("[name=circ-entry]").forEach(r => r.onchange = () => { c.entry = r.value; state.memory = {}; regenerate(); });
+  box.querySelector("#circ-through").onchange = e => { c.through = e.target.checked; state.memory = {}; regenerate(); };
+  box.querySelector("#circ-width").onchange = e => { const v = parseFloat(e.target.value); if (v >= 3 && v <= 20) c.width = v; state.memory = {}; regenerate(); };
+}
 function renderLevelPanel(){
   const S = ASSUMPTIONS, lvls = sortedLevels();
   document.getElementById("level-panel").innerHTML = `
     <h3>标高</h3>
     ${lvls.slice().reverse().map(l => `<div class="lvrow ${l.id===viewLevel().id?"on":""}">
       <span class="lvname" data-view="${l.id}" title="在平面里看这个标高">${l.name}</span>
-      <input type="number" step="0.1" value="${l.elevation}" data-elev="${l.id}"> m
+      <input type="number" step="0.1" value="${l.elevation}" data-elev="${l.id}" aria-label="${l.name} 标高（米）" autocomplete="off"> m
       ${lvls.length>1?`<button class="link" data-dellv="${l.id}">删除</button>`:""}</div>`).join("")}
     <div style="margin-top:4px"><button data-addlv>＋ 添加标高（+${S.storeyHeight.value} m）</button></div>
     <p class="hint" style="margin:6px 0 0">点标高名称在平面里看这一层。默认层高 ${S.storeyHeight.value} m ${statusBadge(S.storeyHeight.status)}；楼板加结构 ${S.slabThickness.value} m、最小可用净高 ${S.minUsableClear.value} m、连通接触宽度 ${S.minContactWidth.value} m，阶段 3 起参与计算。标高只是参照，不代表那里有楼板。</p>`;
@@ -2845,6 +3206,7 @@ function setStep(n){
   state.step = n;
   // 2026-10-19（用户要求）：从第 4 步起就“记住”功能的位置：加体块时已有的功能不动，新体块里自动放入还没放下的功能，不用再到第 5 步
   if (n >= 4) state.layoutStarted = true;
+  if (n === 4 && prev === 3 && !state.massOptionsShown){ state.massOptionsShown = true; setTimeout(() => showMassOptions(true), 50); }   // 2026-10-22：第一次从第 3 步进第 4 步，自动给四个体块起点
   for (let k = 1; k <= 6; k++) document.getElementById(`step${k}`).classList.toggle("on", k === n);
   document.querySelectorAll("#stepper [data-step]").forEach(b => { const k = +b.dataset.step; b.classList.toggle("on", k === n); b.classList.toggle("done", k < n); });
   const slot = document.getElementById(n === 4 ? "v3slot-mass" : n === 6 ? "v3slot-show" : "v3slot-layout"), wrap = document.getElementById("v3wrap");
@@ -2873,9 +3235,26 @@ function renderProgramSelect(){
     <span class="meta">${fmt(effectiveArea(f) * f.count)} m²</span></label>`;
   const sel = FUNCTIONS.filter(isActive);
   document.getElementById("program-select").innerHTML = PROGRAM_GROUPS.map(g => `<div class="prog"><h3>${g.zh}</h3>${g.ids.map(id => row(byId[id])).join("")}</div>`).join("") +
-    `<div class="prog"><h3>以后加入（工具还不能排布，只列出 Marpole 的面积）</h3>${PROGRAM_LATER.map(x => `<div class="pr off"><input type="checkbox" disabled><span><b>${x.name}</b> <span class="hint">${x.note}</span></span><span class="meta">${fmt(x.m2)} m²</span></div>`).join("")}</div>
+    `<div class="prog dev"><h3>以后加入（工具还不能排布，只列出 Marpole 的面积）</h3>${PROGRAM_LATER.map(x => `<div class="pr off"><input type="checkbox" disabled><span><b>${x.name}</b> <span class="hint">${x.note}</span></span><span class="meta">${fmt(x.m2)} m²</span></div>`).join("")}</div>
     <p><b>已选 ${sel.length} 个功能</b>，净面积合计 ${fmt(sel.reduce((t, f) => t + effectiveArea(f) * f.count, 0))} m²（下一步可以改面积）。</p>`;
   document.querySelectorAll("[data-incl]").forEach(cb => cb.onchange = () => { if (cb.checked) delete state.excluded[cb.dataset.incl]; else state.excluded[cb.dataset.incl] = true; regenerate(); });
+  renderProgramCheck();
+}
+// 第 1 步的查漏面板（2026-10-22）：对照四级清单和支持空间表，列出漏了什么；能勾的给按钮，其余只提示
+function renderProgramCheck(){
+  const box = document.getElementById("program-check"); if (!box) return;
+  const { tiers, support } = programCheck();
+  const mark = st => st === "ok" ? `<span class="badge verified">已有</span>` : st === "missing" ? `<span class="badge tocheck">漏了</span>` : st === "later" ? `<span class="badge assumed">以后</span>` : `<span class="badge assumed">由你定</span>`;
+  const missing = tiers.reduce((n, t) => n + t.items.filter(i => i.state === "missing").length, 0), missS = support.filter(s => s.state === "missing").length;
+  const line = it => `<div class="pr ${it.state === "ok" ? "pc-ok" : "off"}"><span>${mark(it.state)}</span><span><b>${it.zh}</b> <span class="hint">${it.by || ""}</span></span>
+    <span class="meta">${it.state === "missing" && it.addable && it.addable.length ? it.addable.map(id => `<button class="link" data-addfn="${id}">勾上 ${FUNCTIONS.find(f => f.id === id).name}</button>`).join("") : ""}</span></div>`;
+  box.innerHTML = `<div class="prog" style="margin-top:12px"><h3>查漏：对照温哥华战略和 14 个案例，${missing + missS ? `漏了 ${missing} 项功能、${missS} 项支持空间` : "没有发现漏项"}</h3>
+    <p class="hint" style="padding:6px 10px 0">依据：温哥华《社区中心战略》2022 目标 9、10；14 个读过平面的社区中心（<code>01_Research/Program_Consistency.md</code>）；支持空间按 Marpole 2021 的房间表。锚（泳池、冰场）和社区专属房间只提示，由你决定。</p>
+    ${tiers.map(t => `<div class="pr" style="display:block;background:#f3f7fa;font-weight:600">${t.id} · ${t.zh}</div>${t.items.map(line).join("")}`).join("")}
+    <div class="pr" style="display:block;background:#f3f7fa;font-weight:600">支持空间（最常被忘；数字借 Marpole 2021，ft²）</div>
+    ${support.map(s => `<div class="pr ${s.state === "ok" ? "pc-ok" : "off"}"><span>${mark(s.state)}</span><span><b>${s.zh}</b> <span class="hint">${s.state === "ok" ? `已并入「${s.by}」` : s.state === "later" ? "工具还不能排布" : `任务书未列；可按 Marpole 借用约 ${fmt(s.ft2)} ft²（假设）`}</span></span><span class="meta">${fmt(s.ft2)} ft²</span></div>`).join("")}
+  </div>`;
+  box.querySelectorAll("[data-addfn]").forEach(b => b.onclick = () => { delete state.excluded[b.dataset.addfn]; regenerate(); });
 }
 
 // 第 2 步：面积、数量、净高
@@ -2885,10 +3264,10 @@ function renderProgramAreas(){
   const tr = f => {
     const a = effectiveArea(f), changed = state.overrides[f.id] || f.count !== f._countDefault || f.minClearHeight !== f._clearDefault;
     return `<tr><td><span class="swatch" style="background:${STAGE_COLORS[f.minStage.winter]}"></span>${f.name}</td>
-      <td class="num"><input type="number" min="1" step="1" value="${f.count}" data-cnt="${f.id}"></td>
-      <td class="num"><input type="number" min="1" step="0.1" value="${+a.toFixed(1)}" data-area="${f.id}"> ${statusBadge(areaStatusOf(f))}</td>
+      <td class="num"><input type="number" min="1" step="1" value="${f.count}" data-cnt="${f.id}" aria-label="${f.name} 数量" autocomplete="off"></td>
+      <td class="num"><input type="number" min="1" step="0.1" value="${+a.toFixed(1)}" data-area="${f.id}" aria-label="${f.name} 单间净面积（平方米）" autocomplete="off"> ${statusBadge(areaStatusOf(f))}</td>
       <td class="num">${fmt(a * f.count)}</td>
-      <td class="num"><input type="number" min="0" step="0.01" value="${f.minClearHeight ? f.minClearHeight.value : ""}" placeholder="无要求" data-clear="${f.id}"> ${f.minClearHeight ? statusBadge(f.minClearHeight.status) : ""}</td>
+      <td class="num"><input type="number" min="0" step="0.01" value="${f.minClearHeight ? f.minClearHeight.value : ""}" placeholder="无要求" data-clear="${f.id}" aria-label="${f.name} 最小净高（米）" autocomplete="off"> ${f.minClearHeight ? statusBadge(f.minClearHeight.status) : ""}</td>
       <td>${f.floorReq ? f.floorReq.zh : "—"}${f.minClearHeight && f.minClearHeight.value > storeyClear + EPS ? `<div class="hint" style="color:var(--warn)">一层净高 ${fmt(storeyClear,1)} m 不够，需要挑空或加高</div>` : ""}</td>
       <td>${changed ? `<button class="link" data-reset="${f.id}">恢复默认</button>` : ""}</td></tr>`;
   };
@@ -2904,8 +3283,8 @@ function renderProgramAreas(){
     <tr class="tot"><td colspan="3">× 组团系数 1.1–1.3（组团内走廊、内墙）</td><td class="num">${fmt(gg)}</td><td colspan="3"></td></tr>
     <tr class="tot"><td colspan="3">× 建筑系数 ${ASSUMPTIONS.buildingFactor.value} = 总建筑面积（Marpole 2021 的系数）</td><td class="num">${fmt(gg * ASSUMPTIONS.buildingFactor.value)}</td><td colspan="3"></td></tr>
   </table>
-  <div class="card" style="margin-top:10px"><b>给体块推演的提示</b><ul style="margin:4px 0;padding-left:18px">
-    <li>可用楼面至少要有 <b>${fmt(net)} m²</b>（净面积）才放得下所有功能；按 Marpole 的系数，整栋建筑约 <b>${fmt(gg * ASSUMPTIONS.buildingFactor.value)} m²</b>。</li>
+  <div class="card dev" style="margin-top:10px"><b>给体块推演的提示</b><ul style="margin:4px 0;padding-left:18px">
+    <li>可用楼面至少要有 <b>${fmt(net)} m²</b>（净面积）才放得下所有功能；按 Marpole 的系数，整栋建筑约 <b>${fmt(gg * ASSUMPTIONS.buildingFactor.value)} m²</b>。${skeletonOn() ? `流线骨架（${state.circ.type}，宽约 ${Math.round(circWidth())} m）和核（+${ASSUMPTIONS.coreExtra.value} m²）也占首层楼面，首层要比“必须首层的功能”再多留几百平方米。` : ""}</li>
     ${outAct.length ? `<li>半室外与室外功能（${outAct.map(f => `${f.name} ≥ ${f.minStage.winter}`).join("、")}）合计 <b>${fmt(outNet)} m²</b>，要放进非封闭的体块：在第 4 步体块属性栏的“围合方式”里去掉屋顶（exposed）或几面墙（protected / buffered）。</li>` : ""}
     <li>必须在首层的功能（${act.filter(f => f.floorReq && f.floorReq.value === "mustGround").map(f => f.name).join("、") || "无"}）合计 <b>${fmt(groundNet)} m²</b>，首层楼面至少要这么大。</li>
     ${tall.map(f => `<li><b>${f.name}</b>需要净高 ${f.minClearHeight.value} m，比一层的 ${fmt(storeyClear,1)} m（层高 ${ASSUMPTIONS.storeyHeight.value} − 楼板 ${ASSUMPTIONS.slabThickness.value}）高：它所在的体块要跨两层或更高${f.minShortSide ? `，短边至少 ${f.minShortSide.value} m` : ""}。</li>`).join("")}
@@ -3132,10 +3511,17 @@ function renderMassingCheck(){
   const groundNet = act.filter(f => f.floorReq && f.floorReq.value === "mustGround").reduce((t, f) => t + effectiveArea(f) * f.count, 0);
   const tall = act.filter(f => f.minClearHeight && f.minClearHeight.value > ASSUMPTIONS.storeyHeight.value - ASSUMPTIONS.slabThickness.value + EPS);
   const ok = b => `<b style="color:${b ? "var(--ok)" : "var(--bad)"}">${b ? "✓" : "✗"}</b>`;
+  if (state.uiMode === "user"){
+    const needAll = L.net + L.skeletonArea + L.coreExtra, okAll = L.usableStart >= needAll - EPS, okG = ground >= groundNet - EPS;
+    const okH = tall.every(f => maxReachableClear(f, L.spaces).best >= f.minClearHeight.value - EPS);
+    const probs = [!okAll ? `楼面还差 ${fmt(needAll - L.usableStart)} m²` : "", !okG ? `首层还差 ${fmt(groundNet - ground)} m²` : "", !okH ? `${tall.map(f => f.name).join("、")}的净高不够` : ""].filter(Boolean);
+    document.getElementById("massing-check").innerHTML = `<h3>体块够不够用</h3><div class="check ${probs.length ? "bad" : "ok"}">${probs.length ? probs.join("；") : "够了：功能都放得下"}</div>${state.site.applied ? `<div style="font-size:12px;margin-top:4px">场地：${state.site.applied.label}</div>` : ""}`;
+    return;
+  }
   document.getElementById("massing-check").innerHTML = `<h3>体块够不够用（实时）</h3>
     <p class="hint" style="margin:0 0 4px">场地：${state.site.applied ? `<b>${state.site.applied.label}</b>（${state.site.applied.area}，${fmt(state.site.applied.m2)} m²，绿色虚线）<br>${contextLine()}` : `${state.site.area ? `${state.site.area}，` : ""}还没选场地，用 ${SITE.w} × ${SITE.d} m 的示意场地（第 3 步可选）`}</p>
     <div class="kv">
-      <div>可用楼面（所有标高）</div><div>${ok(L.usableStart >= L.net - EPS)} ${fmt(L.usableStart)} m² / 需要净面积 ${fmt(L.net)} m²</div>
+      <div>可用楼面（所有标高）</div><div>${ok(L.usableStart >= L.net + L.skeletonArea + L.coreExtra - EPS)} ${fmt(L.usableStart)} m² / 需要净面积 ${fmt(L.net)}${L.skeletonArea ? ` + 骨架 ${fmt(L.skeletonArea)} + 核 ${fmt(L.coreExtra)}` : ""} = ${fmt(L.net + L.skeletonArea + L.coreExtra)} m²</div>
       <div>按系数放大后</div><div>${ok(L.usableStart >= L.gross - EPS)} 总建筑面积约 ${fmt(L.gross)} m²</div>
       <div>首层可用楼面</div><div>${ok(ground >= groundNet - EPS)} ${fmt(ground)} m² / 必须首层的功能 ${fmt(groundNet)} m²</div>
       ${tall.map(f => { const mx = maxReachableClear(f, L.spaces); return `<div>${f.name}净高</div><div>${ok(mx.best >= f.minClearHeight.value - EPS)} 需要 ${f.minClearHeight.value} m，现在最多 ${isFinite(mx.best) ? fmt(mx.best,1) : 0} m${mx.best < f.minClearHeight.value - EPS ? `（把体块顶面拉高到至少 ${fmt(f.minClearHeight.value + ASSUMPTIONS.slabThickness.value,1)} m 并跨两层）` : ""}</div>`; }).join("")}
@@ -3145,6 +3531,17 @@ function renderMassingCheck(){
     <p class="hint">这里只看体块和标高够不够用；功能排布在第 5 步。</p>`;
 }
 
+// 使用者 / 开发者模式（2026-10-22，用户决定：默认使用者；开发者模式不变）
+function setUiMode(m){
+  state.uiMode = m;
+  try { localStorage.setItem("ccTool.uiMode", m); } catch (e) {}
+  document.body.classList.toggle("mode-user", m === "user");
+  const b = document.getElementById("mode-toggle");
+  if (b){ b.innerHTML = m === "user" ? `<b>使用者</b> · 开发者` : `使用者 · <b>开发者</b>`; b.setAttribute("aria-pressed", m === "user" ? "true" : "false"); b.setAttribute("aria-label", `切换到${m === "user" ? "开发者" : "使用者"}模式`); }
+  if (state.layout) regenerate();
+}
+(() => { let m = "user"; try { m = localStorage.getItem("ccTool.uiMode") || "user"; } catch (e) {} state.uiMode = m; document.body.classList.toggle("mode-user", m === "user");
+  const b = document.getElementById("mode-toggle"); if (b){ b.innerHTML = m === "user" ? `<b>使用者</b> · 开发者` : `使用者 · <b>开发者</b>`; b.setAttribute("aria-pressed", m === "user" ? "true" : "false"); b.setAttribute("aria-label", `切换到${m === "user" ? "开发者" : "使用者"}模式`); b.onclick = () => setUiMode(state.uiMode === "user" ? "dev" : "user"); } })();
 function regenerate(){
   // 设计师第一次进入第 4 步之前，排布每次都重新来（不“记住”位置）；进入第 4 步之后开始保持稳定（2026-10-18 定为第 5 步，2026-10-19 改为第 4 步）
   if (!state.layoutStarted) state.memory = {};
@@ -3160,7 +3557,7 @@ function regenerate(){
     generateLayout();
   }
   if (state.selected && !state.layout.rooms.some(r=>r.id===state.selected) && !state.layout.flagged.some(f=>f.id===state.selected)) state.selected = null;
-  syncControls(); renderMassPanel(); renderLevelPanel(); renderPlan(); renderSection(); renderSpaceList(); renderLeft(); renderSidebar();
+  syncControls(); renderMassPanel(); renderLevelPanel(); renderCircPanel(); renderPlan(); renderSection(); renderSpaceList(); renderLeft(); renderSidebar();
   renderProgramSelect(); renderProgramAreas(); renderMassingCheck();
   if (window.render3D) window.render3D();
 }
