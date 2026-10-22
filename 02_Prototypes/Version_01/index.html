@@ -8,7 +8,9 @@
   :root{
     --bg:#f6f4ef; --panel:#ffffff; --ink:#1f2a2e; --muted:#6b7378; --line:#dcd8cf;
     --accent:#2b5d7a; --warn:#b4541c; --bad:#a3212d; --ok:#2e7d4f;
-    --exposed:#cfe3bf; --protected:#d6d2c8; --buffered:#bfd7ea; --tempered:#f2d59b; --controlled:#e08e79;
+    /* 2026-10-20 图纸语言（DESIGN_BRIEF_Plan.md）：阶段是一条冷淡 → 暖实的色阶；问题和建议只用一种深蓝；图纸上的线用淡墨 */
+    --exposed:#E7EEF2; --protected:#CFDBD9; --buffered:#D9CFB0; --tempered:#D4A95A; --controlled:#8C4A2F;
+    --flag:#1F4E79; --inkline:#B9B3A6; --paper:#ffffff;
     --band-south:rgba(255,205,90,0.20); --band-middle:rgba(60,60,60,0.06); --band-north:rgba(90,140,230,0.14);
   }
   *{box-sizing:border-box}
@@ -21,9 +23,9 @@
   aside{background:var(--panel)}
   #left{border-right:1px solid var(--line)}
   #right{border-left:1px solid var(--line)}
-  h2{font-size:13px;margin:14px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+  h2{font-size:13px;margin:14px 0 6px;color:var(--muted);font-weight:600}
   h2:first-child{margin-top:0}
-  .card{border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:8px;background:#fff}
+  .card{border:1px solid var(--line);border-radius:3px;padding:8px 10px;margin-bottom:8px;background:#fff}
   .card.unplaced{border-color:#e8b9a2;background:#fff7f3}
   .card .title{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
   .card .name{font-weight:600}
@@ -44,7 +46,18 @@
   .controls input[type=number]{width:64px;padding:2px 4px;border:1px solid var(--line);border-radius:4px;font:inherit}
   .controls input[type=range]{width:120px}
   .readout{color:var(--muted);font-size:12px}
-  svg#plan{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;touch-action:none;user-select:none}
+  svg#plan{width:100%;height:auto;background:var(--paper);border:1px solid var(--line);border-bottom:none;border-radius:3px 3px 0 0;touch-action:none;user-select:none;display:block}
+  svg#plan text, svg#section text{font-family:Bahnschrift,"Bahnschrift SemiCondensed","Microsoft YaHei",sans-serif}
+  /* 标题块：平面这张“纸”的下沿 */
+  .titleblock{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:flex-end;justify-content:space-between;padding:10px 14px 12px;border:1px solid var(--line);border-top:1px solid var(--ink);border-radius:0 0 3px 3px;background:var(--paper);font-family:Bahnschrift,"Microsoft YaHei",sans-serif}
+  .titleblock .lv{font-size:22px;line-height:1;color:var(--ink);white-space:nowrap}
+  .titleblock .sub{font-size:12px;color:var(--muted);margin-top:4px;white-space:nowrap}
+  .titleblock .ramp{display:grid;grid-template-columns:repeat(5,52px);gap:0;font-size:10px;color:var(--muted)}
+  .titleblock .ramp i{display:block;height:12px;margin-bottom:3px}
+  .titleblock .counts{font-size:12px;color:var(--ink);display:flex;gap:16px}
+  .titleblock .counts span{cursor:pointer}
+  .titleblock .counts span.on{color:var(--flag);font-weight:600}
+  .lockmark{display:inline-block;width:8px;height:8px;background:var(--ink);margin-right:5px;vertical-align:1px}
   .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px;color:var(--muted)}
   .banner{padding:8px 10px;border-radius:6px;margin-bottom:8px;font-size:13px}
   .banner.bad{background:#fbe9ea;border:1px solid #e3a4aa;color:var(--bad)}
@@ -63,8 +76,8 @@
   select{font:inherit;padding:2px 4px;border:1px solid var(--line);border-radius:4px}
   .hint{color:var(--muted);font-size:12px}
   .room{cursor:pointer}
-  .room:hover rect{stroke-width:2.5}
-  .room.selected rect{stroke:#111;stroke-width:3}
+  .room:hover rect.rm{stroke:var(--ink);stroke-width:1.5}
+  .room.selected rect.rm{stroke:var(--flag);stroke-width:2.5}
   .handle{fill:#fff;stroke:var(--accent);stroke-width:1.5}
   .edge{stroke:transparent;stroke-width:10}
   .edge.ns{cursor:ns-resize}.edge.ew{cursor:ew-resize}
@@ -139,7 +152,7 @@
   table.areas input{width:70px;padding:2px 4px;border:1px solid var(--line);border-radius:4px;font:inherit}
   table.areas tr.grp td{background:#f3f7fa;color:var(--accent);font-weight:600}
   table.areas tr.tot td{font-weight:600;background:#faf8f3}
-  .card.flagged{border-color:var(--bad);background:#fbe9ea}
+  .card.flagged{border-left:3px solid var(--flag)}
   .fnrow{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:3px 6px;border-radius:4px;cursor:pointer;font-size:13px}
   .fnrow:hover{background:#f1eee7}
   .lvsep{font-size:12px;font-weight:600;color:var(--accent);border-top:1px solid var(--line);padding:6px 6px 2px;margin-top:4px}
@@ -166,7 +179,7 @@
   .v3sunbox td{padding:0 8px 0 0}
   .v3bar{position:absolute;left:50%;top:8px;transform:translateX(-50%);background:#2b5d7a;color:#fff;border-radius:4px;padding:2px 10px;font-size:12px;display:none}
   button.on{background:var(--accent);color:#fff}
-  svg#section{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px}
+  svg#section{width:100%;height:auto;background:var(--paper);border:1px solid var(--line);border-radius:3px}
   .fields .chk{grid-column:1 / -1;display:flex;gap:6px;align-items:center}
   .encl{margin-top:8px;padding-top:6px;border-top:1px solid var(--line);font-size:12px}
   .encl .chk{display:flex;gap:6px;align-items:center;margin:3px 0}
@@ -257,7 +270,8 @@
     </div>
     <div class="controls">
       <label>平面标高 <select id="plan-level"></select></label>
-      <label><input type="checkbox" id="chk-adj" checked> 显示邻接连线</label>
+      <label><input type="checkbox" id="chk-adj"> 画出所有不满足的邻接</label>
+      <label><input type="checkbox" id="chk-sun"> 外墙受晒色带</label>
       <span id="massing-readout" class="readout"></span>
     </div>
     <div class="controls">
@@ -272,25 +286,9 @@
       <span class="hint">三带只是评判背景，不是容器；默认 35 / 30 / 35（假设）</span>
     </div>
     <svg id="plan" viewBox="-24 -24 948 568" xmlns="http://www.w3.org/2000/svg"></svg>
-    <div class="legend">
-      <span><span class="swatch" style="background:var(--exposed)"></span>exposed（冬季最低）</span>
-      <span><span class="swatch" style="background:var(--protected)"></span>protected（冬季最低）</span>
-      <span><span class="swatch" style="background:var(--buffered)"></span>buffered（冬季最低）</span>
-      <span><span class="swatch" style="background:var(--tempered)"></span>tempered（冬季最低）</span>
-      <span><span class="swatch" style="background:var(--controlled)"></span>controlled（冬季最低）</span>
-      <span class="leg-band"><span class="swatch" style="background:var(--band-south)"></span>南带（直射阳光）</span>
-      <span class="leg-band"><span class="swatch" style="background:var(--band-middle)"></span>中间带（服务）</span>
-      <span class="leg-band"><span class="swatch" style="background:var(--band-north)"></span>北带（漫射）</span>
-      <span class="leg-sun"><span class="swatch" style="width:48px;background:linear-gradient(90deg,#2c3e75,#4f7cac,#9ccfb5,#f2d16b,#e8743b)"></span>外墙受晒（在这栋楼外墙里的排名：低 → 高）</span>
-      <span><span class="swatch" style="background:#fff"></span>空白 = 走廊与未分配空间</span>
-      <span><span class="swatch" style="background:#eee;border:1.5px dashed #888"></span>体块轮廓 / 灰斜线 = 净高不足</span>
-      <span><span class="swatch" style="background:#dceaf5;border:1px solid #7aa7c7"></span>挑空（这一层不设楼板）</span>
-      <span><span class="swatch" style="background:#fbe9ea;border:1.5px dashed var(--bad)"></span>需要调整（原位置）</span>
-      <span><span class="swatch" style="background:#e9f5ee;border:1.5px dashed var(--ok)"></span>建议位置</span>
-      <span><span class="swatch" style="background:#fff;border:none;border-top:3px solid var(--ok)"></span>邻接满足 / <span style="color:var(--bad)">红虚线</span> 不满足</span>
-    </div>
+    <div class="titleblock" id="plan-title"></div>
     <details class="more"><summary>平面怎么读、怎么操作</summary>
-    <p class="hint">平面显示所选标高的截面：只画在这个标高处存在的体块（底标高 ≤ 标高 &lt; 顶标高）。粗黑线 = 外墙；红色虚线 = 体块贴着但接触宽度不足 5 m，不连通；灰色斜线 = 净高不足 3.0 m，不算可用楼面；细虚线 = 各个体块的轮廓。平面里不能改体块（回到第 4 步改）。<b>拖动功能区</b>可以挪动它（吸附 1 m，只在这一层里移动；拖动时绿色 = 落在可用楼面里，红色 = 不在）；拖过的功能区自动锁定（🔒），被它压住的没锁定的功能区会重新找位置。点选房间看说明，点体块选中体块。场地范围 90 × 52 m。</p></details>
+    <p class="hint">平面显示所选标高的截面：只画在这个标高处存在的体块（底标高 ≤ 标高 &lt; 顶标高）。颜色是功能区的阶段（冷淡到暖实：exposed → controlled），空白是走廊和未分配空间。墨色实线 = 外墙；深蓝虚线 = 问题或建议（需要调整的原位置、建议位置、不满足的邻接、体块贴着但接触宽度不足 5 m）；灰色斜线 = 净高不足 3.0 m；淡色虚线 = 体块轮廓（只在有多个体块时画）和挑空范围。房间左上角的小方块 = 已锁定；面积后写“挑空”的房间占了上面的层。平面里不能改体块（回到第 4 步改）。<b>拖动功能区</b>可以挪动它（吸附 1 m，只在这一层里移动；拖动时深蓝 = 不在可用楼面里）；拖过的功能区自动锁定，被它压住的没锁定的功能区会重新找位置。点一个房间，只画它自己不满足的邻接；上面的开关可以画出全部。</p></details>
     <div id="v3slot-layout"></div>
     <h2>剖面</h2>
     <div class="controls">
@@ -340,7 +338,7 @@ const STATUS = {
   userSet:    "用户设定",
 };
 
-// 五个阶段（用户定义），防护逐级增加。index 用于“渐变适配”的线性对应。
+// 五个阶段（用户定义），防护逐级增加。index 用于“渐变序列”里比较两个功能区差几级。
 const STAGES = [
   { id:"exposed",    index:0, zh:"完全没有天空遮挡的空间",                 status:STATUS.userDefined },
   { id:"protected",  index:1, zh:"有天空遮挡的空间",                       status:STATUS.userDefined },
@@ -660,17 +658,17 @@ const ASSUMPTIONS = {
   minContactWidth: { value:5,   status:STATUS.userSet, note:"两个体块的接触宽度至少这么多才算连成一个空间；取重叠或贴面矩形的较长边（2026-10-18）" },
   site:            { w:90, d:52, status:STATUS.userDecided },
   snapM:           { value:1, status:STATUS.userDecided },
-  defaultStage:    { value:"tempered", status:STATUS.userDecided, note:"新区域默认阶段" },
+  defaultStage:    { value:"justEnough", status:STATUS.userDecided, note:"功能区的阶段 = 它冬季的最低阶段（“刚好够”，工具自动指派；用户 2026-10-20 决定，取代“新区域默认 tempered”）" },
   entryFacade:     { value:"south", status:STATUS.userDecided, note:"默认南立面，第一版不可挪" },
-  gradientMapping: { status:STATUS.assumed, note:"阶段越高越靠内，线性对应：目标深度 = 阶段序号 ÷ 4 × 最大可能深度（南北进深的一半）" },
-  depthToFacades:  { status:STATUS.userDecided, note:"深度只量到南、北立面，不量到东、西山墙（2026-10-17）" },
+  stageSequence:   { status:STATUS.assumed, note:"渐变序列：功能区按 buffered → tempered → controlled 排开，controlled 聚成一团、靠冬季向阳的一侧（图景由用户 2026-10-20 决定）。周长各段按长度加权：贴同阶段 1、相差一级 0.7、跳级 0.3；controlled 贴向阳外墙 1、贴背阳外墙 0.3；其他阶段贴外墙 1；还没有邻居的空边 0.5。数值是假设" },
+  warmWallRank:    { value:0.5, status:STATUS.assumed, note:"外墙冬季总辐射在这栋楼外墙里排名 ≥ 50% 算“向阳”（分带依据下：南立面算向阳）" },
   facadeContact:   { status:STATUS.userDecided, note:"偏好南带或北带的房间，贴着对应立面才算完全适配（2026-10-17）；没贴着时按空隙线性打折：系数 = 1 − 空隙 ÷ 带深度", discountStatus:STATUS.assumed },
   simplicityRule:  { status:STATUS.assumed, note:"前几项都相同时，周长中贴着外墙或已放功能区的比例越高越好（紧凑，2026-10-18 改）；仍相同时取最西、最南的位置" },
   adjShared:       { value:3, status:STATUS.assumed, note:"“相邻”= 两个功能区共用的墙至少这么长（米），大致是一个门洞加两侧墙垛（2026-10-18，用户决定先用假设值）" },
   adjNear:         { value:6, status:STATUS.assumed, note:"“靠近”= 两个功能区之间的净距不超过这么多（米），大致是一条走廊的宽度量级；不同楼层时要上下有重叠（2026-10-18，用户决定先用假设值）" },
   extTouch:        { value:3, status:STATUS.assumed, note:"“直通室外”= 贴着外墙至少这么长（米）（2026-10-18，用户决定先用假设值）" },
-  gradientStep:    { value:0.1, status:STATUS.assumed, note:"渐变适配按 10% 一档比较，深度差不多的位置算一样，让“紧凑”决定（2026-10-18，为了更紧凑）" },
-  judgeOrder:      ["楼层适配", "邻接适配", "带适配", "渐变适配", "形状", "简洁"],
+  gradientStep:    { value:0.1, status:STATUS.assumed, note:"渐变序列按 10% 一档比较，差不多的位置算一样，让后面的评判决定（2026-10-18 起的做法）" },
+  judgeOrder:      ["楼层适配", "邻接适配", "渐变序列", "受晒 / 带适配", "形状", "紧凑"],
   floorPrefFirst:  { status:STATUS.userDecided, note:"“楼层适配”（最好首层 / 最好二层）排在带适配之前（用户 2026-10-18 确认）" },
   manualVoidShared:{ status:STATUS.userDecided, note:"手动挑空的空间可以放多个功能（用户 2026-10-18 确认）" },
 };
@@ -682,6 +680,7 @@ const UNPLACED_REASONS = {
   U3:"面积被分割",
   U4:"净高不够",
   U5:"没有合适阶段的空间",
+  U6:"形状放不下",
 };
 
 /* =====================================================================
@@ -723,7 +722,8 @@ const state = {
   selectedFace: null, // 三维里选中的面：south / north / east / west / top / bottom（阶段 5）
   isolate: null,      // 2026-10-18：双击体块单独编辑，只显示这个体块
   whiteModel: false,  // 2026-10-18：三维只看体块白模
-  showAdj: true,      // 2026-10-18：平面上显示邻接连线
+  showAdj: false,     // 2026-10-20：默认只画选中房间不满足的邻接；打开后画全部不满足的
+  showSunWalls: false,   // 2026-10-20：外墙受晒色带默认关闭
   strategy: "climate", // 2026-10-18：当前的排布方式（设计师在“生成几种方案”里选）
   step: 1,            // 2026-10-18：当前步骤 1 选择功能 / 2 面积与净高 / 3 选场地 / 4 体块推演 / 5 功能排布与邻接
   excluded: {},       // 2026-10-18：第 1 步里没勾选的功能 { fnId: true }
@@ -788,8 +788,8 @@ function massStageInfo(m){
   const list = closed.map(x => x.own ? SIDE_ZH[x.side] : `${SIDE_ZH[x.side]}（贴着 ${x.by}）`).join("、");
   // 2026-10-19：没有屋顶时也可以有墙（围墙、院墙）；阶段仍按定义是 exposed（没有天空遮挡），墙只用于挡风的提示和显示
   if (!E.roof) return { stage:"exposed", why:`没有屋顶：完全没有天空遮挡${closed.length ? `（有墙：${list}）` : ""}`, closed };
-  if (closed.length === 4) return E.mech ? { stage:"controlled", why:"有屋顶、四面有墙，有机械调节", closed }
-                                         : { stage:"tempered", why:"有屋顶、四面有墙：与室外完全隔开，没有机械调节", closed };
+  // 2026-10-20（用户决定）：体块是气候基础设施，封闭体块 = tempered；里面哪些功能区需要机械调节（controlled）由功能按“刚好够”自己决定，不再按整个体块勾选
+  if (closed.length === 4) return { stage:"tempered", why:"有屋顶、四面有墙：封闭体块；里面的功能区按“刚好够”各自是 tempered 或 controlled", closed };
   if (closed.length >= 2) return { stage:"buffered", why:`有屋顶，${closed.length} 面有墙（${list}）：有天空遮挡，且有其他环境遮挡`, closed };
   return { stage:"protected", why:`有屋顶，${closed.length ? `只有 ${list} 一面有墙` : "四面开敞"}：有天空遮挡`, closed };
 }
@@ -1007,19 +1007,11 @@ function facadeGap(sp, r, dir){
   if (dir === "north") for (const w of sp.walls.north){ if (overlapLen(r.x0, r.x1, w.a0, w.a1) > EPS && w.pos >= r.y1 - EPS) g = Math.min(g, w.pos - r.y1); }
   return Math.max(0, g);
 }
-// 房间中心到南、北外墙中较近的一个（深度只量到南、北立面，用户决定 2026-10-17）
-function facadeDepth(sp, r){
-  const cy = (r.y0 + r.y1) / 2;
-  let s = Infinity, n = Infinity;
-  for (const w of sp.walls.south) if (overlapLen(r.x0, r.x1, w.a0, w.a1) > EPS && w.pos <= cy + EPS) s = Math.min(s, cy - w.pos);
-  for (const w of sp.walls.north) if (overlapLen(r.x0, r.x1, w.a0, w.a1) > EPS && w.pos >= cy - EPS) n = Math.min(n, w.pos - cy);
-  const d = Math.min(s, n);
-  return isFinite(d) ? d : Math.min(cy - sp.bbox.y0, sp.bbox.y1 - cy);
-}
 
 /* =====================================================================
    ④ 自动摆放（PLACEMENT_CRITERIA.md）
-   大件优先、就近最优；硬约束 → 楼层适配 > 带适配 > 渐变适配 > 形状 > 简洁；同样输入同样结果。
+   大件优先、就近最优；硬约束 → 楼层适配 > 渐变序列 > 受晒 / 带适配 > 形状 > 紧凑；同样输入同样结果。
+   2026-10-20：“渐变适配”（离立面的深度）改为“渐变序列”（功能区按阶段排开，见 stageOrderOf）。
    阶段 3：在每个层段空间里划功能区；一个功能区只能在一个空间里（用户决定）。
    阶段 4：硬约束加上最小净高、“必须首层”；软评判最前面加“楼层适配”（最好首层 / 最好二层）。
    净高一层不够的功能，往上占用几个层段，合成一个挑高空间，整个给这个功能（用户决定）；被占用的上层格子成为挑空，不设楼板。
@@ -1367,6 +1359,56 @@ function sunFitOf(fn, sp, r){
   return { fit:Math.round(raw / 0.05) * 0.05, raw, ex, rt, rd };
 }
 
+// ===== 渐变序列（2026-10-20，用户决定：平面的组织方式）=====
+// 功能区按 buffered → tempered → controlled 排开；controlled 聚成一团、靠冬季向阳的一侧；tempered 在冷侧；buffered 在入口和边缘。
+// 每个功能区的阶段 = 它冬季的最低阶段（“刚好够”，自动指派；半室外功能 = 所在空间的阶段）。体块只提供上限（封闭体块可以承载 tempered 和 controlled）。
+// 一个候选位置的“渐变序列”= 周长里各段的得分按长度加权平均（数值都是假设，见 ASSUMPTIONS.stageSequence）：
+//   贴同阶段的功能区 1；相差一级 0.7；相差两级以上 0.3（例如门厅直接贴老年中心，跳过了 tempered）；
+//   controlled 贴外墙：向阳的 1（冬天白拿太阳热），背阳的 0.3（只散热、不得热）；其他阶段贴外墙 1；
+//   还没有邻居的空边 0.5（比贴同阶段或外墙差，这样功能区会往同阶段的邻居和外墙靠，聚成团）。
+const STAGE_SEQ = { same:1, step:0.7, jump:0.3, cold:0.3, open:0.5 };
+function stageOfFn(fn, sp){ return fn.outdoor ? ((sp && sp.stage) || "tempered") : fn.minStage.winter; }
+const roomStageOf = r => state.stages[r.id] || r.stage || (r.fn ? stageOfFn(r.fn, r.space) : "tempered");   // 没有功能信息的占位矩形按 tempered
+let WARM_CACHE = new Map(), warmKey = "";
+function wallIsWarm(ori, pos, a0, a1, sp){
+  if (state.climate.basis !== "sun") return ori === "S";
+  const E = facadeExposure();
+  if (warmKey !== expoKey){ WARM_CACHE = new Map(); warmKey = expoKey; }
+  const [z0, z1] = spaceZ(sp), k = `${ori}:${pos}:${a0.toFixed(2)}:${a1.toFixed(2)}:${z0}`;
+  if (WARM_CACHE.has(k)) return WARM_CACHE.get(k);
+  const ss = wallSamples(ori, pos, a0, a1, z0, z1);
+  const warm = ss.length ? rankIn(E.tots, ss.reduce((t, q) => t + q.tot, 0) / ss.length) >= ASSUMPTIONS.warmWallRank.value - EPS : ori === "S";
+  WARM_CACHE.set(k, warm);
+  return warm;
+}
+function stageOrderOf(fn, sp, r, placed){
+  const stage = stageOfFn(fn, sp), s = STAGE_INDEX[stage], ctrl = stage === "controlled";
+  const out = { same:0, step:0, jump:0, ext:0, cold:0 };
+  const sides = [
+    { ori:"S", pos:r.y0, a0:r.x0, a1:r.x1, walls:sp.walls.south, nb:q => Math.abs(q.y1 - r.y0) < 1e-3, b0:"x0", b1:"x1" },
+    { ori:"N", pos:r.y1, a0:r.x0, a1:r.x1, walls:sp.walls.north, nb:q => Math.abs(q.y0 - r.y1) < 1e-3, b0:"x0", b1:"x1" },
+    { ori:"W", pos:r.x0, a0:r.y0, a1:r.y1, walls:sp.walls.west,  nb:q => Math.abs(q.x1 - r.x0) < 1e-3, b0:"y0", b1:"y1" },
+    { ori:"E", pos:r.x1, a0:r.y0, a1:r.y1, walls:sp.walls.east,  nb:q => Math.abs(q.x0 - r.x1) < 1e-3, b0:"y0", b1:"y1" },
+  ];
+  for (const sd of sides){
+    for (const q of placed){
+      if (!sd.nb(q)) continue;
+      const L = overlapLen(sd.a0, sd.a1, q[sd.b0], q[sd.b1]); if (L <= EPS) continue;
+      const d = Math.abs(STAGE_INDEX[roomStageOf(q)] - s);
+      out[d === 0 ? "same" : d === 1 ? "step" : "jump"] += L;
+    }
+    for (const wl of sd.walls){
+      if (Math.abs(wl.pos - sd.pos) > 1e-4) continue;
+      const o0 = Math.max(sd.a0, wl.a0), o1 = Math.min(sd.a1, wl.a1); if (o1 - o0 <= EPS) continue;
+      if (ctrl && !wallIsWarm(sd.ori, sd.pos, o0, o1, sp)) out.cold += o1 - o0; else out.ext += o1 - o0;
+    }
+  }
+  const len = out.same + out.step + out.jump + out.ext + out.cold, perim = 2 * ((r.x1 - r.x0) + (r.y1 - r.y0));
+  const open = Math.max(0, perim - len);
+  const fit = perim > EPS ? (out.same + out.ext + STAGE_SEQ.step * out.step + STAGE_SEQ.jump * out.jump + STAGE_SEQ.cold * out.cold + STAGE_SEQ.open * open) / perim : 0.5;
+  return { stage, fit, q:Math.round(fit / ASSUMPTIONS.gradientStep.value) * ASSUMPTIONS.gradientStep.value, ...out, open, len, perim };
+}
+
 function bandRanges(bbox){
   const s = bbox.y0 + bbox.d * state.bands.south / 100;
   const m = s + bbox.d * middlePct() / 100;
@@ -1420,11 +1462,8 @@ function scoreRect(r, fn, sp, placed){
   if (fn.bandPref !== "middle") facadeFactor = gap <= EPS ? 1 : (bandDepth > EPS ? clamp(1 - gap / bandDepth, 0, 1) : 0);
   let bandFit = frac[fn.bandPref] * facadeFactor, sun = null;
   if (state.climate.basis === "sun"){ sun = sunFitOf(fn, sp, r); bandFit = sun.fit; }   // 受晒适配代替带适配（2026-10-19）
-  // 渐变适配：深度只量到南、北立面（用户决定 2026-10-17）
-  const dist = facadeDepth(sp, r);
-  const maxDepth = bbox.d/2;
-  const target = STAGE_INDEX[fn.minStage.winter]/4 * maxDepth;
-  const gradFit = maxDepth > 0 ? clamp(1 - Math.abs(dist-target)/maxDepth, 0, 1) : 1;
+  // 渐变序列（2026-10-20）：取代原来按深度算的“渐变适配”
+  const seq = stageOrderOf(fn, sp, r, placed);
   const w = r.x1-r.x0, h = r.y1-r.y0, ratio = Math.max(w,h)/Math.min(w,h);
   const shapeOk = (ratio <= fn.aspect.max + EPS && ratio >= fn.aspect.min - EPS &&
                    (!fn.minShortSide || Math.min(w,h) >= fn.minShortSide.value - EPS)) ? 1 : 0;
@@ -1445,11 +1484,11 @@ function scoreRect(r, fn, sp, placed){
               + Math.min(h, seg(sp.walls.west,  r.x0, r.y0, r.y1) + seg(sp.partitions.west,  r.x0, r.y0, r.y1) + nb(r.x0, r.y0, r.y1, "x1", "y0", "y1"))
               + Math.min(h, seg(sp.walls.east,  r.x1, r.y0, r.y1) + seg(sp.partitions.east,  r.x1, r.y0, r.y1) + nb(r.x1, r.y0, r.y1, "x0", "y0", "y1"));
   const contact = touch / (2 * (w + h));
-  // 渐变适配按 10% 一档比较（假设）：深度差不多的位置算一样，让“紧凑”来决定
-  const gradQ = Math.round(gradFit / ASSUMPTIONS.gradientStep.value) * ASSUMPTIONS.gradientStep.value;
+  // 渐变序列按 10% 一档比较（假设）：差不多的位置算一样，让后面的评判决定
+  const stageFit = seq.fit, stageQ = seq.q;
   const floorFit = floorFitOf(fn, sp);
   const adjFit = adjacencyFit(fn, r, sp, null);
-  return { floorFit, adjFit, bandFit, sun, frac, gap, bandDepth, facadeFactor, gradFit, gradQ, dist, target, maxDepth, shapeOk, ratio, flush, contact };
+  return { floorFit, adjFit, bandFit, sun, frac, gap, bandDepth, facadeFactor, seq, stageFit, stageQ, shapeOk, ratio, flush, contact };
 }
 // 邻接（2026-10-18）：两个功能区之间满不满足某条关系
 let LAYOUT_ROOMS = [];   // 排布进行中已放好的所有功能区（各层），供邻接评分用
@@ -1516,14 +1555,17 @@ function adjacencyReport(rooms){
 // 排布方式（2026-10-18，用户决定：工具生成几种可能，由设计师挑最合适的）
 // 每种方式是一套评判顺序 + 是否成组放置。楼层要求永远排第一。
 const STRATEGIES = [
-  { id:"climate",  name:"气候优先", desc:"楼层 > 气候适配 > 渐变 > 形状 > 紧凑；不考虑邻接（用户之前选的顺序 A）",
-    keys:["floorFit","bandFit","gradQ","shapeOk","contact"], cluster:false },
-  { id:"adjacent", name:"邻接优先", desc:"楼层 > 邻接 > 气候适配 > 渐变 > 形状 > 紧凑；相关功能成组放置",
-    keys:["floorFit","adjFit","bandFit","gradQ","shapeOk","contact"], cluster:true },
-  { id:"compact",  name:"紧凑优先", desc:"楼层 > 紧凑 > 气候适配 > 渐变 > 形状；不考虑邻接",
-    keys:["floorFit","contact","bandFit","gradQ","shapeOk"], cluster:false },
-  { id:"adjcomp",  name:"邻接 + 紧凑", desc:"楼层 > 邻接 > 紧凑 > 气候适配 > 渐变 > 形状；相关功能成组放置",
-    keys:["floorFit","adjFit","contact","bandFit","gradQ","shapeOk"], cluster:true },
+// 2026-10-20（用户决定）：“渐变序列”排在受晒 / 带适配之前——平面先按阶段排开，再按光排。
+  { id:"climate",  name:"渐变优先", desc:"楼层 > 渐变序列 > 受晒 / 带适配 > 形状 > 紧凑；不考虑邻接（默认）",
+    keys:["floorFit","stageQ","bandFit","shapeOk","contact"], cluster:false },
+  { id:"sunfirst", name:"受晒优先（上一版）", desc:"楼层 > 受晒 / 带适配 > 渐变序列 > 形状 > 紧凑；不考虑邻接（2026-10-20 之前的顺序，渐变序列放在受晒后面）",
+    keys:["floorFit","bandFit","stageQ","shapeOk","contact"], cluster:false },
+  { id:"adjacent", name:"邻接优先", desc:"楼层 > 邻接 > 渐变序列 > 受晒 / 带适配 > 形状 > 紧凑；相关功能成组放置",
+    keys:["floorFit","adjFit","stageQ","bandFit","shapeOk","contact"], cluster:true },
+  { id:"compact",  name:"紧凑优先", desc:"楼层 > 紧凑 > 渐变序列 > 受晒 / 带适配 > 形状；不考虑邻接",
+    keys:["floorFit","contact","stageQ","bandFit","shapeOk"], cluster:false },
+  { id:"adjcomp",  name:"邻接 + 紧凑", desc:"楼层 > 邻接 > 紧凑 > 渐变序列 > 受晒 / 带适配 > 形状；相关功能成组放置",
+    keys:["floorFit","adjFit","contact","stageQ","bandFit","shapeOk"], cluster:true },
 ];
 const JUDGE_KEYS = [...STRATEGIES[0].keys];
 // 比较两组评分：1 = a 更好，−1 = b 更好，0 = 一样
@@ -1566,7 +1608,7 @@ function compactRooms(rooms, levelInfo){
           if (r.fn.entry && facadeGap(sp, nr, "south") > EPS) continue;
           if (r.fn.minClearHeight && roomClear(nr, sp.info.clear) < r.fn.minClearHeight.value - EPS) continue;
           const sc = scoreRect(nr, r.fn, sp, others);
-          const notWorse = ["floorFit","adjFit","bandFit","gradQ"].every(k => sc[k] >= base[k] - EPS);
+          const notWorse = ["floorFit","adjFit","stageQ","bandFit"].every(k => sc[k] >= base[k] - EPS);
           if (notWorse && sc.contact > base.contact + EPS && (!best || sc.contact > best.sc.contact + EPS)) best = { nr, sc };
           break;
         }
@@ -1718,6 +1760,7 @@ function generateLayout(){
   const place = (base, b, extra) => {
     const sp = b.space, spans = lvls.slice(sp.levelIdx, sp.levelIdx + b.n).map(l => l.id);
     const r = { ...base, ...b.rect, ...extra, score:b.score, shape:b.shape, spaceId:sp.id, levelId:sp.levelId, elevation:sp.elevation, space:sp, spans };
+    r.stage = stageOfFn(base.fn, sp);   // 2026-10-20：功能区的阶段 = 冬季最低阶段（刚好够）；半室外功能 = 空间的阶段
     r.clear = roomClear(r, b.col);
     r.topBoundary = sp.elevation + r.clear + ASSUMPTIONS.slabThickness.value;
     markOcc(sp.levelId, r);
@@ -1878,7 +1921,7 @@ function generateLayout(){
           which = `无柱矩形短边至少约 ${fn.minShortSide.value} m（${fn.minShortSide.status}），所有空间的外接框最短边最多只有 ${big ? fmt(Math.min(big.bbox.w, big.bbox.d)) : 0} m`;
         else
           which = `按允许的长宽比 1:${fn.aspect.min}–1:${fn.aspect.max}（${fn.aspect.status}），没有一种形状能放进任何一个空间`;
-        addUnplaced(base, "U2", `面积够，但形状约束不满足：${which}`, `形状约束也不满足：${which}`);
+        addUnplaced(base, "U6", `面积够，但形状约束不满足：${which}`, `形状约束也不满足：${which}`);
         return;
       }
       const best = searchBestAll(fn, area, spaces, rooms, occ);
@@ -1922,7 +1965,7 @@ function generateLayout(){
     const b = searchBestAll(f.fn, f.area, spaces, rooms.concat(pseudo), occ);
     if (b){
       f.suggest = { levelId:b.space.levelId, levelName:b.space.levelName, spaceId:b.space.id, n:b.n, ...b.rect };
-      pseudo.push({ ...b.rect, spaceId:b.space.id, label:f.label, spans:[b.space.levelId] });
+      pseudo.push({ ...b.rect, spaceId:b.space.id, label:f.label, spans:[b.space.levelId], fn:f.fn, stage:stageOfFn(f.fn, b.space) });   // 2026-10-20：带上阶段，渐变序列要读邻居的阶段
     } else f.suggest = null;
   }
 
@@ -1978,9 +2021,31 @@ function layoutMetrics(L){
   }
   const nm = id => (FUNCTIONS.find(f => f.id === id) || {}).name || id;
   return { must:`${must.filter(a => a.ok).length}/${must.length}`, mustN:must.filter(a => a.ok).length, oth:`${oth.filter(a => a.ok).length}/${oth.length}`,
-    band:Math.round(avg("bandFit") * 100), grad:Math.round(avg("gradFit") * 100), contact:Math.round((L.rooms.length ? cs / L.rooms.length : 0) * 100),
+    band:Math.round(avg("bandFit") * 100), seq:Math.round(avg("stageFit") * 100), contact:Math.round((L.rooms.length ? cs / L.rooms.length : 0) * 100),
+    stages:stageMetrics(L),
     unplaced:L.unplaced.map(u => u.label), flagged:L.flagged.length,
     fail:adj.filter(a => !a.ok && !a.missing).map(a => a.rule.kind === "exterior" ? `${nm(a.rule.a)}–室外` : `${nm(a.rule.a)}–${nm(a.rule.b)}`) };
+}
+// 阶段的汇总（2026-10-20）：室内功能区按阶段的面积占比；controlled 成几团（同层、共墙 ≥ 1 m 连成一团）、外墙多长、其中背阳多长。
+// 目标（用户）：controlled 面积尽量少、聚成一团、外墙尽量少。
+function stageMetrics(L){
+  const rooms = L.rooms.filter(r => !r.fn.outdoor), tot = rooms.reduce((t, r) => t + r.area, 0);
+  const share = Object.fromEntries(STAGES.map(s => [s.id, 0]));
+  for (const r of rooms) share[roomStageOf(r)] += r.area;
+  const ctrl = rooms.filter(r => roomStageOf(r) === "controlled");
+  const parent = ctrl.map((_, i) => i), find = i => parent[i] === i ? i : (parent[i] = find(parent[i]));
+  for (let i = 0; i < ctrl.length; i++) for (let j = i + 1; j < ctrl.length; j++)
+    if (ctrl[i].levelId === ctrl[j].levelId && sharedEdge(ctrl[i], ctrl[j]) >= 1 - EPS) parent[find(i)] = find(j);
+  const clusters = new Set(ctrl.map((_, i) => find(i))).size;
+  let perim = 0, ext = 0, cold = 0;
+  for (const r of ctrl){
+    const sq = stageOrderOf(r.fn, r.space, r, []);   // 只看外墙，不看邻居
+    perim += sq.perim; ext += sq.ext + sq.cold; cold += sq.cold;
+  }
+  const pct = s => tot ? Math.round(share[s] / tot * 100) : 0;
+  return { tot, share, pct, ctrlN:ctrl.length, clusters, perim, ext, cold,
+    text:`controlled ${pct("controlled")}% · tempered ${pct("tempered")}% · buffered ${pct("buffered")}%`,
+    ctrlText:ctrl.length ? `${clusters} 团 · 外墙 ${fmt(ext)} m（占周长 ${perim ? Math.round(ext / perim * 100) : 0}%，背阳 ${fmt(cold)} m）` : "无" };
 }
 // 按每种排布方式各排一次（锁定的功能区不动），并排显示，让设计师选
 let OPTIONS = [];
@@ -2009,15 +2074,16 @@ function showOptions(){
   ov.style.cssText = "position:fixed;inset:0;background:#fff;z-index:1000;overflow:auto;padding:14px 18px";
   const best = Math.max(...OPTIONS.map(o => o.metrics.mustN));
   ov.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:16px;color:var(--ink);text-transform:none;letter-spacing:0">几种排布方案：选一个最合适的</h2><button id="opt-close">关闭（不改）</button></div>
-    <p class="hint">同一组体块和标高，按不同的排布方式各排一次；锁定的功能区不动。指标：必须相邻（共 6 条）、其他邻接（最好相邻、靠近、直通室外）、带适配、渐变适配、贴边（功能区周长贴着外墙或别的功能区的平均比例）。平面上绿线 = 邻接满足，红虚线 = 不满足。选定后工具记住这个方案的位置；之后体块改动时按这个方案的方式继续排。</p>
+    <p class="hint">同一组体块和标高，按不同的排布方式各排一次；锁定的功能区不动。指标：必须相邻（共 6 条）、其他邻接（最好相邻、靠近、直通室外）、渐变序列（功能区按 buffered → tempered → controlled 排开的程度）、controlled 的团数和外墙、受晒 / 带适配、贴边（功能区周长贴着外墙或别的功能区的平均比例）。平面上绿线 = 邻接满足，红虚线 = 不满足。选定后工具记住这个方案的位置；之后体块改动时按这个方案的方式继续排。</p>
     <div style="display:grid;grid-template-columns:repeat(${OPTIONS.length},minmax(220px,1fr));gap:12px">${OPTIONS.map((o, i) => `<div class="card" style="${o.st.id === state.strategy ? "border-color:var(--accent);border-width:2px" : ""}">
       <div class="title"><span class="name">${o.st.name}${o.st.id === state.strategy ? "（当前）" : ""}</span><button class="primary" data-opt="${i}">用这个方案</button></div>
       <div class="meta">${o.st.desc}</div>
       <div class="kv" style="margin:6px 0">
         <div>必须相邻</div><div><b style="color:${o.metrics.mustN === best ? "var(--ok)" : "inherit"}">${o.metrics.must}</b></div>
         <div>其他邻接</div><div>${o.metrics.oth}</div>
+        <div>渐变序列</div><div>${o.metrics.seq}%</div>
+        <div>controlled</div><div>${o.metrics.stages.pct("controlled")}% · ${o.metrics.stages.ctrlText}</div>
         <div>${fitName()}</div><div>${o.metrics.band}%</div>
-        <div>渐变适配</div><div>${o.metrics.grad}%</div>
         <div>贴边</div><div>${o.metrics.contact}%</div>
         <div>未放入</div><div>${o.metrics.unplaced.length ? o.metrics.unplaced.join("、") : "无"}</div>
       </div>
@@ -2075,39 +2141,42 @@ function renderPlan(){
   const L = state.layout, lv = viewLevel();
   svg.innerHTML = "";
   const defs = el("defs");
+  // 2026-10-20 图纸语言（DESIGN_BRIEF_Plan.md）：纸是白的，线是淡墨，外墙是墨；颜色只给阶段；问题和建议只用深蓝
+  const INK = "#1f2a2e", FAINT = "#B9B3A6", FLAG = "#1F4E79";
   const pat = el("pattern",{id:"hatch-low",width:6,height:6,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"});
-  pat.appendChild(el("rect",{width:6,height:6,fill:"#eeeeee"})); pat.appendChild(el("line",{x1:0,y1:0,x2:0,y2:6,stroke:"#aaa","stroke-width":2}));
-  const pv = el("pattern",{id:"hatch-void",width:8,height:8,patternUnits:"userSpaceOnUse",patternTransform:"rotate(-45)"});
-  pv.appendChild(el("rect",{width:8,height:8,fill:"#dceaf5"})); pv.appendChild(el("line",{x1:0,y1:0,x2:0,y2:8,stroke:"#7aa7c7","stroke-width":1.5}));
-  defs.appendChild(pat); defs.appendChild(pv); svg.appendChild(defs);
+  pat.appendChild(el("rect",{width:6,height:6,fill:"#f3f1ec"})); pat.appendChild(el("line",{x1:0,y1:0,x2:0,y2:6,stroke:FAINT,"stroke-width":1}));
+  defs.appendChild(pat); svg.appendChild(defs);
   // 看的范围：体块附近（外扩 12 m），限制在场地内；真实场地可能很大，不画整块（2026-10-18）
   updateWindow();
   const vx0 = Math.max(0, WIN.i0 - 10), vx1 = Math.min(SITE.w, WIN.i1 + 10), vy0 = Math.max(0, WIN.j0 - 10), vy1 = Math.min(SITE.d, WIN.j1 + 10);
   svg.setAttribute("viewBox", `${toSX(vx0) - 24} ${toSY(vy1) - 24} ${(vx1 - vx0) * PX + 48} ${(vy1 - vy0) * PX + 48}`);
-  // 网格（1 m 细线、10 m 粗线）
+  // 网格：只画 10 m 的淡线
   const g = el("g");
-  for (let x=Math.ceil(vx0);x<=vx1;x++) g.appendChild(el("line",{x1:toSX(x),y1:toSY(vy0),x2:toSX(x),y2:toSY(vy1),stroke:x%10?"#f0ede6":"#ddd8cc","stroke-width":x%10?0.5:1}));
-  for (let y=Math.ceil(vy0);y<=vy1;y++) g.appendChild(el("line",{x1:toSX(vx0),y1:toSY(y),x2:toSX(vx1),y2:toSY(y),stroke:y%10?"#f0ede6":"#ddd8cc","stroke-width":y%10?0.5:1}));
+  for (let x=Math.ceil(vx0/10)*10;x<=vx1;x+=10) g.appendChild(el("line",{x1:toSX(x),y1:toSY(vy0),x2:toSX(x),y2:toSY(vy1),stroke:"#eeebe4","stroke-width":1}));
+  for (let y=Math.ceil(vy0/10)*10;y<=vy1;y+=10) g.appendChild(el("line",{x1:toSX(vx0),y1:toSY(y),x2:toSX(vx1),y2:toSY(y),stroke:"#eeebe4","stroke-width":1}));
   svg.appendChild(g);
-  if (state.showContext && state.context && state.context.status === "ok"){   // 周边建筑轮廓（灰色；场地内现有建筑为橙色虚线）
+  if (state.showContext && state.context && state.context.status === "ok"){   // 周边建筑轮廓（淡墨；场地内现有建筑为淡墨虚线）
     for (const b of state.context.items){
       for (const poly of b.polys){
         const bb = bboxOf(poly); if (bb.x1 < vx0 || bb.x0 > vx1 || bb.y1 < vy0 || bb.y0 > vy1) continue;
-        svg.appendChild(el("polygon",{points:poly.map(q => `${toSX(q[0])},${toSY(q[1])}`).join(" "),fill:b.inSite ? "rgba(242,182,121,0.18)" : "#ebe8e1",stroke:b.inSite ? "#c9874a" : "#b8b2a6","stroke-width":1,"stroke-dasharray":b.inSite ? "4 3" : "","pointer-events":"none"}));
+        svg.appendChild(el("polygon",{points:poly.map(q => `${toSX(q[0])},${toSY(q[1])}`).join(" "),fill:b.inSite ? "none" : "#f3f1ec",stroke:FAINT,"stroke-width":0.75,"stroke-dasharray":b.inSite ? "4 3" : "","pointer-events":"none"}));
       }
     }
   }
-  if (state.sitePolys){   // 真实场地的边界（绿色虚线）
-    for (const poly of state.sitePolys) svg.appendChild(el("polygon",{points:poly.map(p => `${toSX(p[0])},${toSY(p[1])}`).join(" "),fill:"rgba(120,170,100,0.06)",stroke:"#5f8f4e","stroke-width":2,"stroke-dasharray":"8 4","pointer-events":"none"}));
-  } else svg.appendChild(el("rect",{x:0,y:0,width:SITE.w*PX,height:SITE.d*PX,fill:"none",stroke:"#bbb","stroke-dasharray":"4 4"}));
-  svg.appendChild(el("text",{x:toSX(vx0),y:toSY(vy1)-8,"font-size":11,fill:"#888"},`${state.site.applied ? `场地：${state.site.applied.label}（绿色虚线）` : `示意场地 ${SITE.w} × ${SITE.d} m`} · ${lv.name}（标高 ${fmt(lv.elevation,1)} m）的截面`));
-  svg.appendChild(el("text",{x:toSX(vx1)-30,y:toSY(vy1)-8,"font-size":12,fill:"#333","font-weight":"600"},"北 ↑"));
+  if (state.sitePolys){   // 真实场地的边界（淡墨点划线）
+    for (const poly of state.sitePolys) svg.appendChild(el("polygon",{points:poly.map(p => `${toSX(p[0])},${toSY(p[1])}`).join(" "),fill:"none",stroke:FAINT,"stroke-width":1,"stroke-dasharray":"10 3 2 3","pointer-events":"none"}));
+  } else svg.appendChild(el("rect",{x:0,y:0,width:SITE.w*PX,height:SITE.d*PX,fill:"none",stroke:FAINT,"stroke-width":0.75,"stroke-dasharray":"10 3 2 3"}));
+  // 指北：右上角一个 N 和一根短线
+  svg.appendChild(el("line",{x1:toSX(vx1)-14,y1:toSY(vy1)+30,x2:toSX(vx1)-14,y2:toSY(vy1)+8,stroke:INK,"stroke-width":1.2}));
+  svg.appendChild(el("polygon",{points:`${toSX(vx1)-14},${toSY(vy1)+4} ${toSX(vx1)-18},${toSY(vy1)+12} ${toSX(vx1)-10},${toSY(vy1)+12}`,fill:INK}));
+  svg.appendChild(el("text",{x:toSX(vx1)-14,y:toSY(vy1)+42,"text-anchor":"middle","font-size":11,fill:INK},"N"));
 
   const info = L.levelInfo.find(x => x.levelId === lv.id);
   const spaces = L.spaces.filter(s => s.levelId === lv.id);
   const cut = state.masses.filter(m => massCutAt(m, lv.elevation));
+  renderTitleBlock(lv, L);
   if (!cut.length){
-    svg.appendChild(el("text",{x:toSX((vx0+vx1)/2),y:toSY((vy0+vy1)/2),"text-anchor":"middle","font-size":13,fill:"#888"},`${lv.name} 处没有体块`));
+    svg.appendChild(el("text",{x:toSX((vx0+vx1)/2),y:toSY((vy0+vy1)/2),"text-anchor":"middle","font-size":13,fill:FAINT},`${lv.name} 处没有体块`));
     return;
   }
   // 体块（最下层，可点选）
@@ -2115,100 +2184,118 @@ function renderPlan(){
     const poly = el("polygon",{points:m.points.map(p=>`${toSX(p[0])},${toSY(p[1])}`).join(" "),class:"mass-cut",fill:"transparent"});
     poly.dataset.mass = m.id; svg.appendChild(poly);
   }
-  // 每个空间：三带按空间的外接框划分，只画在空间的可用格子上
-  const bandFill = { south:"var(--band-south)", middle:"var(--band-middle)", north:"var(--band-north)" };
   const sunBasis = state.climate.basis === "sun";
-  document.querySelectorAll(".leg-band").forEach(e => e.style.display = sunBasis ? "none" : "");
-  document.querySelectorAll(".leg-sun").forEach(e => e.style.display = sunBasis ? "" : "none");
-  if (sunBasis){   // 外墙按受晒排名着色（这一层的高度范围）
+  // 外墙受晒色带：默认关闭；打开时画在外墙外侧一道细带（这一层的高度范围）
+  if (sunBasis && state.showSunWalls){
     const E = facadeExposure(), swg = el("g",{id:"sunwalls"}); svg.appendChild(swg);   // 画完房间后再移到最上层
+    const off = 5;
     for (const sp of spaces){
       const [z0, z1] = spaceZ(sp);
       for (const [k, ori] of [["south","S"],["north","N"],["west","W"],["east","E"]]) for (const w of sp.walls[k]){
         for (const q of wallSamples(ori, w.pos, w.a0, w.a1, z0, z1)){
           const a0 = Math.max(w.a0, q.a - q.half), a1 = Math.min(w.a1, q.a + q.half); if (a1 - a0 <= EPS) continue;
           const [cr, cg, cb] = sunColor(rankIn(E.tots, q.tot)), col = `rgb(${Math.round(cr * 255)},${Math.round(cg * 255)},${Math.round(cb * 255)})`;
-          const ns = ori === "S" || ori === "N";
-          swg.appendChild(el("line", ns ? {x1:toSX(a0),y1:toSY(w.pos),x2:toSX(a1),y2:toSY(w.pos),stroke:col,"stroke-width":5,"pointer-events":"none"}
-                                        : {x1:toSX(w.pos),y1:toSY(a0),x2:toSX(w.pos),y2:toSY(a1),stroke:col,"stroke-width":5,"pointer-events":"none"}));
+          const d = ori === "S" ? off : ori === "N" ? -off : ori === "W" ? -off : off;   // 往外偏：南往下、北往上、西往左、东往右
+          swg.appendChild(el("line", ori === "S" || ori === "N"
+            ? {x1:toSX(a0),y1:toSY(w.pos)+d,x2:toSX(a1),y2:toSY(w.pos)+d,stroke:col,"stroke-width":4,"pointer-events":"none"}
+            : {x1:toSX(w.pos)+d,y1:toSY(a0),x2:toSX(w.pos)+d,y2:toSY(a1),stroke:col,"stroke-width":4,"pointer-events":"none"}));
         }
       }
     }
   }
+  // 分带依据：三带只画两条淡墨虚线作分界，不涂色
   for (const sp of (sunBasis ? [] : spaces)){
     const br = bandRanges(sp.bbox);
-    for (const bl of cellBlocks(idx => sp.usable[idx] === 1)){
-      for (const k of ["south","middle","north"]){
-        const y0 = Math.max(bl.y0, br[k][0]), y1 = Math.min(bl.y1, br[k][1]);
-        if (y1 - y0 > EPS) svg.appendChild(el("rect",{x:toSX(bl.x0),y:toSY(y1),width:(bl.x1-bl.x0)*PX,height:(y1-y0)*PX,fill:bandFill[k],"pointer-events":"none"}));
-      }
-    }
+    for (const yy of [br.south[1], br.middle[1]])
+      svg.appendChild(el("line",{x1:toSX(sp.bbox.x0),y1:toSY(yy),x2:toSX(sp.bbox.x1),y2:toSY(yy),stroke:FAINT,"stroke-width":0.75,"stroke-dasharray":"2 4","pointer-events":"none"}));
   }
-  // 挑空：下层的高功能往上占用、或手动标成挑空的体块，这一层没有楼面
-  const lvIdx = sortedLevels().findIndex(l => l.id === lv.id);
+  // 挑空：下层的高功能往上占用、或手动标成挑空的体块，这一层没有楼面——淡墨虚线框，不填色
   if (info && info.owner){
     for (const bl of cellBlocks(idx => info.owner[idx] === -2))
-      svg.appendChild(el("rect",{x:toSX(bl.x0),y:toSY(bl.y1),width:(bl.x1-bl.x0)*PX,height:(bl.y1-bl.y0)*PX,fill:"url(#hatch-void)","pointer-events":"none"}));
+      svg.appendChild(el("rect",{x:toSX(bl.x0),y:toSY(bl.y1),width:(bl.x1-bl.x0)*PX,height:(bl.y1-bl.y0)*PX,fill:"none",stroke:FAINT,"stroke-width":0.75,"stroke-dasharray":"3 3","pointer-events":"none"}));
   }
   for (const r of L.rooms.filter(q => q.spans.length > 1 && q.spans.slice(1).includes(lv.id)))
-    svg.appendChild(el("text",{x:toSX((r.x0+r.x1)/2),y:toSY((r.y0+r.y1)/2),"text-anchor":"middle","font-size":12,fill:"#2b5d7a","font-weight":"600","pointer-events":"none"},`挑空 · ${r.label}（从 ${r.space.levelName} 起）`));
+    svg.appendChild(el("text",{x:toSX((r.x0+r.x1)/2),y:toSY((r.y0+r.y1)/2)+4,"text-anchor":"middle","font-size":10,fill:FAINT,"pointer-events":"none"},`${r.label}的挑空（从 ${r.space.levelName} 起）`));
   // 净高不足的部分：斜线
   if (info && info.owner){
     for (const bl of cellBlocks(idx => info.owner[idx] >= 0 && info.clear[idx] < ASSUMPTIONS.minUsableClear.value - EPS))
-      svg.appendChild(el("rect",{x:toSX(bl.x0),y:toSY(bl.y1),width:(bl.x1-bl.x0)*PX,height:(bl.y1-bl.y0)*PX,fill:"url(#hatch-low)",opacity:0.8,"pointer-events":"none"}));
+      svg.appendChild(el("rect",{x:toSX(bl.x0),y:toSY(bl.y1),width:(bl.x1-bl.x0)*PX,height:(bl.y1-bl.y0)*PX,fill:"url(#hatch-low)","pointer-events":"none"}));
   }
-  // 标红的功能区（原位置，阶段 6）：画在功能区下面，不挡住已放好的功能区的拖动
+  const lockMark = (grp, x, y) => grp.appendChild(el("rect",{x:toSX(x)+4,y:toSY(y)+4,width:6,height:6,fill:INK,"pointer-events":"none"}));
+  // 需要调整的功能区（原位置，阶段 6）：深蓝虚线框；画在功能区下面，不挡住已放好的功能区的拖动
   for (const f of L.flagged.filter(q => q.levelId === lv.id)){
     const grp = el("g",{class:"room"+(state.selected===f.id?" selected":"")}); grp.dataset.room = f.id;
-    grp.appendChild(el("rect",{x:toSX(f.x0),y:toSY(f.y1),width:(f.x1-f.x0)*PX,height:(f.y1-f.y0)*PX,fill:"rgba(163,33,45,0.12)",stroke:"var(--bad)","stroke-width":2.5,"stroke-dasharray":"6 3"}));
-    grp.appendChild(el("text",{x:toSX((f.x0+f.x1)/2),y:toSY((f.y0+f.y1)/2)+4,"text-anchor":"middle","font-size":11,"font-weight":"600",fill:"var(--bad)"},`${f.locked ? "🔒" : "⚠"} ${f.label}（原位置）`));
+    grp.appendChild(el("rect",{class:"rm",x:toSX(f.x0),y:toSY(f.y1),width:(f.x1-f.x0)*PX,height:(f.y1-f.y0)*PX,fill:"rgba(31,78,121,0.07)",stroke:FLAG,"stroke-width":1.5,"stroke-dasharray":"6 3"}));
+    grp.appendChild(el("text",{x:toSX((f.x0+f.x1)/2),y:toSY((f.y0+f.y1)/2)+4,"text-anchor":"middle","font-size":10,fill:FLAG},`${f.label}（原位置）`));
+    if (f.locked) lockMark(grp, f.x0, f.y1);
     svg.appendChild(grp);
   }
-  // 房间
+  // 房间：阶段色填充，淡墨分隔线；名字和面积靠右下角；最深的两档用白字
   for (const r of L.rooms.filter(q => q.levelId === lv.id)){
     const grp = el("g",{class:"room"+(state.selected===r.id?" selected":"")});
     grp.dataset.room = r.id;
-    const w = (r.x1-r.x0)*PX, h = (r.y1-r.y0)*PX;
-    grp.appendChild(el("rect",{x:toSX(r.x0),y:toSY(r.y1),width:w,height:h,fill:STAGE_COLORS[r.fn.minStage.winter],stroke:"#4a4a4a","stroke-width":1.2}));
-    const cx = toSX((r.x0+r.x1)/2), cy = toSY((r.y0+r.y1)/2);
-    const small = w < 70 || h < 30;
-    grp.appendChild(el("text",{x:cx,y:cy-(small?0:4),"text-anchor":"middle","font-size":small?9:11,"font-weight":"600",fill:"#222"},(r.locked ? "🔒 " : "") + r.label));
-    if (!small) grp.appendChild(el("text",{x:cx,y:cy+10,"text-anchor":"middle","font-size":9,fill:"#333"},`${fmt(r.area)} m² · ${state.climate.basis === "sun" ? "晒" : "带"} ${fmt(r.score.bandFit*100)}%`));
+    const w = (r.x1-r.x0)*PX, h = (r.y1-r.y0)*PX, stage = roomStageOf(r);
+    grp.appendChild(el("rect",{class:"rm",x:toSX(r.x0),y:toSY(r.y1),width:w,height:h,fill:STAGE_COLORS[stage],stroke:FAINT,"stroke-width":0.75}));
+    if (r.spans.length > 1) grp.appendChild(el("rect",{x:toSX(r.x0),y:toSY(r.y1),width:w,height:h,fill:"rgba(255,255,255,0.08)","pointer-events":"none"}));
+    const ink = stage === "controlled" ? "#ffffff" : INK, sub = stage === "controlled" ? "rgba(255,255,255,0.8)" : "#5a6166";
+    const small = w < 64 || h < 26, tiny = w < 36 || h < 16;
+    const rx = toSX(r.x1) - 4, by = toSY(r.y0) - 4;
+    if (!tiny){
+      if (small) grp.appendChild(el("text",{x:rx,y:by,"text-anchor":"end","font-size":8,fill:ink},r.label));
+      else {
+        grp.appendChild(el("text",{x:rx,y:by-11,"text-anchor":"end","font-size":11,fill:ink},r.label));
+        grp.appendChild(el("text",{x:rx,y:by,"text-anchor":"end","font-size":9,fill:sub},`${fmt(r.area)} m²${r.spans.length > 1 ? "  挑空" : ""}`));
+      }
+    }
+    if (r.locked) lockMark(grp, r.x0, r.y1);
     svg.appendChild(grp);
-    if (r.fn.entry) svg.appendChild(el("text",{x:cx,y:toSY(r.y0)+14,"text-anchor":"middle","font-size":10,fill:"#8a5a00"},"南立面 · 入口（默认）"));
-    if (r.spans.length > 1 && !small) grp.appendChild(el("text",{x:cx,y:cy+22,"text-anchor":"middle","font-size":9,fill:"#2b5d7a"},`挑空 ${r.spans.length} 层 · 净高 ${fmt(r.clear,1)} m`));
+    if (r.fn.entry){   // 入口：南墙外一个小三角和“入口”
+      const cx = toSX((r.x0+r.x1)/2), y = toSY(r.y0);
+      svg.appendChild(el("polygon",{points:`${cx},${y+5} ${cx-5},${y+13} ${cx+5},${y+13}`,fill:INK,"pointer-events":"none"}));
+      svg.appendChild(el("text",{x:cx+9,y:y+13,"font-size":9,fill:INK,"pointer-events":"none"},"入口"));
+    }
   }
-  // 建议位置（阶段 6）
+  // 建议位置（阶段 6）：深蓝细虚线
   for (const f of L.flagged.filter(q => q.suggest && q.suggest.levelId === lv.id)){
     const g2 = f.suggest;
-    svg.appendChild(el("rect",{x:toSX(g2.x0),y:toSY(g2.y1),width:(g2.x1-g2.x0)*PX,height:(g2.y1-g2.y0)*PX,fill:"rgba(46,125,79,0.10)",stroke:"var(--ok)","stroke-width":2,"stroke-dasharray":"4 3","pointer-events":"none"}));
-    svg.appendChild(el("text",{x:toSX((g2.x0+g2.x1)/2),y:toSY((g2.y0+g2.y1)/2)+4,"text-anchor":"middle","font-size":11,fill:"var(--ok)","font-weight":"600","pointer-events":"none"},`建议：${f.label}`));
+    svg.appendChild(el("rect",{x:toSX(g2.x0),y:toSY(g2.y1),width:(g2.x1-g2.x0)*PX,height:(g2.y1-g2.y0)*PX,fill:"none",stroke:FLAG,"stroke-width":1,"stroke-dasharray":"3 3","pointer-events":"none"}));
+    svg.appendChild(el("text",{x:toSX((g2.x0+g2.x1)/2),y:toSY((g2.y0+g2.y1)/2)+4,"text-anchor":"middle","font-size":10,fill:FLAG,"pointer-events":"none"},`建议：${f.label}`));
   }
-  // 体块轮廓（细虚线，保持各自的几何身份；选中的为蓝色）
-  for (const m of cut){
+  // 体块轮廓：只在有多个体块时画（淡墨虚线；选中的为墨色），只标编号
+  if (cut.length > 1) for (const m of cut){
     const on = m.id === activeMass().id, mb = bboxOf(m.points);
-    svg.appendChild(el("polygon",{points:m.points.map(p=>`${toSX(p[0])},${toSY(p[1])}`).join(" "),fill:"none",stroke:on?"var(--accent)":"#888","stroke-width":on?2:1,"stroke-dasharray":"5 4","pointer-events":"none"}));
-    svg.appendChild(el("text",{x:toSX(mb.x1)-4,y:toSY(mb.y1)+12,"text-anchor":"end","font-size":10,fill:on?"var(--accent)":"#888"},`${m.id} · 底 ${fmt(m.base,1)} / 顶 ${fmt(m.top,1)} m`));
+    svg.appendChild(el("polygon",{points:m.points.map(p=>`${toSX(p[0])},${toSY(p[1])}`).join(" "),fill:"none",stroke:on?INK:FAINT,"stroke-width":0.75,"stroke-dasharray":"5 4","pointer-events":"none"}));
+    svg.appendChild(el("text",{x:toSX(mb.x1)-4,y:toSY(mb.y1)+11,"text-anchor":"end","font-size":9,fill:on?INK:FAINT},m.id));
   }
-  // 邻接连线（2026-10-18）：同一层的两个相关功能区，绿色实线 = 满足，红色虚线 = 不满足
-  if (state.showAdj) for (const a of (L.adjacency || [])){
-    if (!a.ra || !a.rb || a.ra.levelId !== lv.id || a.rb.levelId !== lv.id) continue;
+  // 邻接：只画不满足的（深蓝虚线）。默认只画选中房间的；开关打开后画这一层全部不满足的
+  for (const a of (L.adjacency || [])){
+    if (a.ok || !a.ra || !a.rb || a.ra.levelId !== lv.id || a.rb.levelId !== lv.id) continue;
+    if (!state.showAdj && a.ra.id !== state.selected && a.rb.id !== state.selected) continue;
     const c1 = [(a.ra.x0 + a.ra.x1) / 2, (a.ra.y0 + a.ra.y1) / 2], c2 = [(a.rb.x0 + a.rb.x1) / 2, (a.rb.y0 + a.rb.y1) / 2];
-    svg.appendChild(el("line",{x1:toSX(c1[0]),y1:toSY(c1[1]),x2:toSX(c2[0]),y2:toSY(c2[1]),stroke:a.ok ? "var(--ok)" : "var(--bad)","stroke-width":a.rule.kind === "must" ? 2.5 : 1.5,"stroke-dasharray":a.ok ? "" : "5 4","pointer-events":"none",opacity:0.85}));
+    svg.appendChild(el("line",{x1:toSX(c1[0]),y1:toSY(c1[1]),x2:toSX(c2[0]),y2:toSY(c2[1]),stroke:FLAG,"stroke-width":a.rule.kind === "must" ? 1.5 : 1,"stroke-dasharray":"5 4","pointer-events":"none"}));
   }
-  // 外墙（粗线）和不连通的接触（红色虚线）
+  // 外墙（墨色）和不连通的接触（深蓝虚线：体块贴着但没连通，是个问题）
   const line = (x0, y0, x1, y1, attrs) => svg.appendChild(el("line",{x1:toSX(x0),y1:toSY(y0),x2:toSX(x1),y2:toSY(y1),"pointer-events":"none",...attrs}));
   for (const sp of spaces){
-    const wall = { stroke:"#1f2a2e","stroke-width":2.5,"stroke-linecap":"square" };
+    const wall = { stroke:INK,"stroke-width":2,"stroke-linecap":"square" };
     for (const w of sp.walls.south.concat(sp.walls.north)) line(w.a0, w.pos, w.a1, w.pos, wall);
     for (const w of sp.walls.west.concat(sp.walls.east)) line(w.pos, w.a0, w.pos, w.a1, wall);
-    const part = { stroke:"var(--bad)","stroke-width":2,"stroke-dasharray":"4 3" };
+    const part = { stroke:FLAG,"stroke-width":1.5,"stroke-dasharray":"4 3" };
     for (const w of sp.partitions.south.concat(sp.partitions.north)) line(w.a0, w.pos, w.a1, w.pos, part);
     for (const w of sp.partitions.west.concat(sp.partitions.east)) line(w.pos, w.a0, w.pos, w.a1, part);
-    svg.appendChild(el("text",{x:toSX(sp.bbox.x0)+3,y:toSY(sp.bbox.y1)-5,"font-size":11,"font-weight":"600",fill:"#1f2a2e"},
-      `${sp.id} · ${sp.stage} · ${fmt(sp.area)} m² · ${sp.clearMin >= 99 ? "露天" : `净高 ${sp.clearMin===sp.clearMax?fmt(sp.clearMin,1):`${fmt(sp.clearMin,1)}–${fmt(sp.clearMax,1)}`} m`} · 体块 ${sp.masses.join("+")}`));
   }
-  const swg = svg.querySelector("#sunwalls"); if (swg) svg.appendChild(swg);   // 外墙受晒颜色放在最上层
+  const swg = svg.querySelector("#sunwalls"); if (swg) svg.appendChild(swg);   // 外墙受晒色带放在最上层
+}
+// 标题块（2026-10-20）：楼层、季节与依据、阶段色阶、未放入 / 需要调整的计数（点了跳到左栏）
+function renderTitleBlock(lv, L){
+  const box = document.getElementById("plan-title"); if (!box) return;
+  const basis = state.climate.basis === "sun" ? `${SUN_PERIODS[state.climate.period] ? SUN_PERIODS[state.climate.period].label : ""}，按外墙受晒排布` : "按南 / 中 / 北分带排布";
+  const site = state.site.applied ? state.site.applied.label : `示意场地 ${SITE.w} × ${SITE.d} m`;
+  const un = L.unplaced.length, fl = L.flagged.length;
+  box.innerHTML = `<div><div class="lv">${lv.name}</div><div class="sub">标高 ${fmt(lv.elevation,1)} m<br>${basis}<br>${site}</div></div>
+    <div class="ramp">${STAGES.map(s => `<span><i style="background:${STAGE_COLORS[s.id]}"></i>${s.id}</span>`).join("")}</div>
+    <div class="counts"><span data-jump="unplaced" class="${un ? "on" : ""}">未放入 ${un}</span><span data-jump="flagged" class="${fl ? "on" : ""}">需要调整 ${fl}</span></div>`;
+  box.querySelectorAll("[data-jump]").forEach(s => s.onclick = () => { const t = document.getElementById(s.dataset.jump); if (t) t.scrollIntoView({ block:"center", behavior:"smooth" }); });
 }
 
 // 平面：点选房间或体块；拖动功能区（阶段 7，用户决定：平面调功能分区，三维调体块）
@@ -2237,7 +2324,7 @@ svg.addEventListener("pointermove", ev => {
   const nr = { x0:r.x0 + dx, y0:r.y0 + dy, x1:r.x1 + dx, y1:r.y1 + dy };
   const sp = state.layout.spaces.find(s2 => s2.levelId === r.levelId && s2.area && insideP(nr, s2.P));
   const rect = roomDrag.g.querySelector("rect");
-  if (rect){ rect.setAttribute("stroke", sp ? "var(--ok)" : "var(--bad)"); rect.setAttribute("stroke-width", 3); }
+  if (rect){ rect.setAttribute("stroke", sp ? "#1f2a2e" : "var(--flag)"); rect.setAttribute("stroke-width", sp ? 1.5 : 2.5); rect.setAttribute("stroke-dasharray", sp ? "" : "4 3"); }
 });
 const endRoomDrag = () => {
   if (!roomDrag) return;
@@ -2283,7 +2370,7 @@ function shortReason(u){
 // 标红功能区的卡片（左栏和侧栏共用）
 function flaggedCard(f){
   const sug = f.suggest ? `建议移到 ${f.suggest.levelName}（${f.suggest.spaceId}），西南角 (${fmt(f.suggest.x0,1)}, ${fmt(f.suggest.y0,1)}) m${f.suggest.n > 1 ? `，挑空 ${f.suggest.n} 层` : ""}；平面上的绿色虚线框` : "现在没有能放下它的位置。接受后它会变成“未生成”，原因会列在下面。";
-  return `<div class="card flagged"><div class="title"><span class="name">${f.locked ? "🔒 " : "⚠ "}${f.label}</span><span class="meta">${f.levelName} · 原位置</span></div>
+  return `<div class="card flagged"><div class="title"><span class="name">${f.locked ? `<span class="lockmark"></span>` : ""}${f.label}</span><span class="meta">${f.levelName}，原位置</span></div>
     <ul style="margin:4px 0;padding-left:18px">${f.reasons.map(x => `<li>${x}</li>`).join("")}</ul>
     <div class="meta">${sug}${f.pushedBy ? `也可以把「${f.pushedBy.label}」拖开（或解锁后“重新排布”），让它回到原位置附近。` : ""}</div>
     <div class="btnrow">${f.locked ? `<span class="hint">已锁定，不会自动改；解锁后才能接受建议。</span><button data-lock="${f.id}">解锁</button>` :
@@ -2314,6 +2401,11 @@ function renderLeft(){
   else html += `<div class="banner ok">面积够。</div>`;
   const adj = L.adjacency || [], must = adj.filter(a => a.rule.kind === "must"), others = adj.filter(a => a.rule.kind !== "must");
   html += `<div class="kv" style="margin-top:4px"><div>邻接（Marpole）</div><div>必须相邻 ${must.filter(a => a.ok).length}/${must.length} · 其他 ${others.filter(a => a.ok).length}/${others.length}</div></div>`;
+  // 阶段汇总（2026-10-20，用户决定）：controlled 面积尽量少、聚成一团、外墙尽量少
+  const sm = stageMetrics(L);
+  html += `<div class="kv" style="margin-top:4px" title="功能区的阶段 = 它冬季的最低阶段（刚好够）。目标：controlled 面积尽量少、聚成一团、外墙（尤其背阳的）尽量少。">
+    <div>阶段面积</div><div>${sm.text}</div>
+    <div>controlled</div><div>${sm.ctrlText}</div></div>`;
   document.getElementById("area-summary").innerHTML = html;
 
   // 已放入：每个功能区一行（名称、楼层、锁）；点击在平面上选中它
@@ -2325,7 +2417,7 @@ function renderLeft(){
         const rs = L.rooms.filter(r => r.levelId === lv.id);
         if (!rs.length) return "";
         return `<div class="lvsep">${lv.name} · ${rs.length} 个 · ${fmt(rs.reduce((t, r) => t + r.area, 0))} m²</div>` +
-          rs.map(r => row(r.id, STAGE_COLORS[r.fn.minStage.winter], `${r.locked ? "🔒 " : ""}${r.label}`, `${r.spans.length > 1 ? `挑空至 ${lvName(r.spans[r.spans.length-1])} · ` : ""}${fmt(r.area)} m²`)).join("");
+          rs.map(r => row(r.id, STAGE_COLORS[roomStageOf(r)], `${r.locked ? `<span class="lockmark"></span>` : ""}${r.label}`, `${r.spans.length > 1 ? `挑空至 ${lvName(r.spans[r.spans.length-1])} · ` : ""}${fmt(r.area)} m²`)).join("");
       }).join("")
     : `<p class="hint">还没有功能区。</p>`;
 
@@ -2414,13 +2506,13 @@ function renderSidebar(){
   }
   if (!r){ box.innerHTML = `<p class="hint">点击平面上的功能区，或左侧列表里的功能，这里可以调整它，并解释它为什么放在这里。</p>`; return; }
   const fn = r.fn, sc = r.score, sp = r.space;
-  // 2026-10-19：默认用所在空间由围合方式推出的阶段（建议值）；手动指派的优先
-  const derived = (sp && sp.stage) || ASSUMPTIONS.defaultStage.value, assigned = state.stages[r.id] || derived;
+  // 2026-10-20（用户决定）：功能区的阶段按“刚好够”自动指派 = 冬季最低阶段；半室外功能 = 所在空间由围合方式推出的阶段；手动指派的优先
+  const derived = stageOfFn(fn, sp), assigned = state.stages[r.id] || derived;
   const dm = sp && state.masses.find(m => m.id === sp.masses[0]), dInfo = dm ? massStageInfo(dm) : null;
   const w = r.x1-r.x0, h = r.y1-r.y0;
   const chk = stageCheck(assigned, fn.minStage.winter);
   const chkS = stageCheck(assigned, fn.minStage.summer);
-  const depthWord = sc.dist < sc.target - 0.5 ? "偏靠外" : sc.dist > sc.target + 0.5 ? "偏靠内" : "接近目标深度";
+  const seq = sc.seq, seqCtrl = seq.stage === "controlled";
   const pref = BANDS[fn.bandPref];
 
   // 没有满足的地方和建议
@@ -2451,16 +2543,23 @@ function renderSidebar(){
     const why2 = sc.gap > EPS ? `离${fn.bandPref==="south"?"南":"北"}立面空 ${fmt(sc.gap,1)} m，没贴着立面` : "";
     issues.push(`<b>带适配 ${fmt(sc.bandFit*100)}%：</b>${[why,why2].filter(Boolean).join("；")}。要提高它，可以调整${pref.zh.slice(0,2)}的深度滑块，或改体块的长宽比；房间形状只能在长宽比 1:${fn.aspect.min}–1:${fn.aspect.max} 内变化。`);
   }
+  if (seq.len > EPS && seq.fit < 0.7 - EPS){
+    const parts = [];
+    if (seq.jump > EPS) parts.push(`有 ${fmt(seq.jump)} m 贴着相差两级以上的功能区（跳级，例如 buffered 直接贴 controlled）`);
+    if (seq.cold > EPS) parts.push(`有 ${fmt(seq.cold)} m 贴着背阳的外墙（controlled 在这里只散热、不得热）`);
+    if (seq.step > seq.same + EPS) parts.push(`贴同阶段的只有 ${fmt(seq.same)} m，贴相差一级的有 ${fmt(seq.step)} m`);
+    issues.push(`<b>渐变序列 ${fmt(seq.fit*100)}%：</b>${parts.join("；") || "贴着的边里符合序列的不多"}。${seqCtrl ? "可以把它挪到别的 controlled 功能区旁边、向阳的一侧，让 controlled 聚成一团" : "可以把它挪到同阶段或相差一级的功能区旁边"}。`);
+  }
   if (fn.entry && facadeGap(sp, r, "south") > EPS) issues.push(`<b>入口：</b>门厅没有贴在南立面。`);
   if (!issues.length) issues.push("没有发现不满足的地方。");
 
   box.innerHTML = `
-    <div class="sec"><h3>${r.locked ? "🔒 " : ""}${r.label}</h3>
+    <div class="sec"><h3>${r.locked ? `<span class="lockmark"></span>` : ""}${r.label}</h3>
       <p class="hint" style="margin:0 0 6px">${sp.levelName}${r.spans.length > 1 ? `（挑空到 ${fmt(r.topBoundary,1)} m）` : ""} · ${fmt(r.area)} m² · 净高 ${fmt(r.clear,1)} m${r.kept ? " · 体块改动后留在原位" : r.pushed ? " · 被拖动的功能区压住，重新找了位置" : r.fresh ? " · 新放入" : ""}</p>
       ${settingsBox(fn, r.id, { lockable:true, locked:r.locked })}
       ${adjacencyBox(fn.id)}
       <div class="sec"><h3>阶段检查</h3>
-        <div class="hint">由体块围合方式推出：<b>${derived}</b>${dInfo ? `（体块 ${dm.id}：${dInfo.why}）` : ""}${state.stages[r.id] ? `；你手动改成了 <b>${assigned}</b> <button class="link" id="stage-reset">恢复推出的阶段</button>` : ""}</div>
+        <div class="hint">${fn.outdoor ? `由所在体块的围合方式推出：<b>${derived}</b>` : `按“刚好够”自动指派：<b>${derived}</b>（= 冬季最低阶段）`}${dInfo ? `。体块 ${dm.id}：${dInfo.why}` : ""}${state.stages[r.id] ? `；你手动改成了 <b>${assigned}</b> <button class="link" id="stage-reset">恢复自动指派</button>` : ""}</div>
         <label>给这个房间指派阶段：
           <select id="stage-select">${STAGES.map(s=>`<option value="${s.id}" ${s.id===assigned?"selected":""}>${s.id} — ${s.zh}</option>`).join("")}</select>
         </label>
@@ -2489,10 +2588,10 @@ function renderSidebar(){
       <p class="hint">评判顺序：${ASSUMPTIONS.judgeOrder.join(" > ")}（不设数值权重）</p>
       <ul>
         <li><b>邻接适配：</b>放入时已放好的相关功能区中，满足的比例 ${fmt(sc.adjFit*100)}%（必须相邻、直通室外权重 1，最好相邻、靠近权重 0.5 ${statusBadge(STATUS.assumed)}）。</li>
-        <li><b>楼层适配：</b>${fn.floorReq ? `${fn.floorReq.zh} ${statusBadge(fn.floorReq.status)}（${fn.floorReq.note}），现在在 ${sp.levelName}：${fn.floorReq.value === "mustGround" ? "硬约束，满足" : sc.floorFit ? "符合" : "不符合"}。` : "没有楼层要求（原文未写）。"}${statusBadge(ASSUMPTIONS.floorPrefFirst.status)} 楼层偏好排在带适配之前（用户 2026-10-18 确认）。</li>
+        <li><b>楼层适配：</b>${fn.floorReq ? `${fn.floorReq.zh} ${statusBadge(fn.floorReq.status)}（${fn.floorReq.note}），现在在 ${sp.levelName}：${fn.floorReq.value === "mustGround" ? "硬约束，满足" : sc.floorFit ? "符合" : "不符合"}。` : "没有楼层要求（原文未写）。"}${statusBadge(ASSUMPTIONS.floorPrefFirst.status)} 楼层偏好排在最前面（用户 2026-10-18 确认）。</li>
         ${sc.sun ? `<li><b>受晒适配：</b>偏好 ${SUN_PREF[fn.bandPref].zh} ${statusBadge(fn.bandPrefStatus)}（由原来的“${pref.zh}”对应过来），<b>${fmt(sc.bandFit*100)}%</b>。${sc.sun.ex.len ? `贴着外墙 ${fmt(sc.sun.ex.len)} m，这段外墙${SUN_PERIODS[state.climate.period].label}平均总辐射 ${fmt(sc.sun.ex.tot, 1)} kWh/m²（其中直射 ${fmt(sc.sun.ex.dir, 1)}），总辐射在这栋楼外墙里排第 ${fmt(sc.sun.rt * 100)}%、直射排第 ${fmt(sc.sun.rd * 100)}%。` : "没有贴外墙。"} ${statusBadge(STATUS.assumed)}</li>` : ""}
         <li style="${sc.sun ? "display:none" : ""}"><b>带适配：</b>偏好 ${pref.zh} ${statusBadge(fn.bandPrefStatus)}${fn.bandPrefNote?`（${fn.bandPrefNote}）`:""}，<b>${fmt(sc.bandFit*100)}%</b>。带内面积比例：南 ${fmt(sc.frac.south*100)}% · 中 ${fmt(sc.frac.middle*100)}% · 北 ${fmt(sc.frac.north*100)}%。${fn.bandPref!=="middle" ? (sc.gap<=EPS ? `贴着${fn.bandPref==="south"?"南":"北"}立面，算完全适配。` : `离${fn.bandPref==="south"?"南":"北"}立面空 ${fmt(sc.gap,1)} m，按空隙打折（系数 ${fmt(sc.facadeFactor,2)}）。`) + ` ${statusBadge(ASSUMPTIONS.facadeContact.status)}` : "服务空间没有对应的立面，不打折。"}</li>
-        <li><b>渐变位置：</b>冬季最低阶段 <b>${fn.minStage.winter}</b>，房间中心离较近的南/北立面 ${fmt(sc.dist,1)} m，目标约 ${fmt(sc.target,1)} m（最大 ${fmt(sc.maxDepth,1)} m），${depthWord}；渐变适配 ${fmt(sc.gradFit*100)}%。${statusBadge(ASSUMPTIONS.gradientMapping.status)} ${ASSUMPTIONS.gradientMapping.note}；${ASSUMPTIONS.depthToFacades.note} ${statusBadge(ASSUMPTIONS.depthToFacades.status)}</li>
+        <li><b>渐变序列：</b>这个功能区是 <b>${seq.stage}</b>。放入时周长 ${fmt(seq.perim)} m 里：贴同阶段 ${fmt(seq.same)} m、相差一级 ${fmt(seq.step)} m、跳级 ${fmt(seq.jump)} m、${seqCtrl ? "向阳" : ""}外墙 ${fmt(seq.ext)} m${seqCtrl ? `、背阳外墙 ${fmt(seq.cold)} m` : ""}、空边 ${fmt(seq.open)} m（按 0.5 计）；序列适配 <b>${fmt(seq.fit*100)}%</b>。${statusBadge(ASSUMPTIONS.stageSequence.status)} ${ASSUMPTIONS.stageSequence.note}。${seqCtrl ? `向阳 = ${ASSUMPTIONS.warmWallRank.note} ${statusBadge(ASSUMPTIONS.warmWallRank.status)}` : ""}</li>
         <li><b>形状：</b>${fmt(w,1)} × ${fmt(h,1)} m，长宽比 1:${fmt(sc.ratio,2)}，允许 1:${fn.aspect.min}–1:${fn.aspect.max} ${statusBadge(fn.aspect.status)}，${sc.shapeOk?"在范围内":"超出范围"}。${fn.minShortSide?`短边至少 ${fn.minShortSide.value} m ${statusBadge(fn.minShortSide.status)}：${Math.min(w,h)>=fn.minShortSide.value-EPS?"满足":"不满足"}；无柱矩形、不可拆分。`:""}</li>
         <li><b>入口：</b>${fn.entry ? (facadeGap(sp, r, "south")<=EPS ? "紧贴南面外墙（默认入口），满足硬约束。" : "没有贴在南面外墙。") : "不适用（只有门厅要求贴入口）。"}</li>
         <li><b>紧凑：</b>周长的 ${fmt(sc.contact*100)}% 贴着外墙或别的功能区（放入时计算）。${statusBadge(ASSUMPTIONS.simplicityRule.status)} ${ASSUMPTIONS.simplicityRule.note}</li>
@@ -2501,7 +2600,7 @@ function renderSidebar(){
     <details class="more"><summary>触发的规则</summary>
       <ul>${fn.rules.map(k=>`<li><b>${k}</b> ${RULES[k].text} ${statusBadge(RULES[k].status)}<div class="hint">${RULES[k].basis}</div></li>`).join("")}</ul>
       <div class="kv"><div>冬季最低阶段</div><div><b>${fn.minStage.winter}</b></div><div>夏季最低阶段</div><div>${fn.minStage.summer}</div>${fn.stageNote?`<div>备注</div><div>${fn.stageNote}</div>`:""}</div>
-      <p class="hint">最低阶段 = 触发的规则所要求的阶段中最高的那个；“刚好够”= 最低阶段。房间的阶段默认由所在体块的围合方式推出（2026-10-19）；封闭、无机械调节的体块 = ${ASSUMPTIONS.defaultStage.value} ${statusBadge(ASSUMPTIONS.defaultStage.status)}</p></details>
+      <p class="hint">最低阶段 = 触发的规则所要求的阶段中最高的那个；“刚好够”= 最低阶段。${ASSUMPTIONS.defaultStage.note} ${statusBadge(ASSUMPTIONS.defaultStage.status)}</p></details>
   `;
   document.getElementById("stage-select").onchange = e => { if (e.target.value === derived) delete state.stages[r.id]; else state.stages[r.id] = e.target.value; renderSidebar(); };
   const sr = document.getElementById("stage-reset"); if (sr) sr.onclick = () => { delete state.stages[r.id]; renderSidebar(); };
@@ -2570,10 +2669,9 @@ function renderMassPanel(){
       <div><b>围合方式</b> <span class="hint">（2026-10-19；阶段按你定义的五个阶段推出）</span></div>
       <label class="chk"><input type="checkbox" data-encl="roof" ${E.roof?"checked":""}> 屋顶</label>
       <span class="hint">墙：</span>${SIDES.map(s => `<label class="chk inl"><input type="checkbox" data-wall="${s}" ${E.walls[s]?"checked":""}> ${SIDE_ZH[s]}</label>`).join("")}
-      <label class="chk"><input type="checkbox" data-encl="mech" ${E.mech?"checked":""} ${st.closed.length === 4 && E.roof ? "" : "disabled"}> 机械调节（只对四面封闭的体块有意义）</label>
       <div class="stage-out"><span class="swatch" style="background:${STAGE_COLORS[st.stage]}"></span><b>${st.stage}</b> — ${st.why}</div>
       ${windHint(m)}
-      <div class="hint">有屋顶：四面有墙 = tempered（加机械调节 = controlled）；至少两面有墙 = buffered（用户 2026-10-19 定）；少于两面 = protected。没有屋顶 = exposed（也可以加墙，例如院墙；阶段不变）。贴着封闭体块 ≥ ${ASSUMPTIONS.minContactWidth.value} m 的一面也算有墙。非封闭体块只在最低一层有地面，只放半室外与室外功能；室内功能只放进封闭体块。</div>
+      <div class="hint">有屋顶：四面有墙 = tempered（封闭体块；里面需要机械调节的功能区各自是 controlled，不按整个体块勾选——用户 2026-10-20 决定）；至少两面有墙 = buffered（用户 2026-10-19 定）；少于两面 = protected。没有屋顶 = exposed（也可以加墙，例如院墙；阶段不变）。贴着封闭体块 ≥ ${ASSUMPTIONS.minContactWidth.value} m 的一面也算有墙。非封闭体块只在最低一层有地面，只放半室外与室外功能；室内功能只放进封闭体块。</div>
     </div>
     <p class="hint" style="margin:6px 0 0">也可以在三维里点一个面、拖箭头推拉。单位米；位置和尺寸吸附 1 m，标高取 0.1 m。高 ${fmt(m.top-m.base,1)} m。体块各自独立；接触宽度 ≥ ${ASSUMPTIONS.minContactWidth.value} m 的体块在空间上连成一个空间。</p>`;
   document.querySelectorAll("[data-pick]").forEach(btn => btn.onclick = () => {
@@ -2639,6 +2737,7 @@ document.getElementById("plan-level").onchange = e => { state.viewLevel = e.targ
 document.getElementById("btn-relayout").onclick = relayoutUnlocked;
 document.getElementById("btn-options").onclick = generateOptions;
 document.getElementById("chk-adj").onchange = e => { state.showAdj = e.target.checked; renderPlan(); };
+document.getElementById("chk-sun").onchange = e => { state.showSunWalls = e.target.checked; renderPlan(); };
 
 // 剖面（阶段 4）：沿一条线切开，画体块轮廓、楼板（由空间推出）、屋顶、功能区和挑空
 const secSvg = document.getElementById("section");
@@ -2659,16 +2758,16 @@ function renderSection(){
   const X = a => a * SX, Z = z => (zMax - z) * SZ;
   const add = (tag, attrs, text) => { const e = el(tag, attrs, text); secSvg.appendChild(e); return e; };
   const defs = el("defs"); const pv = el("pattern",{id:"sec-void",width:8,height:8,patternUnits:"userSpaceOnUse",patternTransform:"rotate(-45)"});
-  pv.appendChild(el("rect",{width:8,height:8,fill:"#dceaf5"})); pv.appendChild(el("line",{x1:0,y1:0,x2:0,y2:8,stroke:"#7aa7c7","stroke-width":1.5})); defs.appendChild(pv); secSvg.appendChild(defs);
+  pv.appendChild(el("rect",{width:8,height:8,fill:"#f7f5f0"})); pv.appendChild(el("line",{x1:0,y1:0,x2:0,y2:8,stroke:"#d8d2c6","stroke-width":1})); defs.appendChild(pv); secSvg.appendChild(defs);
   // 沿切线的格子：a 是沿线的坐标（东西向时是 x，南北向时是 y）
   const idxAt = a => ew ? cellIdx(a, pos) : cellIdx(pos, a);
   const runs = test => { const out = []; let s0 = -1; for (let a = 0; a <= span; a++){ const on = a < span && test(a); if (on && s0 < 0) s0 = a; if (!on && s0 >= 0){ out.push([s0, a]); s0 = -1; } } return out; };
   // 地面
-  add("line",{x1:X(0),y1:Z(0),x2:X(span),y2:Z(0),stroke:"#8a7f6a","stroke-width":2});
-  // 标高（虚线）
+  add("line",{x1:X(0),y1:Z(0),x2:X(span),y2:Z(0),stroke:"#1f2a2e","stroke-width":1.5});
+  // 标高（淡墨点划线）
   for (const l of lvls){
-    add("line",{x1:X(0),y1:Z(l.elevation),x2:X(span),y2:Z(l.elevation),stroke:"#bbb","stroke-dasharray":"5 4"});
-    add("text",{x:X(a0)-56,y:Z(l.elevation)+4,"font-size":10,fill:"#777"},`${l.name} ${fmt(l.elevation,1)}`);
+    add("line",{x1:X(0),y1:Z(l.elevation),x2:X(span),y2:Z(l.elevation),stroke:"#B9B3A6","stroke-dasharray":"10 3 2 3","stroke-width":0.75});
+    add("text",{x:X(a0)-56,y:Z(l.elevation)+4,"font-size":10,fill:"#6b7378"},`${l.name} ${fmt(l.elevation,1)}`);
   }
   // 挑空（这一层没有楼面的格子，画到下一个标高或体块顶）
   lvls.forEach((l, li) => {
@@ -2683,13 +2782,14 @@ function renderSection(){
   for (const r of L.rooms){
     const [c0, c1, a0, a1] = ew ? [r.y0, r.y1, r.x0, r.x1] : [r.x0, r.x1, r.y0, r.y1];
     if (!(pos + 0.5 > c0 && pos + 0.5 < c1)) continue;
-    add("rect",{x:X(a0),y:Z(r.elevation + r.clear),width:X(a1-a0),height:Z(r.elevation)-Z(r.elevation + r.clear),fill:STAGE_COLORS[r.fn.minStage.winter],stroke:"#4a4a4a","stroke-width":1});
-    if (X(a1-a0) > 40) add("text",{x:X((a0+a1)/2),y:Z(r.elevation + r.clear/2)+4,"text-anchor":"middle","font-size":10,fill:"#222"},r.label);
+    const stg = roomStageOf(r);
+    add("rect",{x:X(a0),y:Z(r.elevation + r.clear),width:X(a1-a0),height:Z(r.elevation)-Z(r.elevation + r.clear),fill:STAGE_COLORS[stg],stroke:"#B9B3A6","stroke-width":0.75});
+    if (X(a1-a0) > 40) add("text",{x:X((a0+a1)/2),y:Z(r.elevation + r.clear/2)+4,"text-anchor":"middle","font-size":10,fill:stg === "controlled" ? "#fff" : "#1f2a2e"},r.label);
   }
   // 楼板：每个标高处有楼面的地方（最低一层画成地坪）；厚度画在标高以下
   for (const sl of L.slabs){
     for (const [a0, a1] of runs(a => sl.mask[idxAt(a)]))
-      add("rect",{x:X(a0),y:Z(sl.elevation),width:X(a1-a0),height:t*SZ,fill:"#555"});
+      add("rect",{x:X(a0),y:Z(sl.elevation),width:X(a1-a0),height:t*SZ,fill:"#1f2a2e"});
   }
   // 屋顶：每个格子往上，体块最高处（连续覆盖到的顶）
   const roofs = new Map();
@@ -2703,16 +2803,16 @@ function renderSection(){
   }
   for (const [k, list] of roofs){
     const top = +k, set = new Set(list);
-    for (const [a0, a1] of runs(a => set.has(a))) add("rect",{x:X(a0),y:Z(top),width:X(a1-a0),height:t*SZ,fill:"#555"});
+    for (const [a0, a1] of runs(a => set.has(a))) add("rect",{x:X(a0),y:Z(top),width:X(a1-a0),height:t*SZ,fill:"#1f2a2e"});
   }
-  // 体块轮廓（被切到的）
-  for (const m of state.masses){
+  // 体块轮廓（被切到的）：只在有多个体块时画
+  if (state.masses.length > 1) for (const m of state.masses){
     const b = bboxOf(m.points), [c0, c1, a0, a1] = ew ? [b.y0, b.y1, b.x0, b.x1] : [b.x0, b.x1, b.y0, b.y1];
     if (!(pos + 0.5 > c0 && pos + 0.5 < c1)) continue;
-    add("rect",{x:X(a0),y:Z(m.top),width:X(a1-a0),height:Z(m.base)-Z(m.top),fill:"none",stroke:m.id===am.id?"#2b5d7a":"#888","stroke-width":m.id===am.id?2:1,"stroke-dasharray":"6 4"});
-    add("text",{x:X(a0)+3,y:Z(m.top)-4,"font-size":10,fill:m.id===am.id?"#2b5d7a":"#888"},m.id);
+    add("rect",{x:X(a0),y:Z(m.top),width:X(a1-a0),height:Z(m.base)-Z(m.top),fill:"none",stroke:m.id===am.id?"#1f2a2e":"#B9B3A6","stroke-width":0.75,"stroke-dasharray":"6 4"});
+    add("text",{x:X(a0)+3,y:Z(m.top)-4,"font-size":9,fill:m.id===am.id?"#1f2a2e":"#B9B3A6"},m.id);
   }
-  add("text",{x:X(a0),y:H-14,"font-size":10,fill:"#777"},ew ? `东西向剖面，切在 y = ${pos}–${pos+1} m（西 ← → 东）` : `南北向剖面，切在 x = ${pos}–${pos+1} m（南 ← → 北）`);
+  add("text",{x:X(a0),y:H-14,"font-size":10,fill:"#6b7378"},ew ? `东西向剖面，切在 y = ${pos}–${pos+1} m（西 ← → 东）` : `南北向剖面，切在 x = ${pos}–${pos+1} m（南 ← → 北）`);
 }
 document.getElementById("sec-dir").onchange = e => { state.section.dir = e.target.value; state.section.pos = null; renderSection(); };
 document.getElementById("sec-pos").onchange = e => { const v = parseFloat(e.target.value); if (isFinite(v)) state.section.pos = v; renderSection(); };
@@ -3677,7 +3777,7 @@ function rebuild(){
   for (const r of (drag || white || show ? [] : state.layout.rooms)){   // 体块推演那一步也显示功能区（用户 2026-10-18 要求）
     const faded = !inIso(r), op = faded ? 0.2 : 1;
     const g = new THREE.PlaneGeometry(r.x1 - r.x0, r.y1 - r.y0); g.rotateX(-Math.PI/2);
-    const mesh = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: css(STAGE_COLORS[r.fn.minStage.winter].slice(4, -1)), side:THREE.DoubleSide, transparent: faded, opacity: op, depthWrite: !faded }));
+    const mesh = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: css(STAGE_COLORS[roomStageOf(r)].slice(4, -1)), side:THREE.DoubleSide, transparent: faded, opacity: op, depthWrite: !faded }));
     mesh.position.set((r.x0 + r.x1)/2, r.elevation + 0.03, -(r.y0 + r.y1)/2); dyn.add(mesh);
     const ol = outline([[r.x0,r.y0],[r.x1,r.y0],[r.x1,r.y1],[r.x0,r.y1]], r.elevation + 0.05, faded ? 0xbbbbbb : 0x4a4a4a);
     if (faded){ ol.material.transparent = true; ol.material.opacity = 0.5; }
@@ -3685,7 +3785,7 @@ function rebuild(){
     if (r.spans.length > 1){   // 挑空的功能：画出它的高度
       const h = r.clear, box = new THREE.BoxGeometry(r.x1 - r.x0, h, r.y1 - r.y0);
       box.translate((r.x0 + r.x1)/2, r.elevation + h/2, -(r.y0 + r.y1)/2);
-      dyn.add(new THREE.Mesh(box, new THREE.MeshBasicMaterial({ color: css(STAGE_COLORS[r.fn.minStage.winter].slice(4, -1)), transparent:true, opacity: faded ? 0.1 : 0.35, depthWrite:false })));
+      dyn.add(new THREE.Mesh(box, new THREE.MeshBasicMaterial({ color: css(STAGE_COLORS[roomStageOf(r)].slice(4, -1)), transparent:true, opacity: faded ? 0.1 : 0.35, depthWrite:false })));
       dyn.add(new THREE.LineSegments(new THREE.EdgesGeometry(box), new THREE.LineBasicMaterial({ color: faded ? 0xbbbbbb : 0x2b5d7a })));
     }
   }

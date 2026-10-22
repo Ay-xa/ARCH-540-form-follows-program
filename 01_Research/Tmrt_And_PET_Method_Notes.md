@@ -45,3 +45,9 @@
 - 7 月 15 日 14 时的晴天：开阔处有太阳时 Tmrt 58.1℃、PET 29.7℃；同样开阔但被遮阳时 Tmrt 37.9℃、PET 21.5℃。
 - 1 月 15 日 12 时阴天：开阔和遮阳完全一样，因为没有直射辐射。
 - 窄院落（天空开敞度 0.4）比开阔处 Tmrt 低，因为散射和反射都按天空开敞度折减。
+
+## 5. 行业里算 PET 的方法（2026-10-17 搜索摘要，强度 B；2026-10-22 从对话记录补入）
+- 算 PET 分两步：先得到 Tmrt、风、气温、湿度（最难的一步），再用 MEMI 模型算 PET。
+- 第一步各家做法不同：RayMan、SOLWEIG（UMEP，QGIS 插件，实验版）、ENVI-met、Ladybug-Honeybee（`ladybug_comfort` 有 PET 模块，Grasshopper 里现成的 PET 地图组件未确认）；同一个庭院用不同工具结果不一致；Rakha 等认为公开工具算不出可靠的户外 Tmrt。
+- 第二步基本一致：pythermalcomfort（只做第二步，Walther & Goestchel 2018 修正，不同版本输入格式不同）、ladybug_comfort、RayMan。VDI 3787 Part 2（2022 版）列入 PET；有改进版 mPET。
+- 以上只看了搜索摘要，没有读原文；两个库对同一输入差约 1.7℃ 的原因仍未查明（第 4 节）。

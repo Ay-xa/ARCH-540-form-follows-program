@@ -8,7 +8,7 @@
 - **雨：** 唯一明确的雨研究是新加坡（热带公园，降雨降低气温、改善舒适），不适用温哥华。没有找到把降雨、热感觉问卷和实际使用放在一起的研究。
 - 还提到魁北克市有全年的 UTCI 研究（只看到标题，未读）。
 
-读到的两份最接近的来源如下。读取方式：多伦多两份 PDF 由用户同意后下载到临时文件夹（各约 30 MB，不进项目、不进 Git），用本地工具抽取文字；墨尔本论文由用户放进 Drive。图和表的版式未核对。
+读到的两份最接近的来源如下。读取方式：多伦多两份 PDF 由用户同意后下载到临时文件夹（各约 30 MB，不进项目、不进 Git），用本地工具抽取文字；墨尔本论文由用户放进 Drive。图和表的版式未核对。2026-10-17 用户同意后，三份 PDF 已按 `Author_Year_ShortTitle` 放入 Drive 的 `05_Comfort_Thresholds`：`CityOfToronto_2025_Thermal_Comfort_Guidelines_Part1.pdf`、`..._Part2.pdf`、`Kenawy_2018_Melbourne_Benchmarks.pdf`（不进 Git）。
 
 ---
 
@@ -50,7 +50,7 @@
 ---
 
 ## 2. Kenawy & Elkadi (2018) 墨尔本户外热基准
-*Sustainable Cities and Society* 43:587–600。Drive 里的文件：`IK The outdoor thermal benchmarks in Melbourne urban climate.pdf`（未按 Author_Year 命名）。
+*Sustainable Cities and Society* 43:587–600。Drive 里的文件：`05_Comfort_Thresholds/Kenawy_2018_Melbourne_Benchmarks.pdf`（2026-10-17 由 `IK The outdoor thermal benchmarks in Melbourne urban climate.pdf` 改名）。
 
 - **提取表：** 主类别 5；阈值依据 = 季节 × 空间类型（联邦广场和 Burwood 校园）；活动按坐、站、走折算成代谢率。
 - **气候与地点：** 墨尔本，Köppen 温带海洋性（Cfb）；论文给出冬季月平均气温 6–15℃，夏季 13–26℃。

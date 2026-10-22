@@ -18,7 +18,10 @@ Assignment 1 的工具（MassShadeLight 及之前的原型）仍留在仓库根�
 | `04_Presentation/screenshots/` | 过程截图、GIF、渲染图，按日期或版本命名，例如 `2026-10-20_v01_plan.png`。 |
 
 ## 规则与功能库
-工具的规则和功能库放在 `02_Prototypes/_shared/Rules/`（`README.md` 说明状态词汇；`STAGE_RULES.md` 阶段与分配规则；`FUNCTION_LIBRARY.md` 功能库）。逻辑草稿：`Tool_Logic_Draft_v2.md`（`Tool_Logic_Draft.md` 是被取代的旧稿）。文献笔记在 `01_Research/`。
+工具的规则和功能库放在 `02_Prototypes/_shared/Rules/`（`README.md` 说明状态词汇和 skill 的开放问题；`STAGE_RULES.md` 阶段与分配规则；`FUNCTION_LIBRARY.md` 功能库；`PLACEMENT_CRITERIA.md` 排布的评判准则）。逻辑草稿：`Tool_Logic_Draft_v2.md`（研究命题、已确认的逻辑、外部工具与 AI 代理的方向；`Tool_Logic_Draft.md` 是被取代的旧稿）。工具本身的逐步记录：`Architecture_Massing_Level_Space_Program.md`。文献如何支撑决定：`Literature_To_Tool_Decisions.md`（截至 10-17）。文献笔记在 `01_Research/`（PET / UTCI、相似气候城市、多伦多与墨尔本阈值、温哥华文件、Marpole 任务书、行业扫描、Rhino.Compute）。数据来源：`03_Data/README_data_sources.md`。工具的用法：`02_Prototypes/Version_01/README.md`。
+
+## 文献的存放（2026-10-15 决定）
+PDF 不进仓库，放 Google Drive：`G:\My Drive\A - UBC - SALA\M3 Fall 2026\ARCH 548 GP1\Assignment 3  - Progress Review\Supporting_Literature\`，七个文件夹 `01_Problem_Context`、`02_Binary`、`03_Gradient`、`04_Climate_Infrastructure`、`05_Comfort_Thresholds`、`06_Behavior`、`07_Precedents_and_Vernacular`，编号与 Zotero 分类 1–7 一致；文件名 `Author_Year_ShortTitle.pdf`。Zotero（本地接口只读，需保持打开）纳入 ARCH 548 Assignment 1 与 Assignment 3 的分类，外加 Social Catalist & Biophilia、Vernacular；Adaptive Reuse 已过时不用。Miro 板 ARCH 548 GP1：https://miro.com/app/board/uXjVEd_mcn0=/ 。
 
 ## 几条习惯
 

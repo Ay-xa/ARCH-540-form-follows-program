@@ -81,6 +81,8 @@
 **已定（补充）：先做本地，最后再考虑自动化。** 顺序：先用手填的空间卡数字跑通“空间卡 → 计算 → 涂色”；同时用 Rhino 里已有的 Ladybug（不经过 Compute）验证几何数字怎么取；最后才决定要不要用 Rhino.Compute 自动化（第六节）。
 
 ## 六、Rhino 接入的探索（Rhino.Compute）
+> 2026-10-21 补记：这一节已扩写并移到 `01_Research/Rhino_Compute_Notes.md`（含优缺点的比较），以那份为准。
+
 - **它是什么：** 一个在后台运行 Rhino 和 Grasshopper 的服务，通过网络请求接收参数、返回结果。Hops 是 Grasshopper 里调用它的插件。本地个人电脑使用不另收费（McNeel 常见问题，来自搜索摘要，未亲自核对），服务器上运行按核心小时计费。
 - **这台电脑的现状（我查了文件夹）：** 装有 Rhino 7 和 Rhino 8；Ladybug Tools 已安装（`~/ladybug_tools` 里有 Python 环境）；Rhino 8 的包目录里只有 Rhino-MCP-Platform，没有看到 Hops。搜索时没有打开 Rhino。
 - **和现有的 `Rhino_Live_Link` 的区别：** 现有的是在打开的 Rhino 里运行脚本，网页读取几何并移动滑块；Compute 是后台按需求解 Grasshopper，不需要 Rhino 窗口开着。
