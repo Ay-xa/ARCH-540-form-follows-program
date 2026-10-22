@@ -108,6 +108,44 @@
 - 大件要从门厅看见，意味着排布时体育馆应优先贴门厅 / 街道，而不只是按受晒和阶段。
 - 小尺度（本项目 3,000–5,000 m²）用 B 型不做走廊更常见；A 型需要 7,000 m² 以上才撑得起一条街。
 
+## 4（补）. 从平面里读出的空间排布规则（建筑经验，2026-10-22）
+
+下面每条后面写的是我在平面里看到的案例数（读图的 21 个里）。"几乎都"= 没有看到反例；"多数"= 看到一两个反例；"有些"= 只有几个案例，还不能算规律。这些是归纳，不是规范。
+
+**门厅周围**
+1. **接待台在入口正面，能同时看到门厅、街道和大件的门。** 几乎都（Sport England 把它写成要求："central hub ... clear views of circulation routes"；Kenilworth 的前台正对体育馆门；Gleneagles 的接待在 living room 里）。
+2. **咖啡贴着门厅，常在入口的角上、朝室外广场，和接待连成一片。** 多数（Marpole 2011 门厅 + 咖啡 + 社区聚会区；Gleneagles 入口廊 → living room → 咖啡；Clayton 大堂就是 social space；Sotra 门厅带咖啡座；Redmond 的 lounge 像口袋挂在街道上；Sport England 咖啡在入口角）。
+3. **公共卫生间紧贴门厅，并且落在湿区和干区的分界上。** 多数（Churchill、Toyotomi、Clayton、Redmond）。
+4. **行政办公在接待后面，成一团，不散。** 几乎都（Marpole 2011 东翼一串办公室；Regent Park 沿 concourse；Clayton 北翼；Redmond 西南角）。
+
+**大件**
+5. **体育馆贴着门厅或街道的侧面，有一面玻璃或看台从门厅看进去；它自己还有一个外门通球场。** 几乎都（Marpole 2011 看台；Gleneagles 隔玻璃；East Bayfront 看台；Commonwealth、Churchill、Sixteen Mile 都从公共空间可见；Lochside 是反例，也是老式）。
+6. **泳池和体育馆平行并列、不相邻；中间夹更衣带或门厅。** 几乎都（Sport England 三个方案、Churchill、Sixteen Mile、Eastside、Hebburn、Kingston、Commonwealth）。
+7. **更衣室在大件背后或北侧，不临街、不临门厅正面；湿更衣直通泳池、干更衣直通体育馆。** 几乎都（Churchill 北侧一条带、Sixteen Mile 北侧、Western North York 北侧、Sotra 下层、Redmond 西南角藏在体育馆后面）。
+8. **健身在二层，俯瞰体育馆或泳池，和跑道连在一起；首层只放它的入口楼梯。** 多数（Sixteen Mile、Commonwealth、Churchill 在干更衣上方、Hebburn、Kingston、Gleneagles 上层、Oak Park、Marpole 2022 东端二层；Marpole 2011 是反例——健身在首层西侧带，但它是单层主楼面）。
+9. **多功能厅 / 大厅在门厅的另一翼，不和体育馆同一侧；带自己的室外露台，厨房贴着它。** 多数（Clayton 表演厅东翼、体育馆西翼；Redmond 餐厅在街道东端、体育馆西端，餐厅有露台、厨房在旁；Toyotomi 多功能厅西北角；Marpole 2011 多功能室东侧带各带露台，厨房 / 备餐夹在 3a、3b 之间）。
+
+**小房间**
+10. **多功能室、活动室沿街道单排，每间朝外，有自己的露台或外门，可以独立开放。** 多数（Marpole 2011、Western North York 沿 promenade、Sixteen Mile program room 靠室外游戏场、Clayton 北翼）。
+11. **托儿 / 儿童室在建筑的一端或角落，有独立出入口和围起来的室外场地，不穿主流线。** 几乎都（Clayton 西南角独立外门；Western North York 东端；Toyotomi 东端；Gleneagles 西端 childcare + playground；Sixteen Mile 儿童区贴室外游戏场；Marpole 2022 托儿在中段南侧二层另说）。
+12. **青少年空间靠近体育馆，但有自己的门，能和主楼分开开放。** 有些（Marpole 2011 青少年中心在体育馆东侧带；Delbrook 青少年中心是唯一不直接连脊的房间；Kenilworth teen lounge 在走廊端；Marpole 2021 任务书要求青少年室贴体育馆——已在工具的邻接规则里）。
+13. **老人 / 社区休息室在门厅层、靠近入口，旁边是厨房，有自己的室外出口。** 有些（Kenilworth：老人休息室 + 厨房 + 室外出口；Eastside 老人中心在入口楔形体西端；Marpole 2021 任务书：老年中心须贴公共卫生间、最好贴厨房——已在工具里）。
+14. **设备 / 后勤在远离入口的背面，紧贴泳池（机房）或体育馆（库房）；有自己的服务入口。** 几乎都（Sport England plant 贴泳池；Sixteen Mile 泳池西侧；Kenilworth 机房在泳池房；Clayton 东北角）。
+
+**剖面**
+15. **门厅两层通高，主楼梯是门厅里的一个物件（螺旋梯、大台阶、看台）。** 多数（Clayton 螺旋梯、Churchill 大楼梯、Marpole 2011 阶梯看台、Commonwealth、Western North York 的 living room）。
+16. **跑道做成环绕体育馆上空的回廊，同时是二层的走道。** 多数（见 C 型）。
+
+**和工具现有邻接规则的关系（Marpole 2021 任务书的 6 条必须相邻、2 条最好相邻、1 条靠近、5 条直通室外）**
+- 任务书的"大多功能厅—厨房""灵活多功能室—厨房""老年中心—卫生间""更衣—门厅""行政—门厅"都和上面第 2、3、4、9、13 条一致；"青少年—体育馆"对应第 12 条；"健身—更衣可上下对位"对应第 8 条。
+- 平面里看到、任务书没写的：第 1（接待看见一切）、5（体育馆从门厅可见 + 自己的外门）、6（泳池和体育馆不相邻）、7（更衣藏在背后）、11（托儿在端部、独立出入口）、14（后勤在背面）、15（门厅通高 + 楼梯物件）。
+- 和本项目渐变序列的关系：第 2、10、11 说明"有露台 / 外门的房间"（咖啡、多功能室、托儿、老人休息室）天然是 buffered → controlled 的交界，这正是 10-20 提到的"冬夏阶段不同的功能放在交界处"的位置；第 7、14 说明更衣和后勤是"不需要外窗、不需要向阳"的核，可以放在平面最深处。
+
+## 4（决定）. 空间排布逻辑的优先级（用户 2026-10-22 决定）
+1. **先按任务书的要求**（Marpole 2021 的邻接、楼层、净高、直通室外；`Marpole_Functional_Program_2021.md`、工具里的 `ADJACENCY` / `EXTERIOR_ACCESS`）。
+2. **再用上面第 4（补）节归纳出的建筑经验规则**（接待看见一切、体育馆贴门厅侧面、泳池与体育馆不相邻、更衣藏背后、健身在二层、托儿在端部等）。
+3. 两者都要做成 skill（`.claude/skills/community-centre-layout/`），以后规则稳定了再接进工具的评分。
+
 ## 5. 待做 / 没做
 - 各类型的尺寸规律（街道宽度、门厅面积占比、更衣带深度）没有量；Sport England 导则里有部分数字，还没抄。
 - Marpole 现行方案（2022 起）没有公开平面，只有鸟瞰；Killarney、Trout Lake、Creekside 没找到平面。

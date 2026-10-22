@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 760" font-family="Bahnschrift, 'Microsoft YaHei', sans-serif" font-size="13">
+  <rect width="1180" height="760" fill="#ffffff"/>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f2a2e"/></marker>
+    <pattern id="street" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#efe9d8"/></pattern>
+  </defs>
+  <style>
+    .box{fill:none;stroke:#1f2a2e;stroke-width:2.2}
+    .big{fill:none;stroke:#1f2a2e;stroke-width:3}
+    .room{fill:none;stroke:#7a7368;stroke-width:1}
+    .pub{fill:#efe9d8;stroke:none}
+    .lbl{fill:#1f2a2e}
+    .sub{fill:#6b7378;font-size:11px}
+    .ttl{fill:#1f2a2e;font-size:15px;font-weight:600}
+    .ex{fill:#6b7378;font-size:11px}
+    .entry{stroke:#1f2a2e;stroke-width:2;marker-end:url(#arr)}
+    .big-lbl{fill:#1f2a2e;font-size:12px;text-anchor:middle}
+  </style>
+
+  <text x="24" y="34" class="ttl" font-size="18">社区中心的五种流线类型（线条图，2026-10-22）</text>
+  <text x="24" y="54" class="sub">浅色 = 公共的门厅 / 街道；粗框 = 大件（体育馆、泳池、大厅）；细框 = 普通房间；箭头 = 入口。北不固定，图只讲关系。</text>
+
+  <!-- ============ A 线性街道 ============ -->
+  <text x="24" y="100" class="ttl">A 线性街道（street / galleria / spine）</text>
+  <text x="24" y="118" class="sub">一条贯穿的公共走廊是主轴，房间和大件挂在它上面；大型中心（&gt; 7,000 m²）几乎都是这种。</text>
+
+  <!-- A1 双侧街 -->
+  <g transform="translate(24,130)">
+    <rect x="0" y="40" width="260" height="34" class="pub"/>
+    <rect x="0" y="0" width="100" height="40" class="big"/>
+    <rect x="160" y="0" width="100" height="40" class="big"/>
+    <rect x="100" y="0" width="60" height="40" class="room"/>
+    <rect x="0" y="74" width="52" height="30" class="room"/><rect x="52" y="74" width="52" height="30" class="room"/><rect x="104" y="74" width="52" height="30" class="room"/><rect x="156" y="74" width="52" height="30" class="room"/><rect x="208" y="74" width="52" height="30" class="room"/>
+    <text x="50" y="25" class="big-lbl">泳池</text><text x="130" y="25" class="big-lbl" font-size="10">更衣带</text><text x="210" y="25" class="big-lbl">体育馆</text>
+    <text x="130" y="62" class="big-lbl">街道</text>
+    <line x1="-28" y1="57" x2="-2" y2="57" class="entry"/>
+    <line x1="262" y1="57" x2="288" y2="57" class="entry"/>
+    <text x="0" y="128" class="lbl" font-weight="600">A1 双侧街</text>
+    <text x="0" y="144" class="ex">大盒子分列两侧，街道从中间穿过，常两端都有入口。</text>
+    <text x="0" y="158" class="ex">Sixteen Mile、Eastside El Paso、Kingston、Redmond</text>
+  </g>
+
+  <!-- A2 单侧街 -->
+  <g transform="translate(400,130)">
+    <rect x="0" y="0" width="60" height="40" class="room"/><rect x="60" y="0" width="60" height="40" class="room"/><rect x="120" y="0" width="60" height="40" class="room"/>
+    <rect x="180" y="0" width="80" height="40" class="big"/>
+    <rect x="0" y="40" width="260" height="30" class="pub"/>
+    <line x1="0" y1="70" x2="260" y2="70" stroke="#1f2a2e" stroke-width="1" stroke-dasharray="6 4"/>
+    <text x="130" y="88" class="sub" text-anchor="middle">玻璃 / 室外长廊 / 公园</text>
+    <text x="220" y="25" class="big-lbl">体育馆</text>
+    <text x="130" y="60" class="big-lbl">单侧街</text>
+    <line x1="30" y1="104" x2="30" y2="74" class="entry"/>
+    <line x1="130" y1="104" x2="130" y2="74" class="entry"/>
+    <line x1="230" y1="104" x2="230" y2="74" class="entry"/>
+    <text x="0" y="128" class="lbl" font-weight="600">A2 单侧街</text>
+    <text x="0" y="144" class="ex">房间只在一侧，另一侧朝外；多个入口；大件在尽端。</text>
+    <text x="0" y="158" class="ex">Western North York、East Bayfront、Five Acres、Britannia concourse</text>
+  </g>
+
+  <!-- A3 脊（剖面） -->
+  <g transform="translate(776,130)">
+    <rect x="0" y="0" width="90" height="70" class="big"/>
+    <rect x="170" y="20" width="90" height="50" class="room"/>
+    <rect x="170" y="0" width="90" height="20" class="room"/>
+    <rect x="90" y="0" width="80" height="70" class="pub"/>
+    <line x1="90" y1="35" x2="170" y2="35" stroke="#7a7368" stroke-width="1"/>
+    <line x1="90" y1="18" x2="170" y2="18" stroke="#7a7368" stroke-width="1"/>
+    <path d="M95,-8 L165,-8" stroke="#1f2a2e" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="130" y="-12" class="sub" text-anchor="middle" font-size="10">天窗</text>
+    <text x="45" y="40" class="big-lbl">体育馆</text>
+    <text x="130" y="58" class="big-lbl" font-size="11">三层通高的脊</text>
+    <text x="215" y="48" class="big-lbl" font-size="11">健身 / 活动室</text>
+    <text x="215" y="14" class="big-lbl" font-size="10">桥</text>
+    <text x="0" y="128" class="lbl" font-weight="600">A3 脊（剖面看）</text>
+    <text x="0" y="144" class="ex">街道做成三层通高中庭，上层有桥；小空间一侧、大空间一侧。</text>
+    <text x="0" y="158" class="ex">West Vancouver CC、Delbrook、Hillcrest</text>
+  </g>
+
+  <!-- ============ B 中央门厅 ============ -->
+  <text x="24" y="330" class="ttl">B 中央门厅（hub，没有走廊）</text>
+  <text x="24" y="348" class="sub">一个大门厅是中心，大件和房间直接围着它，从门厅能看见大件；本项目尺度（3,000–5,000 m²）最常见。</text>
+
+  <!-- B1 -->
+  <g transform="translate(24,362)">
+    <rect x="0" y="0" width="100" height="70" class="big"/>
+    <rect x="150" y="0" width="100" height="70" class="big"/>
+    <rect x="0" y="-26" width="100" height="26" class="room"/><rect x="150" y="-26" width="100" height="26" class="room"/>
+    <text x="50" y="-9" class="big-lbl" font-size="10">湿更衣</text><text x="200" y="-9" class="big-lbl" font-size="10">干更衣</text>
+    <rect x="100" y="-26" width="50" height="96" class="pub"/>
+    <text x="50" y="40" class="big-lbl">泳池</text><text x="200" y="40" class="big-lbl">体育馆</text>
+    <text x="125" y="26" class="big-lbl" font-size="11">门</text><text x="125" y="40" class="big-lbl" font-size="11">厅</text>
+    <line x1="125" y1="98" x2="125" y2="74" class="entry"/>
+    <line x1="125" y1="-54" x2="125" y2="-30" class="entry"/>
+    <text x="0" y="120" class="lbl" font-weight="600">B1 门厅夹在两个大盒子之间</text>
+    <text x="0" y="136" class="ex">常做成穿越式：街道一侧、公园一侧各一入口。</text>
+    <text x="0" y="150" class="ex">Churchill Meadows、Commonwealth、Canada Games（文）</text>
+  </g>
+
+  <!-- B2 -->
+  <g transform="translate(400,362)">
+    <rect x="0" y="0" width="80" height="60" class="big"/>
+    <rect x="180" y="0" width="80" height="60" class="big"/>
+    <rect x="80" y="-26" width="100" height="40" class="room"/>
+    <rect x="0" y="60" width="60" height="30" class="room"/><rect x="200" y="60" width="60" height="30" class="room"/>
+    <rect x="80" y="14" width="100" height="46" class="pub"/>
+    <rect x="60" y="60" width="140" height="30" class="pub"/>
+    <circle cx="130" cy="52" r="9" fill="none" stroke="#1f2a2e" stroke-width="1.5"/>
+    <text x="40" y="35" class="big-lbl">体育馆</text><text x="220" y="35" class="big-lbl">大厅</text>
+    <text x="130" y="-6" class="big-lbl" font-size="10">多功能 / 行政</text>
+    <text x="30" y="79" class="big-lbl" font-size="10">托儿</text><text x="230" y="79" class="big-lbl" font-size="10">厨房</text>
+    <text x="130" y="38" class="big-lbl" font-size="11">门厅</text>
+    <line x1="130" y1="118" x2="130" y2="94" class="entry"/>
+    <text x="0" y="120" class="lbl" font-weight="600">B2 门厅 + 风车翼</text>
+    <text x="0" y="136" class="ex">T 形门厅，大件在两翼而不正对入口；楼梯是门厅里的物件。</text>
+    <text x="0" y="150" class="ex">Clayton（Surrey）</text>
+  </g>
+
+  <!-- B3 -->
+  <g transform="translate(776,362)">
+    <rect x="70" y="-10" width="120" height="80" class="big"/>
+    <rect x="0" y="-10" width="70" height="80" class="room"/>
+    <rect x="190" y="-10" width="70" height="80" class="room"/>
+    <rect x="70" y="-46" width="120" height="36" class="pub"/>
+    <line x1="80" y1="-10" x2="180" y2="-10" stroke="#1f2a2e" stroke-width="1"/><line x1="84" y1="-16" x2="176" y2="-16" stroke="#7a7368" stroke-width="1"/><line x1="88" y1="-22" x2="172" y2="-22" stroke="#7a7368" stroke-width="1"/>
+    <text x="130" y="36" class="big-lbl">体育馆（低一层）</text>
+    <text x="130" y="-32" class="big-lbl" font-size="10">门厅 + 看台</text>
+    <text x="35" y="34" class="big-lbl" font-size="10">健身</text><text x="225" y="34" class="big-lbl" font-size="10">多功能</text>
+    <line x1="40" y1="-56" x2="68" y2="-40" class="entry"/>
+    <text x="0" y="120" class="lbl" font-weight="600">B3 大件在正中、门厅俯视</text>
+    <text x="0" y="136" class="ex">体育馆是心脏，门厅经看台看下去；功能环绕。</text>
+    <text x="0" y="150" class="ex">Marpole 2011（Patkau）、Gleneagles</text>
+  </g>
+
+  <!-- B4 -->
+  <g transform="translate(24,560)">
+    <rect x="60" y="0" width="140" height="44" class="pub"/>
+    <rect x="0" y="-20" width="60" height="44" class="big"/>
+    <rect x="200" y="-20" width="60" height="44" class="room"/>
+    <rect x="70" y="-30" width="50" height="30" class="room"/><rect x="140" y="-30" width="50" height="30" class="room"/>
+    <rect x="70" y="44" width="50" height="30" class="room"/><rect x="140" y="44" width="50" height="30" class="room"/>
+    <text x="30" y="6" class="big-lbl" font-size="10">多功能厅</text><text x="230" y="6" class="big-lbl" font-size="10">儿童</text>
+    <text x="130" y="26" class="big-lbl" font-size="11">入口大厅</text>
+    <line x1="130" y1="102" x2="130" y2="78" class="entry"/>
+    <text x="0" y="112" class="lbl" font-weight="600">B4 小型单层集群</text>
+    <text x="0" y="128" class="ex">&lt; 3,000 m²：房间像一座座"房子"挂在大厅周围。</text>
+    <text x="0" y="142" class="ex">Toyotomi、Ørestad、Streetmekka、Kenilworth</text>
+  </g>
+
+  <!-- ============ C 环形 ============ -->
+  <g transform="translate(400,560)">
+    <text x="0" y="-62" class="ttl">C 环形（几乎只在二层）</text>
+    <rect x="60" y="-30" width="140" height="90" class="big"/>
+    <rect x="40" y="-50" width="180" height="130" class="box" stroke-dasharray="8 4"/>
+    <text x="130" y="18" class="big-lbl">体育馆上空</text>
+    <text x="130" y="-36" class="big-lbl" font-size="10">跑道 / 看台环</text>
+    <text x="0" y="112" class="lbl" font-weight="600">C 环形 / 回廊</text>
+    <text x="0" y="128" class="ex">跑道绕体育馆一圈；作为首层组织只见于竞技馆。</text>
+    <text x="0" y="142" class="ex">Sixteen Mile、Commonwealth、East Bayfront、Oak Park（二层）；Sotra Arena</text>
+  </g>
+
+  <!-- ============ D 双面走廊 / E 更衣带 ============ -->
+  <g transform="translate(776,560)">
+    <text x="0" y="-62" class="ttl">D 老式双面走廊　/　E 湿干更衣带</text>
+    <!-- D -->
+    <rect x="0" y="-40" width="120" height="16" class="pub"/>
+    <rect x="0" y="-56" width="30" height="16" class="room"/><rect x="30" y="-56" width="30" height="16" class="room"/><rect x="60" y="-56" width="30" height="16" class="room"/><rect x="90" y="-56" width="30" height="16" class="room"/>
+    <rect x="0" y="-24" width="30" height="16" class="room"/><rect x="30" y="-24" width="30" height="16" class="room"/><rect x="60" y="-24" width="30" height="16" class="room"/>
+    <rect x="90" y="-24" width="30" height="30" class="big"/>
+    <line x1="-26" y1="-32" x2="-2" y2="-32" class="entry"/>
+    <text x="105" y="-6" class="big-lbl" font-size="9">体育馆</text>
+    <text x="0" y="24" class="ex">D：走廊两侧全是房间，大件在尽头看不见（Lochside，1970s）。新项目都避开。</text>
+    <!-- E -->
+    <rect x="150" y="-56" width="40" height="48" class="big"/>
+    <rect x="190" y="-56" width="30" height="48" class="room"/>
+    <rect x="220" y="-56" width="40" height="48" class="big"/>
+    <rect x="150" y="-8" width="110" height="14" class="pub"/>
+    <text x="170" y="-28" class="big-lbl" font-size="9">泳池</text><text x="205" y="-36" class="big-lbl" font-size="8">湿</text><text x="205" y="-18" class="big-lbl" font-size="8">干</text><text x="240" y="-28" class="big-lbl" font-size="9">体育馆</text>
+    <text x="0" y="42" class="ex">E：更衣带夹在泳池和体育馆之间，同时是门厅 / 街道的一侧墙；</text>
+    <text x="0" y="56" class="ex">健身叠在二层。Sport England 2014、Hebburn、Churchill、Sixteen Mile。</text>
+    <text x="0" y="112" class="lbl" font-weight="600">D 是反例，E 是组织规则而不是走廊形状</text>
+  </g>
+
+  <text x="24" y="740" class="sub">来源与案例细节：01_Research/Circulation_Patterns.md；平面原图：01_Research/precedents/plans/</text>
+</svg>
