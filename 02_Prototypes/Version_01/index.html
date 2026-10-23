@@ -25,13 +25,29 @@
     /* 图纸上"问题 / 建议"的虚线和界面主色统一成一种蓝（2026-10-22）：意思都是"看这里" */
     --flag:#0052FF; --inkline:#B9B3A6; --paper:#ffffff;
     --band-south:rgba(255,205,90,0.20); --band-middle:rgba(60,60,60,0.06); --band-north:rgba(90,140,230,0.14);
+    /* 2026-10-23 深色模式：原来写死在各条规则里的浅色收成这几个变量，深色时在下面整组换掉；图纸的纸和阶段色不变 */
+    --surface-2:#F8FAFC; --surface-3:#F1F5F9; --glass:rgba(255,255,255,.94); --header-bg:rgba(250,250,250,.85); --view-bg:#ffffff;
+    --unplaced-bg:#FFF7F5; --tint-ok:#e9f5ee; --tint-ok-line:#b6dcc4; --tint-bad:#fbe9ea; --tint-bad-line:#e3a4aa; --tint-warn:#fdf1e6; --tint-warn-line:#efc7a6;
+    color-scheme:light;
   }
+  html[data-theme="dark"]{
+    --bg:#141416; --panel:#1C1C1F; --ink:#E6E6EA; --muted:#9A9AA3; --line:#2C2C31;
+    --accent:#5B8CFF; --accent2:#7FA6FF; --gradient:linear-gradient(135deg,#3D6FFF,#6F96FF);
+    --accent-soft:rgba(91,140,255,.12); --accent-line:rgba(91,140,255,.45);
+    --warn:#E0905A; --bad:#E57373; --ok:#5CBF86; --flag:#5B8CFF;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.35); --shadow-md:0 4px 8px rgba(0,0,0,.4); --shadow-lg:0 10px 18px rgba(0,0,0,.45); --shadow-xl:0 20px 28px rgba(0,0,0,.5);
+    --shadow-accent:0 4px 14px rgba(61,111,255,.35); --shadow-accent-lg:0 8px 24px rgba(61,111,255,.45);
+    --surface-2:#232327; --surface-3:#2A2A2F; --glass:rgba(28,28,31,.92); --header-bg:rgba(20,20,22,.85); --view-bg:#151517;
+    --unplaced-bg:rgba(229,115,115,.10); --tint-ok:rgba(92,191,134,.14); --tint-ok-line:rgba(92,191,134,.4); --tint-bad:rgba(229,115,115,.14); --tint-bad-line:rgba(229,115,115,.4); --tint-warn:rgba(224,144,90,.14); --tint-warn-line:rgba(224,144,90,.4);
+    color-scheme:dark;
+  }
+  html[data-theme="dark"] .levelbar{background:var(--panel)}   /* 标高栏是界面不是图纸：深色时跟面板走，图纸的纸仍是白的 */
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 var(--font-ui);-webkit-font-smoothing:antialiased}
   .num, table.areas td.num{font-family:var(--font-mono);font-size:12px}
   @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   /* 换步骤的浮起由 setStep 用脚本触发（CSS 版会在飞行换页时再起一次，视窗跳 12 px；2026-10-23 改） */
-  header{position:sticky;top:0;z-index:20;padding:12px 22px;border-bottom:1px solid var(--line);background:rgba(250,250,250,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  header{position:sticky;top:0;z-index:20;padding:12px 22px;border-bottom:1px solid var(--line);background:var(--header-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
   header h1{margin:0;font:400 22px/1.1 var(--font-display);letter-spacing:-.01em}
   header .sub{color:var(--muted);font-size:12px}
   .layout{display:grid;grid-template-columns:300px 1fr 360px;gap:0;min-height:calc(100vh - 44px)}
@@ -43,20 +59,20 @@
   h2:first-child{margin-top:0}
   .card{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;background:var(--panel);box-shadow:var(--shadow-sm);transition:box-shadow .3s ease-out}
   .card:hover{box-shadow:var(--shadow-md)}
-  .card.unplaced{border-color:rgba(163,33,45,.25);background:#FFF7F5}
+  .card.unplaced{border-color:rgba(163,33,45,.25);background:var(--unplaced-bg)}
   .card .title{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
   .card .name{font-weight:600}
   .card .meta{color:var(--muted);font-size:12px}
   .badge{display:inline-block;font:500 10.5px/1 var(--font-mono);letter-spacing:.04em;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin-left:4px;white-space:nowrap}
   .badge.verified{border-color:var(--ok);color:var(--ok)}
   .badge.tocheck{border-color:var(--warn);color:var(--warn)}
-  .badge.assumed{border-color:#999;color:#666}
+  .badge.assumed{border-color:var(--muted);color:var(--muted)}
   .badge.userset{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft)}
   .swatch{display:inline-block;width:12px;height:12px;border:1px solid #8a8a8a;vertical-align:-2px;margin-right:4px}
   .override{display:flex;gap:4px;align-items:center;margin-top:6px}
   .override input{width:72px;padding:2px 4px;border:1px solid var(--line);border-radius:6px;font:inherit;font-variant-numeric:tabular-nums}
   button{font:inherit;font-size:12.5px;font-weight:500;min-height:30px;padding:3px 12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s ease-out}
-  button:hover{border-color:var(--accent-line);background:#F1F5F9;box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+  button:hover{border-color:var(--accent-line);background:var(--surface-3);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
   button:active{transform:scale(.98)}
   button.link{border:none;min-height:auto;padding:0 4px;background:transparent;text-decoration:underline;color:var(--muted)}
   button.link:hover{background:transparent;box-shadow:none;transform:none;color:var(--ink)}
@@ -87,11 +103,11 @@
   .levelbar .sub{margin-top:0;line-height:1.35}
   .levelbar .sub br{display:none}
   .levelbar .sub{display:inline-flex;gap:14px;flex-wrap:wrap}
-  .vpanel{position:absolute;right:10px;top:10px;width:340px;max-width:48%;max-height:calc(100% - 20px);overflow:auto;background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-xl);padding:12px 14px 14px;z-index:7;font-size:13px}
+  .vpanel{position:absolute;right:10px;top:10px;width:340px;max-width:48%;max-height:calc(100% - 20px);overflow:auto;background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-xl);padding:12px 14px 14px;z-index:7;font-size:13px}
   .vpanel .vclose{position:absolute;right:8px;top:6px;min-height:26px;width:26px;padding:0;border-radius:50%;line-height:1;font-size:16px;z-index:1}
   .vpanel .dcard{margin-right:22px}
   #v3slot-layout #view3d{height:calc(100vh - 180px);min-height:480px}
-  .dchain{margin-top:8px;padding:8px 10px;border-radius:8px;background:#F8FAFC;font-size:12px;line-height:1.5}
+  .dchain{margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--surface-2);font-size:12px;line-height:1.5}
   .dchain .cline{display:grid;grid-template-columns:auto 1fr;gap:8px}
   .dchain .ck{color:var(--muted);white-space:nowrap}
   .dchain .cdet{margin-top:6px}
@@ -111,8 +127,8 @@
   @media (prefers-reduced-motion: reduce){ *{animation-duration:0.01ms !important;transition-duration:0.01ms !important} }
   #mode-toggle{margin-left:auto;font-size:12px;border-radius:999px;min-height:32px;padding:3px 14px}
   #mode-toggle b{color:var(--accent)}
-  #lang-toggle{font-size:12px;border-radius:999px;min-height:32px;padding:3px 14px}
-  #lang-toggle b{color:var(--accent)}
+  #lang-toggle,#theme-toggle{font-size:12px;border-radius:999px;min-height:32px;padding:3px 14px}
+  #lang-toggle b,#theme-toggle b{color:var(--accent)}
   svg#plan{width:100%;height:auto;background:var(--paper);border:1px solid var(--line);border-bottom:none;border-radius:var(--radius) var(--radius) 0 0;touch-action:none;user-select:none;display:block}
   svg#plan text, svg#section text{font-family:Bahnschrift,"Bahnschrift SemiCondensed","Microsoft YaHei",sans-serif}
   /* 标题块：平面这张“纸”的下沿 */
@@ -134,22 +150,22 @@
   .lockmark{display:inline-block;width:8px;height:8px;background:var(--ink);margin-right:5px;vertical-align:1px}
   .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px;color:var(--muted)}
   .banner{padding:8px 12px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:13px}
-  .banner.bad{background:#fbe9ea;border:1px solid #e3a4aa;color:var(--bad)}
-  .banner.warn{background:#fdf1e6;border:1px solid #efc7a6;color:var(--warn)}
-  .banner.ok{background:#e9f5ee;border:1px solid #b6dcc4;color:var(--ok)}
+  .banner.bad{background:var(--tint-bad);border:1px solid var(--tint-bad-line);color:var(--bad)}
+  .banner.warn{background:var(--tint-warn);border:1px solid var(--tint-warn-line);color:var(--warn)}
+  .banner.ok{background:var(--tint-ok);border:1px solid var(--tint-ok-line);color:var(--ok)}
   .vpanel .sec{margin-bottom:12px}
   /* 决策卡（2026-10-23） */
   .dcard{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:12px 14px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
   .dcard .dhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
   .dcard .dname{font-weight:600;font-size:14px}
   .dcard .dverdict{font-size:11.5px;padding:3px 10px;border-radius:999px;white-space:nowrap}
-  .dcard .dverdict.ok{background:#e9f5ee;color:var(--ok)} .dcard .dverdict.bad{background:#fbe9ea;color:var(--bad)} .dcard .dverdict.over{background:#fdf1e6;color:var(--warn)}
+  .dcard .dverdict.ok{background:var(--tint-ok);color:var(--ok)} .dcard .dverdict.bad{background:var(--tint-bad);color:var(--bad)} .dcard .dverdict.over{background:var(--tint-warn);color:var(--warn)}
   .dcard .drow{padding:6px 6px;margin:0 -6px;border-radius:6px;cursor:default}
   .dcard .drow:hover{background:var(--accent-soft)}
   .dcard .dl{display:flex;justify-content:space-between;gap:10px;font-size:12.5px}
   .dcard .dl span:first-child{font-weight:600;white-space:nowrap}
   .dcard .dv{color:var(--muted);text-align:right}
-  .dcard .dbar,.dcard .dseg{height:6px;border-radius:3px;background:#F1F5F9;margin-top:5px;overflow:hidden;display:flex}
+  .dcard .dbar,.dcard .dseg{height:6px;border-radius:3px;background:var(--surface-3);margin-top:5px;overflow:hidden;display:flex}
   .dcard .dbar i,.dcard .dseg i{display:block;height:6px}
   .dcard .dcells{display:flex;gap:3px;margin-top:5px}
   .dcard .dcells i{flex:1;height:6px;border-radius:3px;display:block}
@@ -159,14 +175,17 @@
   .kv{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px}
   .kv div:nth-child(odd){color:var(--muted)}
   .check{padding:6px 8px;border-radius:4px;font-weight:600;margin:4px 0}
-  .check.ok{background:#e9f5ee;color:var(--ok)}
-  .check.bad{background:#fbe9ea;color:var(--bad)}
-  .check.over{background:#fdf1e6;color:var(--warn)}
+  .check.ok{background:var(--tint-ok);color:var(--ok)}
+  .check.bad{background:var(--tint-bad);color:var(--bad)}
+  .check.over{background:var(--tint-warn);color:var(--warn)}
   select{font:inherit;font-weight:500;min-height:30px;padding:2px 26px 2px 10px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2.5'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 8px center;-webkit-appearance:none;appearance:none;cursor:pointer}
   input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,82,255,.15)}
   input[type=checkbox]{accent-color:var(--accent)}
   .hint{color:var(--muted);font-size:12px}
-  .room{cursor:pointer}
+  /* 悬停抬起（2026-10-23，用户要求，参考 iPadOS 指针）：光标停在房间上，整间微微放大、带一点投影，像从纸上浮起；滑动重排时暂时不过渡 */
+  .room{cursor:pointer;transform-box:fill-box;transform-origin:center;transition:transform .18s cubic-bezier(.2,.8,.2,1),filter .18s ease-out}
+  .room:hover{transform:translateY(-1.5px) scale(1.015);filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+  svg#plan.sliding .room{transition:none}
   /* 平面里的小人（2026-10-23）：和图纸一样的墨线 */
   .fig line{stroke:#1F2A2E;stroke-linecap:round;fill:none}
   .fig rect{fill:#1F2A2E}
@@ -174,7 +193,7 @@
   .fig .prop{stroke:#0052FF;stroke-linecap:round}
   .room:hover rect.rm{stroke:var(--ink);stroke-width:1.5}
   .room.selected rect.rm{stroke:var(--flag);stroke-width:2.5}
-  .handle{fill:#fff;stroke:var(--accent);stroke-width:1.5}
+  .handle{fill:var(--paper);stroke:var(--accent);stroke-width:1.5}
   .edge{stroke:transparent;stroke-width:10}
   .edge.ns{cursor:ns-resize}.edge.ew{cursor:ew-resize}
   .corner{cursor:nwse-resize}.corner.alt{cursor:nesw-resize}
@@ -183,14 +202,14 @@
   .panel-row .card{margin:0}
   .panel-row h3{font-size:13.5px;margin:0 0 6px;color:var(--ink);font-weight:600;letter-spacing:-.01em}
   .chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
-  .chip{border:1px solid var(--line);color:var(--ink);background:#fff}
+  .chip{border:1px solid var(--line);color:var(--ink);background:var(--panel)}
   .chip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600}
   .fields{display:grid;grid-template-columns:repeat(3,auto 64px);gap:4px 6px;align-items:center;font-size:12px}
   .fields input,.lvrow input{width:64px;padding:2px 4px;border:1px solid var(--line);border-radius:6px;font:inherit;font-variant-numeric:tabular-nums;font-size:12px}
   .lvrow{display:flex;gap:6px;align-items:center;font-size:12px;margin-bottom:3px}
   .lvrow .lvname{min-width:64px;cursor:pointer;text-decoration:underline dotted}
   .lvrow.on .lvname{color:var(--accent);font-weight:600}
-  #view3d{position:relative;height:380px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:4px}
+  #view3d{position:relative;height:380px;background:var(--view-bg);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:4px}
   #view3d canvas{display:block}
   #view3d-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
   .mass-cut{cursor:pointer}
@@ -225,16 +244,16 @@
   #v3slot-mass #view3d{height:calc(100vh - 240px);min-height:420px}
   /* 第 6 步和第 5 步共用一个视窗框（2026-10-23）：内边距、高度和第 5 步"工具条收起后"完全一样，换页时视窗一个像素都不动；说明条浮在视窗左上角 */
   #step6{position:relative;padding:14px 14px 14px 58px}
-  .showbar{position:absolute;left:68px;top:24px;z-index:8;display:flex;gap:10px;align-items:center;padding:5px 10px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);max-width:calc(100% - 300px)}
+  .showbar{position:absolute;left:68px;top:24px;z-index:8;display:flex;gap:10px;align-items:center;padding:5px 10px;background:var(--glass);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);max-width:calc(100% - 300px)}
   .showbar > button, .showbar > b{white-space:nowrap;flex:none}
   .showbar .hint{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   #v3slot-show{padding:0}
-  #v3slot-show #view3d{height:calc(100vh - 180px);min-height:480px;background:#FAFAFA}
+  #v3slot-show #view3d{height:calc(100vh - 180px);min-height:480px;background:var(--bg)}
   .step.on.noanim{animation:none}
   #step5 #center > .controls.collapsing{overflow:hidden}
   #v3wrap.show .v3add, #v3wrap.show #v3-white, #v3wrap.show #v3-sun, #v3wrap.show #v3-sunbox, #v3wrap.show #v3-wind, #v3wrap.show #v3-windbox, #v3wrap.show #v3-exit, #v3wrap.show #v3-bar, #v3wrap.show > p.hint{display:none !important}
   .sitewrap{display:grid;grid-template-columns:1fr 300px;gap:12px;align-items:start}
-  svg#sitemap{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-md)}
+  svg#sitemap{width:100%;height:auto;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-md)}
   .area{cursor:pointer}
   .area path{fill:#f6f3ec;stroke:#8a8a8a;stroke-width:1;vector-effect:non-scaling-stroke}
   .area:hover path{fill:#e4eef4}
@@ -254,20 +273,20 @@
   #sitemap .centre circle{fill:var(--bad);stroke:#fff;stroke-width:1;vector-effect:non-scaling-stroke}
   #sitemap .centre text{fill:var(--bad);text-anchor:middle;font-weight:600;pointer-events:none}
   .prog{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);margin-bottom:12px;box-shadow:var(--shadow-sm);overflow:hidden}
-  .prog h3{margin:0;padding:9px 12px;font-size:13.5px;border-bottom:1px solid var(--line);color:var(--ink);font-weight:600;background:#F8FAFC}
-  .prog .pr{display:grid;grid-template-columns:28px 1fr auto;gap:6px;align-items:center;padding:5px 10px;border-bottom:1px solid #F1F5F9;font-size:13px}
+  .prog h3{margin:0;padding:9px 12px;font-size:13.5px;border-bottom:1px solid var(--line);color:var(--ink);font-weight:600;background:var(--surface-2)}
+  .prog .pr{display:grid;grid-template-columns:28px 1fr auto;gap:6px;align-items:center;padding:5px 10px;border-bottom:1px solid var(--surface-3);font-size:13px}
   .prog .pr:last-child{border-bottom:none}
   .prog .pr.off{opacity:.55}
-  table.areas{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+  table.areas{width:100%;border-collapse:collapse;background:var(--panel);font-size:13px}
   table.areas th,table.areas td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:middle}
-  table.areas th{color:var(--muted);font-weight:600;font-size:12px;background:#F8FAFC}
+  table.areas th{color:var(--muted);font-weight:600;font-size:12px;background:var(--surface-2)}
   table.areas td.num{text-align:right;white-space:nowrap}
   table.areas input{width:70px;padding:2px 4px;border:1px solid var(--line);border-radius:6px;font:inherit;font-variant-numeric:tabular-nums}
   table.areas tr.grp td{background:var(--accent-soft);color:var(--accent);font-weight:600}
-  table.areas tr.tot td{font-weight:600;background:#F8FAFC}
+  table.areas tr.tot td{font-weight:600;background:var(--surface-2)}
   .card.flagged{border-left:3px solid var(--flag)}
   .fnrow{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;transition:background .2s ease-out}
-  .fnrow:hover{background:#F1F5F9}
+  .fnrow:hover{background:var(--surface-3)}
   .lvsep{font-size:12px;font-weight:600;color:var(--accent);border-top:1px solid var(--line);padding:6px 6px 2px;margin-top:4px}
   .lvsep:first-child{border-top:none;margin-top:0}
   .fnrow.sel{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent-line)}
@@ -280,38 +299,46 @@
   .btnrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
   button.primary{background:var(--gradient);border-color:transparent;color:#fff;min-height:38px;padding:5px 16px;border-radius:var(--radius);box-shadow:var(--shadow-sm)}
   button.primary:hover{background:var(--gradient);filter:brightness(1.1);box-shadow:var(--shadow-accent-lg);transform:translateY(-2px)}
-  .v3tip{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:2px 8px;font-size:12px;display:none}
+  .v3tip{position:absolute;left:8px;bottom:8px;background:var(--glass);border:1px solid var(--line);border-radius:8px;padding:2px 8px;font-size:12px;display:none}
   .v3add{position:absolute;left:8px;top:8px}
   /* 视窗左上角的体块工具条（2026-10-22，用户要求：和侧栏的"添加体块"合并） */
-  .v3tools{position:absolute;left:8px;top:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;max-width:calc(100% - 260px);background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);padding:5px 6px;font-size:12.5px}
+  .v3tools{position:absolute;left:8px;top:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;max-width:calc(100% - 260px);background:var(--glass);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);padding:5px 6px;font-size:12.5px}
   .v3tools .chip{min-height:28px;padding:2px 9px}
   .v3tools button{min-height:28px;padding:2px 10px}
   .v3tools .sep{width:1px;height:20px;background:var(--line);margin:0 2px}
   .v3right{position:absolute;right:8px;top:8px;display:flex;gap:6px}
   /* 体块方案切换（2026-10-22，用户要求：第 4 步三维右下角） */
-  .v3mopts{position:absolute;right:8px;bottom:8px;display:none;align-items:center;gap:4px;background:rgba(255,255,255,0.94);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);padding:4px 6px;font-size:12px}
+  .v3mopts{position:absolute;right:8px;bottom:8px;display:none;align-items:center;gap:4px;background:var(--glass);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);padding:4px 6px;font-size:12px}
   .v3mopts span{color:var(--muted);margin-right:2px}
   .v3mopts button{min-width:28px;padding:2px 7px}
   .v3mopts .mo-ask{display:inline-flex;gap:4px;align-items:center;margin-left:6px;color:var(--warn);white-space:nowrap}
-  .v3mopts button.on{background:var(--gradient);color:#fff;border-color:transparent}
   .v3mopts button.ready{border-color:var(--accent);color:var(--accent);font-weight:600}
+  .v3mopts button.on, .v3mopts button.ready.on{background:var(--gradient);color:#fff;border-color:transparent}   /* 2026-10-23：选中的那个字要白，原来被 .ready 的蓝字盖掉 */
   .v3mopts button.pending{border-style:dashed;border-color:var(--line);color:var(--muted);opacity:.75;cursor:progress}
-  .v3sunbox{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,0.94);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);padding:6px 10px;font-size:12px;max-width:340px}
+  .v3sunbox{position:absolute;left:8px;bottom:8px;background:var(--glass);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);padding:6px 10px;font-size:12px;max-width:340px}
   .v3sunbox .ramp{height:10px;border-radius:2px;margin:4px 0 2px;background:linear-gradient(90deg,#2c3e75,#4f7cac,#9ccfb5,#f2d16b,#e8743b)}
   .v3sunbox table{border-collapse:collapse;margin-top:4px}
   .v3windbox{left:auto;right:8px;max-width:440px;font-size:11px;max-height:62%;overflow:auto}
   .v3windbox td{padding:0 6px 0 0;white-space:nowrap}
   .v3windbox .ramp{background:linear-gradient(90deg,#dbe9f6,#8fb8de,#3f7fbf,#1d4f8a)}
   .v3sunbox td{padding:0 8px 0 0}
-  .v3bar{position:absolute;left:50%;top:46px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:4px;padding:2px 10px;font-size:12px;display:none}
+  .v3bar{position:absolute;left:50%;top:46px;transform:translateX(-50%);background:var(--ink);color:var(--panel);border-radius:4px;padding:2px 10px;font-size:12px;display:none}
   button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
   svg#section{width:100%;height:auto;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius)}
   .fields .chk{grid-column:1 / -1;display:flex;gap:6px;align-items:center}
   .encl{margin-top:8px;padding-top:6px;border-top:1px solid var(--line);font-size:12px}
   .encl .chk{display:flex;gap:6px;align-items:center;margin:3px 0}
   .encl .chk.inl{display:inline-flex;margin-right:8px}
-  .encl .stage-out{margin:4px 0;padding:4px 8px;background:#F1F5F9;border-radius:6px}
+  .encl .stage-out{margin:4px 0;padding:4px 8px;background:var(--surface-3);border-radius:6px}
 </style>
+<script>
+  // 主题（2026-10-23 深色模式）：首屏之前就定下来，避免先白后黑的闪一下；存在浏览器里，没存过就跟系统设置
+  (() => { let t = null; try { t = localStorage.getItem("ccTool.theme"); } catch (e) {}
+    if (t !== "dark" && t !== "light") t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? "dark" : "light";
+    document.documentElement.dataset.theme = t; })();
+  // 减少动效（2026-10-23）：全文件只在这里判断一次
+  window.reducedMotion = () => !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+</script>
 </head>
 <body>
 <header>
@@ -324,16 +351,17 @@
     <button data-step="5" data-i18n="step5">5 确认体块与功能</button><span class="arrow">→</span>
     <button data-step="6" data-i18n="step6">6 效果展示</button>
   </nav>
-  <span class="sub">ARCH 540 作业二 · 规则见 <code>_shared/Rules/</code> · 北在上</span>
+  <span class="sub" data-i18n="hdr_sub" data-i18n-html>ARCH 540 作业二 · 规则见 <code>_shared/Rules/</code> · 北在上</span>
   <button id="mode-toggle" title="使用者模式只显示功能本身；开发者模式显示所有数值、来源和说明"></button>
   <button id="lang-toggle" title="界面语言 / Interface language" aria-label="language"></button>
+  <button id="theme-toggle" title="浅色 / 深色界面 · Light / dark interface" aria-label="theme"></button>
 </header>
 
 <!-- 第 1 步：选择要生成的功能（2026-10-18，用户要求按设计流程分步） -->
 <div id="step1" class="step">
   <div class="steppage">
     <h2 data-i18n="s1_title">第 1 步 · 选择要生成的功能</h2>
-    <p class="hint">勾选这个社区中心要有的功能。“必有”来自温哥华《社区中心战略》（2022）目标 9，每个社区中心都要有；“基本配套”是建筑运转需要的门厅、行政、更衣和设备（Marpole 任务书里都有，分类是我的判断）；“可选”是 Marpole 里有、可加可减的房间。面积和净高在下一步确认。</p>
+    <p class="hint" data-i18n="s1_hint">勾选这个社区中心要有的功能。“必有”来自温哥华《社区中心战略》（2022）目标 9，每个社区中心都要有；“基本配套”是建筑运转需要的门厅、行政、更衣和设备（Marpole 任务书里都有，分类是我的判断）；“可选”是 Marpole 里有、可加可减的房间。面积和净高在下一步确认。</p>
     <div id="program-select"></div>
     <div id="program-check"></div>
     <div class="stepnav"><span></span><button class="primary" data-goto="2" data-i18n="next2">下一步：确认面积与净高 →</button></div>
@@ -344,7 +372,7 @@
 <div id="step2" class="step">
   <div class="steppage">
     <h2 data-i18n="s2_title">第 2 步 · 确认面积与净高</h2>
-    <p class="hint">默认值来自 Marpole 社区中心任务书（2021）：单间面积已含并入的储藏等配套；最小净高只有原文写了的才有。可以直接改，改过的标为“用户设定”，随时可以恢复默认。下面的合计告诉你下一步大概需要多少楼面。</p>
+    <p class="hint" data-i18n="s2_hint">默认值来自 Marpole 社区中心任务书（2021）：单间面积已含并入的储藏等配套；最小净高只有原文写了的才有。可以直接改，改过的标为“用户设定”，随时可以恢复默认。下面的合计告诉你下一步大概需要多少楼面。</p>
     <div id="program-areas"></div>
     <div class="stepnav"><button data-goto="1" data-i18n="prev">← 上一步</button><button class="primary" data-goto="3" data-i18n="next3">下一步：选场地 →</button></div>
   </div>
@@ -354,7 +382,7 @@
 <div id="step3" class="step">
   <div class="steppage">
     <h2 data-i18n="s3_title">第 3 步 · 选场地</h2>
-    <p class="hint">先点地图上的社区（温哥华的 22 个 local area），进入社区后点一个公园或几个地块，按“用这个场地”。场地边界会带到体块推演里（绿色虚线），超出场地的体块部分不算楼面。进入社区时会联网查询温哥华开放数据。不选场地也可以继续，用 90 × 52 m 的示意场地。</p>
+    <p class="hint" data-i18n="s3_hint">先点地图上的社区（温哥华的 22 个 local area），进入社区后点一个公园或几个地块，按“用这个场地”。场地边界会带到体块推演里（绿色虚线），超出场地的体块部分不算楼面。进入社区时会联网查询温哥华开放数据。不选场地也可以继续，用 90 × 52 m 的示意场地。</p>
     <div class="sitewrap"><svg id="sitemap" xmlns="http://www.w3.org/2000/svg"></svg><div><div class="card" id="site-info"></div></div></div>
     <p class="hint">数据：City of Vancouver Open Data（Open Government Licence – Vancouver）——<i>Local area boundary</i>、<i>Parks – polygon representation</i>、<i>Property parcel polygons</i>、<i>Community centres</i>。社区边界大致沿街道中线；公园边界只是示意，不等于法定地界；地块按物业评估划分，公园用地通常不在地块里。北在上。</p>
     <div class="stepnav"><button data-goto="2" data-i18n="prev">← 上一步</button><button class="primary" data-goto="4" data-i18n="next4">下一步：体块推演 →</button></div>
@@ -423,15 +451,15 @@
       <span id="massing-readout" class="readout"></span>
     </div>
     <div class="controls climate">
-      <label>气候依据 <select id="sel-basis"><option value="sun">外墙受晒（太阳辐射）</option><option value="bands">南 / 中 / 北分带（原来的假设）</option></select></label>
-      <label id="lbl-climper">时段 <select id="sel-climper"></select></label>
+      <label><span data-i18n="lbl_basis">气候依据</span> <select id="sel-basis"><option value="sun" data-i18n="opt_basis_sun">外墙受晒（太阳辐射）</option><option value="bands" data-i18n="opt_basis_bands">南 / 中 / 北分带（原来的假设）</option></select></label>
+      <label id="lbl-climper"><span data-i18n="lbl_period">时段</span> <select id="sel-climper"></select></label>
       <span id="climate-hint" class="hint"></span>
     </div>
     <div class="controls" id="band-ctrl">
-      <label>南带 <input id="sl-south" type="range" min="0" max="100" step="1"> <span id="rd-south" class="readout"></span></label>
-      <label>中间 <span id="rd-middle" class="readout"></span></label>
-      <label>北带 <input id="sl-north" type="range" min="0" max="100" step="1"> <span id="rd-north" class="readout"></span></label>
-      <span class="hint">三带只是评判背景，不是容器；默认 35 / 30 / 35（假设）</span>
+      <label><span data-i18n="lbl_south">南带</span> <input id="sl-south" type="range" min="0" max="100" step="1"> <span id="rd-south" class="readout"></span></label>
+      <label><span data-i18n="lbl_middle">中间</span> <span id="rd-middle" class="readout"></span></label>
+      <label><span data-i18n="lbl_north">北带</span> <input id="sl-north" type="range" min="0" max="100" step="1"> <span id="rd-north" class="readout"></span></label>
+      <span class="hint" data-i18n="bands_hint">三带只是评判背景，不是容器；默认 35 / 30 / 35（假设）</span>
     </div>
     <!-- 2026-10-23 用户要求：轴测和平面合成一个视窗——默认轴测；双击房间，相机飞到那一层正上方、平面淡入叠在上面；双击平面空白回到轴测 -->
     <div id="v3slot-layout" class="viewstack">
@@ -441,7 +469,7 @@
       </div>
     </div>
     <details class="more"><summary data-i18n="how_plan">平面怎么读、怎么操作</summary>
-    <p class="hint">平面显示所选标高的截面：只画在这个标高处存在的体块（底标高 ≤ 标高 &lt; 顶标高）。颜色是功能区的阶段（冷淡到暖实：exposed → controlled），空白是走廊和未分配空间。墨色实线 = 外墙；深蓝虚线 = 问题或建议（需要调整的原位置、建议位置、不满足的邻接、体块贴着但接触宽度不足 5 m）；灰色斜线 = 净高不足 3.0 m；淡色虚线 = 体块轮廓（只在有多个体块时画）和挑空范围。房间左上角的小方块 = 已锁定；面积后写“挑空”的房间占了上面的层。平面里不能改体块（回到第 4 步改）。<b>拖动功能区</b>可以挪动它（吸附 1 m，只在这一层里移动；拖动时深蓝 = 不在可用楼面里）；拖过的功能区自动锁定，被它压住的没锁定的功能区会重新找位置。点一个房间，只画它自己不满足的邻接；上面的开关可以画出全部。</p></details>
+    <p class="hint" data-i18n="plan_legend" data-i18n-html>平面显示所选标高的截面：只画在这个标高处存在的体块（底标高 ≤ 标高 &lt; 顶标高）。颜色是功能区的阶段（冷淡到暖实：exposed → controlled），空白是走廊和未分配空间。墨色实线 = 外墙；深蓝虚线 = 问题或建议（需要调整的原位置、建议位置、不满足的邻接、体块贴着但接触宽度不足 5 m）；灰色斜线 = 净高不足 3.0 m；淡色虚线 = 体块轮廓（只在有多个体块时画）和挑空范围。房间左上角的小方块 = 已锁定；面积后写“挑空”的房间占了上面的层。平面里不能改体块（回到第 4 步改）。<b>拖动功能区</b>可以挪动它（吸附 1 m，只在这一层里移动；拖动时深蓝 = 不在可用楼面里）；拖过的功能区自动锁定，被它压住的没锁定的功能区会重新找位置。点一个房间，只画它自己不满足的邻接；上面的开关可以画出全部。</p></details>
     <h2 data-i18n="h_section">剖面</h2>
     <div class="controls dev">
       <label>方向 <select id="sec-dir"><option value="ew">东西向（沿 y 切）</option><option value="ns">南北向（沿 x 切）</option></select></label>
@@ -465,7 +493,7 @@
 <!-- 三维视图：第 4、5、6 步共用，切换步骤时移到对应位置 -->
 <div id="v3wrap">
   <div id="view3d"><div id="view3d-msg" class="hint">三维视图加载中（需要联网加载 three.js）……</div><div id="view3d-tip" class="v3tip"></div><button id="v3-add" class="v3add" data-i18n="add_mass">＋ 添加体块</button><div id="v3-masstools" class="v3tools" style="display:none"></div><div class="v3right"><button id="v3-ctx" title="显示 / 隐藏场地周围的建筑（2009 年数据）" style="display:none" data-i18n="ctx">周边建筑</button><button id="v3-sun" title="体块表面的直射日照时数或太阳辐射（近似），算上周边建筑和树木的遮挡" data-i18n="sun">日照</button><button id="v3-wind" title="季节盛行风：风玫瑰和体块各面的迎风程度（机场气象站，未按场地修正）" data-i18n="wind">风</button><button id="v3-white" title="只看体块的白模，不显示功能区和标高" data-i18n="white">白模</button><button id="v3-plan" style="display:none" title="轴测 / 平面切换（双击房间也能进平面，双击平面空白回轴测）">平面</button><button id="v3-exit" style="display:none" data-i18n="exit_iso">退出单独编辑（Esc）</button></div><div id="v3-bar" class="v3bar"></div><div id="v3-mopts" class="v3mopts"></div><div id="v3-sunbox" class="v3sunbox" style="display:none"></div><div id="v3-windbox" class="v3sunbox v3windbox" style="display:none"></div></div>
-  <p class="hint">三维视图：左键拖动旋转，右键拖动平移，滚轮缩放。<b>单独编辑：</b>双击一个体块：它变得更实，其他体块和功能变淡（仍可看到周边关系，但不能点选，不会挡住选面）；双击空白处或按 Esc 退出。<b>白模：</b>右上角按钮切换，只看体块。<b>周边建筑：</b>选了真实场地后，右上角可以显示 / 隐藏场地周围约 200 m 的建筑（2009 年数据，按平地处理，浅橙色为场地内现有建筑）。<b>推拉：</b>点击体块的一个面选中它（变橙色），拖橙色箭头沿这个面的法线推拉；立面吸附 1 m，顶面和底面吸附 0.1 m。拖动时只更新体块和数字，松开后再重新识别空间、排布功能（用户决定）。点空白处取消选面。蓝色箭头指北；橙色框是平面所看的标高。功能区随体块实时排布；要只看体块，点“白模”。</p>
+  <p class="hint" data-i18n="v3_hint" data-i18n-html>三维视图：左键拖动旋转，右键拖动平移，滚轮缩放。<b>单独编辑：</b>双击一个体块：它变得更实，其他体块和功能变淡（仍可看到周边关系，但不能点选，不会挡住选面）；双击空白处或按 Esc 退出。<b>白模：</b>右上角按钮切换，只看体块。<b>周边建筑：</b>选了真实场地后，右上角可以显示 / 隐藏场地周围约 200 m 的建筑（2009 年数据，按平地处理，浅橙色为场地内现有建筑）。<b>推拉：</b>点击体块的一个面选中它（变橙色），拖橙色箭头沿这个面的法线推拉；立面吸附 1 m，顶面和底面吸附 0.1 m。拖动时只更新体块和数字，松开后再重新识别空间、排布功能（用户决定）。点空白处取消选面。蓝色箭头指北；橙色框是平面所看的标高。功能区随体块实时排布；要只看体块，点“白模”。</p>
 </div>
 
 <script>
@@ -994,13 +1022,13 @@ function sideNeighbor(m, side){
 function massStageInfo(m){
   const E = enclosureOf(m);
   const closed = SIDES.map(s => ({ side:s, own:!!E.walls[s], by:E.walls[s] ? null : sideNeighbor(m, s) })).filter(x => x.own || x.by);
-  const list = closed.map(x => x.own ? SIDE_ZH[x.side] : `${SIDE_ZH[x.side]}（贴着 ${x.by}）`).join("、");
+  const list = closed.map(x => x.own ? Z(SIDE_ZH[x.side]) : `${Z(SIDE_ZH[x.side])}（${T("touching")} ${x.by}）`).join("、");
   // 2026-10-19：没有屋顶时也可以有墙（围墙、院墙）；阶段仍按定义是 exposed（没有天空遮挡），墙只用于挡风的提示和显示
-  if (!E.roof) return { stage:"exposed", why:`没有屋顶：完全没有天空遮挡${closed.length ? `（有墙：${list}）` : ""}`, closed };
+  if (!E.roof) return { stage:"exposed", why:`${T("encl_exposed")}${closed.length ? T("encl_walls").replace("{list}", list) : ""}`, closed };
   // 2026-10-20（用户决定）：体块是气候基础设施，封闭体块 = tempered；里面哪些功能区需要机械调节（controlled）由功能按“刚好够”自己决定，不再按整个体块勾选
-  if (closed.length === 4) return { stage:"tempered", why:"有屋顶、四面有墙：封闭体块；里面的功能区按“刚好够”各自是 tempered 或 controlled", closed };
-  if (closed.length >= 2) return { stage:"buffered", why:`有屋顶，${closed.length} 面有墙（${list}）：有天空遮挡，且有其他环境遮挡`, closed };
-  return { stage:"protected", why:`有屋顶，${closed.length ? `只有 ${list} 一面有墙` : "四面开敞"}：有天空遮挡`, closed };
+  if (closed.length === 4) return { stage:"tempered", why:T("encl_tempered"), closed };
+  if (closed.length >= 2) return { stage:"buffered", why:T("encl_buffered").replace("{n}", closed.length).replace("{list}", list), closed };
+  return { stage:"protected", why:closed.length ? T("encl_protected_one").replace("{list}", list) : T("encl_protected_open"), closed };
 }
 const massStage = m => massStageInfo(m).stage;
 // 非封闭体块（阶段低于 tempered）：只在最低一层有地面，上面不切楼板；净高不受中间标高限制
@@ -2183,8 +2211,8 @@ function generateLayout(){
   const addUnplaced = (base, reason, detail, detailShort) => {
     let u;
     if (shortTotal && !base.fn.outdoor && reason !== "U5"){
-      const own = reason === "U1" ? detail : `这个功能自己的问题：${detailShort || detail}`;
-      u = { ...base, reason:"U1", detail:`总面积不够：所有标高封闭体块里的可用空间合计 ${fmt(usableIndoor)} m²，所有室内功能净面积合计 ${fmt(netAll)} m²，缺 ${fmt(netAll-usableIndoor)} m²。` + own };
+      const own = reason === "U1" ? detail : `${T("own_marker")}${detailShort || detail}`;
+      u = { ...base, reason:"U1", detail:T("u1").replace("{a}", fmt(usableIndoor)).replace("{b}", fmt(netAll)).replace("{c}", fmt(netAll-usableIndoor)) + own };
     } else u = { ...base, reason, detail };
     // 被拖动的功能区推开、又找不到位置的：不直接变成“未生成”，而是标红，说明被谁压住，由用户决定（用户 2026-10-18 决定）
     const mem = state.memory[base.id];
@@ -2279,12 +2307,12 @@ function generateLayout(){
     if (!pool.some(sp => sp.area)){
       const stages = [...new Set(spaces.filter(sp => sp.area).map(sp => sp.stage))].join("、") || "无";
       addUnplaced(base, "U5", fn.outdoor
-        ? `这是半室外 / 室外功能，冬季最低 ${fn.minStage.winter}，只能放进非封闭体块里、阶段不低于 ${fn.minStage.winter} 的空间。现在的空间阶段：${stages}。可以在第 4 步加一个体块，在属性栏的“围合方式”里调屋顶和墙（${fn.minStage.winter === "buffered" ? "buffered = 有屋顶、至少两面墙" : fn.minStage.winter === "protected" ? "protected = 有屋顶、少于两面墙" : "exposed = 没有屋顶"}）`
+        ? T("outdoor_why").split("{stage}").join(fn.minStage.winter).replace("{stages}", stages).replace("{encl}", fn.minStage.winter === "buffered" ? T("encl_b") : fn.minStage.winter === "protected" ? T("encl_p") : T("encl_e"))
         : `室内功能只能放进封闭体块（有屋顶、四面有墙），现在没有封闭体块的可用空间`);
       return;
     }
     if (area > free + EPS){
-      addUnplaced(base, "U1", `${fn.outdoor ? "合适阶段的非封闭空间" : "所有可用空间"}剩余 ${fmt(free)} m²，这个功能需要 ${fmt(area)} m²，缺 ${fmt(area-free)} m²`);
+      addUnplaced(base, "U1", `${fn.outdoor ? T("free_open") : T("free_all")}${T("free_left").replace("{f}", fmt(free)).replace("{n}", fmt(area)).replace("{d}", fmt(area-free))}`);
       return;
     }
     // 必须首层：最低一层要有空间
@@ -2304,7 +2332,7 @@ function generateLayout(){
       if (mx.best < fn.minClearHeight.value - EPS){
         const need = fn.minClearHeight.value - mx.best;
         const where = mx.where ? `（${mx.where.id}，体块 ${mx.where.masses.join("、")}）` : "";
-        const det = `这个功能要求净高至少 ${fn.minClearHeight.value} m（${fn.minClearHeight.status}，${fn.minClearHeight.note}）；${fn.floorReq && fn.floorReq.value === "mustGround" ? "首层" : "所有"}可用空间往上最多只能做到 ${mx.where ? fmt(mx.best,1) : 0} m${where}，差 ${fmt(need,1)} m。可以把体块顶面拉高至少 ${fmt(need,1)} m，让它跨两个标高形成挑空`;
+        const det = T("clear_why").replace("{h}", fn.minClearHeight.value).replace("{status}", fn.minClearHeight.status).replace("{note}", fn.minClearHeight.note).replace("{floor}", fn.floorReq && fn.floorReq.value === "mustGround" ? T("ground_") : T("all_")).replace("{best}", mx.where ? fmt(mx.best,1) : 0).replace("{where}", where).split("{need}").join(fmt(need,1));
         addUnplaced(base, "U4", det);
         return;
       }
@@ -2472,7 +2500,7 @@ function stageMetrics(L){
   const pct = s => tot ? Math.round(share[s] / tot * 100) : 0;
   return { tot, share, pct, ctrlN:ctrl.length, clusters, perim, ext, cold,
     text:`controlled ${pct("controlled")}% · tempered ${pct("tempered")}% · buffered ${pct("buffered")}%`,
-    ctrlText:ctrl.length ? `${clusters} 团 · 外墙 ${fmt(ext)} m（占周长 ${perim ? Math.round(ext / perim * 100) : 0}%，背阳 ${fmt(cold)} m）` : "无" };
+    ctrlText:ctrl.length ? T("ctrl_text").replace("{k}", clusters).replace("{e}", fmt(ext)).replace("{p}", perim ? Math.round(ext / perim * 100) : 0).replace("{c}", fmt(cold)) : T("none") };
 }
 // 按每种排布方式各排一次（锁定的功能区不动），并排显示，让设计师选
 let OPTIONS = [];
@@ -3061,8 +3089,9 @@ function snapshotPlan(){
 }
 function animatePlanDiff(snap){
   if (!ANIME || snap.level !== state.viewLevel) return;
-  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (reducedMotion()) return;
   const { animate } = ANIME, seen = new Set(), moves = [], enters = [];
+  svg.classList.add("sliding"); setTimeout(() => svg.classList.remove("sliding"), 700);   // 滑动期间关掉悬停的过渡，免得两套 transform 打架（2026-10-23）
   for (const g of svg.querySelectorAll("g.room[data-room]")){
     const key = roomKey(g); seen.add(key);
     const rect = g.querySelector("rect.rm"); if (!rect) continue;
@@ -3128,7 +3157,7 @@ function figRand(seed){ let x = 0; for (const ch of seed) x = (x * 31 + ch.charC
 function drawFigures(L, lv){
   for (const a of FIG_ANIMS) a.cancel(); FIG_ANIMS = [];
   if (state.step !== 5 || !state.planMode || state.figures === false) return;
-  const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = reducedMotion();
   const g = el("g", { class:"figs", "pointer-events":"none" }); svg.appendChild(g);
   const rooms = L.rooms.filter(r => r.levelId === lv.id && !r.skeleton && FIG_POSE_BY_FN[r.fnId]);
   for (const r of rooms){
@@ -3502,11 +3531,11 @@ svg.addEventListener("click", ev => {
    ===================================================================== */
 function statusBadge(s){
   const cls = s.startsWith(STATUS.verified)?"verified":s.startsWith(STATUS.toCheck)?"tocheck":s.startsWith(STATUS.userSet)?"userset":"assumed";
-  return `<span class="badge ${cls}">${s}</span>`;
+  return `<span class="badge ${cls}">${Z(s)}</span>`;
 }
 // 未放入的一句话原因（完整原因在右侧）
 function shortReason(u){
-  const own = u.detail.includes("这个功能自己的问题：") ? u.detail.split("这个功能自己的问题：")[1] : u.detail;
+  const own = u.detail.includes(T("own_marker")) ? u.detail.split(T("own_marker"))[1] : u.detail;
   const first = own.split(/[。；]/)[0];
   return first.length > 46 ? first.slice(0, 46) + "……" : first;
 }
@@ -3536,7 +3565,7 @@ function bindFlaggedButtons(root){
 let LEFT_LAYOUT = null;
 function renderLeft(){
   const want = PLAN_ANIM.leftPending; PLAN_ANIM.leftPending = false;
-  const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = reducedMotion();
   if (!want || !ANIME || !ANIME.createLayout || reduced || state.step !== 5){ renderLeftNow(); return; }
   const root = document.getElementById("left");
   // 行里面的文字每次都是新元素，anime 会把它们当成"新进来的"淡入；只让行本身淡入，文字直接出现
@@ -3565,19 +3594,19 @@ function renderLeftNow(){
   const U = inSp.reduce((s, sp) => s + sp.area, 0), UO = outSp.reduce((s, sp) => s + sp.area, 0);
   const outNet = FUNCTIONS.filter(f => isActive(f) && f.outdoor).reduce((s, f) => s + effectiveArea(f) * f.count, 0);
   let html = `<div class="kv" style="margin-bottom:6px" title="功能净面积 × 组团系数 1.1–1.3 × 建筑系数 ${ASSUMPTIONS.buildingFactor.value}（Marpole 2021）= 总建筑面积 ${fmt(L.gross)} m²">
-    <div>室内可用空间</div><div>${fmt(U)} m²（${inSp.length} 个空间，封闭体块）</div>
-    <div>室内功能净面积</div><div>${fmt(L.net)} m² · 放大后 ${fmt(L.gross)} m²</div>
-    ${outSp.length || outNet ? `<div>半室外与室外</div><div>空间 ${fmt(UO)} m²（${outSp.map(sp => sp.stage).join("、") || "无"}）· 功能 ${fmt(outNet)} m²</div>` : ""}
+    <div>${T("as_usable")}</div><div>${fmt(U)} m²（${inSp.length} ${T("as_spaces")}）</div>
+    <div>${T("as_net")}</div><div>${fmt(L.net)} m² · ${T("as_gross")} ${fmt(L.gross)} m²</div>
+    ${outSp.length || outNet ? `<div>${T("as_outdoor")}</div><div>${T("as_space")} ${fmt(UO)} m²（${outSp.map(sp => sp.stage).join("、") || T("none")}）· ${T("as_fn")} ${fmt(outNet)} m²</div>` : ""}
   </div>`;
-  if (L.net > U + EPS) html += `<div class="banner bad">面积不够：功能净面积比可用空间多 ${fmt(L.net-U)} m²。</div>`;
-  else if (L.gross > U + EPS) html += `<div class="banner warn">净面积放得下；按 Marpole 的系数，总建筑面积还差 ${fmt(L.gross-U)} m²，走廊会偏紧。</div>`;
-  else html += `<div class="banner ok">面积够。</div>`;
+  if (L.net > U + EPS) html += `<div class="banner bad">${T("as_bad").replace("{a}", fmt(L.net-U))}</div>`;
+  else if (L.gross > U + EPS) html += `<div class="banner warn">${T("as_warn").replace("{a}", fmt(L.gross-U))}</div>`;
+  else html += `<div class="banner ok">${T("as_ok")}</div>`;
   const adj = L.adjacency || [], must = adj.filter(a => a.rule.kind === "must"), others = adj.filter(a => a.rule.kind !== "must");
-  html += `<div class="kv" style="margin-top:4px"><div>邻接（Marpole）</div><div>必须相邻 ${must.filter(a => a.ok).length}/${must.length} · 其他 ${others.filter(a => a.ok).length}/${others.length}</div></div>`;
+  html += `<div class="kv" style="margin-top:4px"><div>${T("as_adj")}</div><div>${T("as_must")} ${must.filter(a => a.ok).length}/${must.length} · ${T("as_other")} ${others.filter(a => a.ok).length}/${others.length}</div></div>`;
   // 阶段汇总（2026-10-20，用户决定）：controlled 面积尽量少、聚成一团、外墙尽量少
   const sm = stageMetrics(L);
   html += `<div class="kv" style="margin-top:4px" title="功能区的阶段 = 它冬季的最低阶段（刚好够）。目标：controlled 面积尽量少、聚成一团、外墙（尤其背阳的）尽量少。">
-    <div>阶段面积</div><div>${sm.text}</div>
+    <div>${T("as_stage")}</div><div>${sm.text}</div>
     <div>controlled</div><div>${sm.ctrlText}</div></div>`;
   document.getElementById("area-summary").innerHTML = html;
 
@@ -3685,15 +3714,15 @@ function decisionCard(r){
   const si = STAGE_INDEX[stg], cells = STAGES.map((s, i) => `<i style="background:${i <= si ? STAGE_COLORS[s.id] : "var(--muted-bg,#F1F5F9)"}"></i>`).join("");
   const stageText = `${T("need")} ${need} ${chk.cls === "ok" ? "=" : chk.cls === "bad" ? ">" : "<"} ${T("space_is")} ${stg}`;
   // 阶段是怎么定的（2026-10-23，用户要求）：功能这边是触发的规则 → 最低阶段；空间这边是体块的围合 → 空间阶段；指派按"刚好够"（手动指派优先）
-  const ruleIds = fn.rules || [], ruleRows = ruleIds.map(k => RULES[k] ? `<div class="crow"><b>${k}</b><span>${RULES[k].text}</span><em>${RULES[k].status}</em></div>` : "").join("");
+  const ruleIds = fn.rules || [], ruleRows = ruleIds.map(k => RULES[k] ? `<div class="crow"><b>${k}</b><span>${Z(RULES[k].text)}</span><em>${Z(RULES[k].status)}</em></div>` : "").join("");
   const dm = sp.masses && sp.masses.length ? state.masses.find(m => m.id === (typeof sp.masses[0] === "string" ? sp.masses[0] : sp.masses[0].id)) : null;
   const dInfo = dm ? massStageInfo(dm) : null;
   const manual = !!state.stages[r.id];
   const chain = `<div class="dchain">
       <div class="cline"><span class="ck">${T("chain_rules")}</span><span>${ruleIds.length ? ruleIds.join(" ") : T("r_none")} → <b>${fn.minStage ? fn.minStage.winter : "—"}</b></span></div>
-      <div class="cline"><span class="ck">${T("chain_encl")}</span><span>${dInfo ? `${dm.id}：${dInfo.why.split("：")[0]}` : "—"} → <b>${sp.stage || (dInfo ? dInfo.stage : "—")}</b></span></div>
+      <div class="cline"><span class="ck">${T("chain_encl")}</span><span>${dInfo ? `${dm.id}：${dInfo.why.split(/[：:]/)[0]}` : "—"} → <b>${sp.stage || (dInfo ? dInfo.stage : "—")}</b></span></div>
       <div class="cline"><span class="ck">${T("chain_assign")}</span><span>${manual ? T("manual") : T("just_enough")} → <b>${stg}</b></span></div>
-      ${ruleRows ? `<details class="cdet"><summary>${T("chain_more")}</summary>${ruleRows}${dInfo ? `<div class="crow"><b>${dm.id}</b><span>${dInfo.why}</span></div>` : ""}${fn.stageNote ? `<div class="crow"><b>·</b><span>${fn.stageNote}</span></div>` : ""}</details>` : ""}
+      ${ruleRows ? `<details class="cdet"><summary>${T("chain_more")}</summary>${ruleRows}${dInfo ? `<div class="crow"><b>${dm.id}</b><span>${dInfo.why}</span></div>` : ""}${fn.stageNote ? `<div class="crow"><b>·</b><span>${Z(fn.stageNote)}</span></div>` : ""}</details>` : ""}
     </div>`;
   // 梯度
   const q = sc.seq || {}, same = q.same || 0, step = q.step || 0, jump = q.jump || 0, ext = q.ext || 0, street = q.street || 0;
@@ -3946,14 +3975,14 @@ function renderMassPanel(){
   document.getElementById("mass-panel").innerHTML = `
     <h3>${T("enclosure")} · ${m.id}</h3>
     <div class="fields">
-      ${f("x","西边 X",b.x0,1)}${f("w","宽（东西）",b.w,1)}${f("base","底标高",m.base,0.1)}
-      ${f("y","南边 Y",b.y0,1)}${f("d","深（南北）",b.d,1)}${f("top","顶标高",m.top,0.1)}
+      ${f("x",T("m_x"),b.x0,1)}${f("w",T("m_w"),b.w,1)}${f("base",T("m_base"),m.base,0.1)}
+      ${f("y",T("m_y"),b.y0,1)}${f("d",T("m_d"),b.d,1)}${f("top",T("m_top"),m.top,0.1)}
       <label class="chk dev"><input type="checkbox" data-void ${m.void?"checked":""}> 挑空：在这个体块最低的一层之上不切楼板（例如中庭、挑空门厅）；挑空的空间可以放多个功能</label>
     </div>
     <div class="encl">
       <div class="hint dev">阶段按你定义的五个阶段推出（2026-10-19）</div>
-      <label class="chk"><input type="checkbox" data-encl="roof" ${E.roof?"checked":""}> 屋顶</label>
-      <span class="hint">墙：</span>${SIDES.map(s => `<label class="chk inl"><input type="checkbox" data-wall="${s}" ${E.walls[s]?"checked":""}> ${SIDE_ZH[s]}</label>`).join("")}
+      <label class="chk"><input type="checkbox" data-encl="roof" ${E.roof?"checked":""}> ${T("roof")}</label>
+      <span class="hint">${T("walls")}</span>${SIDES.map(s => `<label class="chk inl"><input type="checkbox" data-wall="${s}" ${E.walls[s]?"checked":""}> ${Z(SIDE_ZH[s])}</label>`).join("")}
       <div class="stage-out"><span class="swatch" style="background:${STAGE_COLORS[st.stage]}"></span><b>${st.stage}</b> — ${st.why}</div>
       <div class="dev">${windHint(m)}</div>
       <div class="hint">有屋顶：四面有墙 = tempered（封闭体块；里面需要机械调节的功能区各自是 controlled，不按整个体块勾选——用户 2026-10-20 决定）；至少两面有墙 = buffered（用户 2026-10-19 定）；少于两面 = protected。没有屋顶 = exposed（也可以加墙，例如院墙；阶段不变）。贴着封闭体块 ≥ ${ASSUMPTIONS.minContactWidth.value} m 的一面也算有墙。非封闭体块只在最低一层有地面，只放半室外与室外功能；室内功能只放进封闭体块。</div>
@@ -3995,12 +4024,12 @@ function renderMassPanel(){
 function renderCircPanel(){
   const box = document.getElementById("circ-panel"); if (!box) return;
   const c = state.circ, on = skeletonOn(), sk = state.layout && state.layout.rooms.find(r => r.skeleton);
-  box.innerHTML = `<h3>流线骨架</h3>
+  box.innerHTML = `<h3>${T("circ_h")}</h3>
     <p class="hint" style="margin:0 0 6px">先画门厅 / 街道，房间围着它放（用户 2026-10-22）。类型来自 26 个案例的归类，宽度是目测值 ${statusBadge(ASSUMPTIONS.circWidth.status)}。</p>
-    <label style="display:block;margin:4px 0">类型 <select id="circ-type" style="max-width:100%">${Object.entries(CIRC_TYPES).map(([k, v]) => `<option value="${k}" ${k === c.type ? "selected" : ""}>${v.zh}</option>`).join("")}</select></label>
-    <div class="lvrow"><span>入口在</span>${["south","east","north","west"].map(sd => `<label class="chk inl"><input type="radio" name="circ-entry" value="${sd}" ${c.entry === sd ? "checked" : ""} ${on ? "" : "disabled"}> ${SIDE_ZH2[sd]}</label>`).join("")}</div>
-    <div class="lvrow"><label class="chk"><input type="checkbox" id="circ-through" ${c.through ? "checked" : ""} ${on && CIRC_TYPES[c.type].shape === "stem" ? "" : "disabled"}> 穿越到对面（第二个入口）</label></div>
-    <div class="lvrow"><span>带宽</span><input type="number" step="1" min="3" max="20" id="circ-width" aria-label="骨架带宽（米）" autocomplete="off" value="${Math.round(circWidth())}" ${on ? "" : "disabled"}> m <span class="hint">默认 ${ASSUMPTIONS.circWidth[c.type] || "—"}</span></div>
+    <label style="display:block;margin:4px 0">${T("type")} <select id="circ-type" style="max-width:100%">${Object.entries(CIRC_TYPES).map(([k, v]) => `<option value="${k}" ${k === c.type ? "selected" : ""}>${Z(v.zh)}</option>`).join("")}</select></label>
+    <div class="lvrow"><span>${T("entry_at")}</span>${["south","east","north","west"].map(sd => `<label class="chk inl"><input type="radio" name="circ-entry" value="${sd}" ${c.entry === sd ? "checked" : ""} ${on ? "" : "disabled"}> ${Z(SIDE_ZH2[sd])}</label>`).join("")}</div>
+    <div class="lvrow"><label class="chk"><input type="checkbox" id="circ-through" ${c.through ? "checked" : ""} ${on && CIRC_TYPES[c.type].shape === "stem" ? "" : "disabled"}> ${T("through")}</label></div>
+    <div class="lvrow"><span>${T("band_w")}</span><input type="number" step="1" min="3" max="20" id="circ-width" aria-label="骨架带宽（米）" autocomplete="off" value="${Math.round(circWidth())}" ${on ? "" : "disabled"}> m <span class="hint">默认 ${ASSUMPTIONS.circWidth[c.type] || "—"}</span></div>
     ${sk ? `<div class="hint">现在：${sk.label} ${fmt(sk.area)} m²，在 ${sk.space.levelName}，阶段 buffered；门厅功能由它顶替（任务书门厅 ${fmt(FUNCTIONS.find(f => f.id === "lobby").areaM2)} m²）。</div>` : on ? `<div class="hint" style="color:var(--warn)">最低一层没有封闭空间，骨架没画出来。</div>` : ""}`;
   box.querySelector("#circ-type").onchange = e => { c.type = e.target.value; c.width = null; state.memory = {}; regenerate(); };
   box.querySelectorAll("[name=circ-entry]").forEach(r => r.onchange = () => { c.entry = r.value; state.memory = {}; regenerate(); });
@@ -4010,12 +4039,12 @@ function renderCircPanel(){
 function renderLevelPanel(){
   const S = ASSUMPTIONS, lvls = sortedLevels();
   document.getElementById("level-panel").innerHTML = `
-    <h3>标高</h3>
+    <h3>${T("elev")}</h3>
     ${lvls.slice().reverse().map(l => `<div class="lvrow ${l.id===viewLevel().id?"on":""}">
       <span class="lvname" data-view="${l.id}" title="在平面里看这个标高">${l.name}</span>
       <input type="number" step="0.1" value="${l.elevation}" data-elev="${l.id}" aria-label="${l.name} 标高（米）" autocomplete="off"> m
-      ${lvls.length>1?`<button class="link" data-dellv="${l.id}">删除</button>`:""}</div>`).join("")}
-    <div style="margin-top:4px"><button data-addlv>＋ 添加标高（+${S.storeyHeight.value} m）</button></div>
+      ${lvls.length>1?`<button class="link" data-dellv="${l.id}">${T("delete")}</button>`:""}</div>`).join("")}
+    <div style="margin-top:4px"><button data-addlv>${T("add_level")}（+${S.storeyHeight.value} m）</button></div>
     <p class="hint" style="margin:6px 0 0">点标高名称在平面里看这一层。默认层高 ${S.storeyHeight.value} m ${statusBadge(S.storeyHeight.status)}；楼板加结构 ${S.slabThickness.value} m、最小可用净高 ${S.minUsableClear.value} m、连通接触宽度 ${S.minContactWidth.value} m，阶段 3 起参与计算。标高只是参照，不代表那里有楼板。</p>`;
   document.querySelectorAll("[data-view]").forEach(x => x.onclick = () => { state.viewLevel = x.dataset.view; regenerate(); });
   document.querySelectorAll("[data-elev]").forEach(inp => inp.onchange = () => {
@@ -4128,17 +4157,17 @@ function renderSpaceList(){
   const len = list => list.reduce((s, w) => s + (w.a1 - w.a0), 0);
   let html = sps.length ? sps.map(sp => {
     const rooms = L.rooms.filter(r => r.spaceId === sp.id), used = rooms.reduce((s, r) => s + r.area, 0);
-    return `<div class="card"><div class="title"><span class="name">${sp.id}</span><span class="meta">体块 ${sp.masses.join("、")}</span></div>
+    return `<div class="card"><div class="title"><span class="name">${sp.id}</span><span class="meta">${T("sl_mass")} ${sp.masses.join("、")}</span></div>
       <div class="kv">
-        <div>阶段</div><div><span class="swatch" style="background:${STAGE_COLORS[sp.stage]}"></span><b>${sp.stage}</b>（由体块的围合方式推出）${isIndoorSpace(sp) ? "" : "；只放半室外与室外功能"}</div>
-        <div>可用面积</div><div>${fmt(sp.area)} m²${sp.lowArea ? `（另有 ${fmt(sp.lowArea)} m² 净高不足）` : ""}</div>
-        <div>净高</div><div>${sp.clearMin >= 99 ? "露天" : `${sp.clearMin===sp.clearMax ? fmt(sp.clearMin,1) : `${fmt(sp.clearMin,1)}–${fmt(sp.clearMax,1)}`} m`}</div>
-        <div>外墙长度</div><div>南 ${fmt(len(sp.walls.south))} · 北 ${fmt(len(sp.walls.north))} · 东 ${fmt(len(sp.walls.east))} · 西 ${fmt(len(sp.walls.west))} m</div>
-        <div>功能区</div><div>${rooms.length} 个，${fmt(used)} m²（占 ${fmt(used / sp.area * 100)}%）；其余是走廊和未分配空间</div>
-        ${sp.voidArea ? `<div>挑空</div><div>${fmt(sp.voidArea)} m² 被下层的高功能占用，这里不设楼板</div>` : ""}
+        <div>${T("d_stage")}</div><div><span class="swatch" style="background:${STAGE_COLORS[sp.stage]}"></span><b>${sp.stage}</b>${T("sl_from_encl")}${isIndoorSpace(sp) ? "" : T("sl_outdoor_only")}</div>
+        <div>${T("sl_area")}</div><div>${fmt(sp.area)} m²${sp.lowArea ? `（${T("sl_low").replace("{a}", fmt(sp.lowArea))}）` : ""}</div>
+        <div>${T("sl_clear")}</div><div>${sp.clearMin >= 99 ? T("open_air") : `${sp.clearMin===sp.clearMax ? fmt(sp.clearMin,1) : `${fmt(sp.clearMin,1)}–${fmt(sp.clearMax,1)}`} m`}</div>
+        <div>${T("sl_walls")}</div><div>${Z("南")} ${fmt(len(sp.walls.south))} · ${Z("北")} ${fmt(len(sp.walls.north))} · ${Z("东")} ${fmt(len(sp.walls.east))} · ${Z("西")} ${fmt(len(sp.walls.west))} m</div>
+        <div>${T("sl_rooms")}</div><div>${T("sl_rooms_v").replace("{n}", rooms.length).replace("{a}", fmt(used)).replace("{p}", fmt(used / sp.area * 100))}</div>
+        ${sp.voidArea ? `<div>${T("sl_void")}</div><div>${T("sl_void_v").replace("{a}", fmt(sp.voidArea))}</div>` : ""}
       </div></div>`;
-  }).join("") : `<p class="hint">${lv.name} 处没有可用空间。</p>`;
-  if (info && info.contacts.length) html += `<p class="hint">${lv.name} 的体块接触：` + info.contacts.map(c => `${c.a} 与 ${c.b} 接触宽度 ${fmt(c.width,1)} m → ${c.connected ? "连成一个空间" : `不足 ${ASSUMPTIONS.minContactWidth.value} m，不连通`}`).join("；") + `。</p>`;
+  }).join("") : `<p class="hint">${T("sl_none").replace("{l}", lv.name)}</p>`;
+  if (info && info.contacts.length) html += `<p class="hint">${T("sl_contact").replace("{l}", lv.name)}` + info.contacts.map(c => `${c.a}${T("sl_and")}${c.b}${T("sl_cw")}${fmt(c.width,1)} m → ${c.connected ? T("sl_joined") : T("sl_apart").replace("{w}", ASSUMPTIONS.minContactWidth.value)}`).join("；") + `。</p>`;
   if (L.warnings.length) html += `<div class="banner warn">${L.warnings.map(w => `<div>${w}</div>`).join("")}</div>`;
   document.getElementById("space-list").innerHTML = html;
 }
@@ -4146,6 +4175,7 @@ function renderSpaceList(){
 // ---------- 步骤（2026-10-18，用户要求按设计流程分步） ----------
 function setStep(n){
   const prev = state.step;
+  if (window.fx3DCancelAll) window.fx3DCancelAll();   // 2026-10-23：先把三维里所有在跑的动画停掉，再开始这一步自己的
   state.step = n;
   // 2026-10-19（用户要求）：从第 4 步起就“记住”功能的位置：加体块时已有的功能不动，新体块里自动放入还没放下的功能，不用再到第 5 步
   if (n >= 4) state.layoutStarted = true;
@@ -4167,7 +4197,7 @@ function setStep(n){
   // 第 5 ↔ 6 步（2026-10-23，用户要求"趋于无缝"）：两步共用一个视窗框。第 5 步的工具条滑走收起、视窗顶上去；相机同时起飞；
   // 飞到三分之一处换页（视窗位置不变）并做渐变（旧房间和周边淡出、新的升起）+ 晕染；回第 5 步反过来：先飞，中途换页，工具条滑回来
   const flyShow = (n === 6 && prev === 5) || (n === 5 && prev === 6);
-  const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = reducedMotion();
   if (n !== 5 && state.focusRoom && window.exitRoomFocus) window.exitRoomFocus(true, flyShow, flyShow);   // 离开第 5 步就退出"看决定"（飞行时相机留在原地、场景先不重画）
   if (n !== 5 && state.planMode && window.exitPlanMode) window.exitPlanMode(true, flyShow, flyShow);   // 离开第 5 步就回到轴测
   const after3D = () => {
@@ -4223,12 +4253,12 @@ function renderProgramSelect(){
   const row = f => `<label class="pr ${state.excluded[f.id] ? "off" : ""}"><input type="checkbox" data-incl="${f.id}" ${state.excluded[f.id] ? "" : "checked"}>
     <span><span class="swatch" style="background:${STAGE_COLORS[f.minStage.winter]}"></span><b>${f.name}</b>${f.count > 1 ? ` × ${f.count}` : ""}
       <span class="hint">${f.main ? f.main.map(x => x.name).join("、") : f.areaSource}</span>
-      ${f.required && state.excluded[f.id] ? `<span class="badge tocheck">温哥华战略要求每个社区中心都有</span>` : ""}</span>
+      ${f.required && state.excluded[f.id] ? `<span class="badge tocheck">${T("req_badge")}</span>` : ""}</span>
     <span class="meta">${fmt(effectiveArea(f) * f.count)} m²</span></label>`;
   const sel = FUNCTIONS.filter(isActive);
   document.getElementById("program-select").innerHTML = PROGRAM_GROUPS.map(g => `<div class="prog"><h3>${state.lang === "en" && g.en ? g.en : g.zh}</h3>${g.ids.map(id => row(byId[id])).join("")}</div>`).join("") +
-    `<div class="prog dev"><h3>以后加入（工具还不能排布，只列出 Marpole 的面积）</h3>${PROGRAM_LATER.map(x => `<div class="pr off"><input type="checkbox" disabled><span><b>${x.name}</b> <span class="hint">${x.note}</span></span><span class="meta">${fmt(x.m2)} m²</span></div>`).join("")}</div>
-    <p><b>已选 ${sel.length} 个功能</b>，净面积合计 ${fmt(sel.reduce((t, f) => t + effectiveArea(f) * f.count, 0))} m²（下一步可以改面积）。</p>`;
+    `<div class="prog dev"><h3>${T("later_h")}</h3>${PROGRAM_LATER.map(x => `<div class="pr off"><input type="checkbox" disabled><span><b>${Z(x.name)}</b> <span class="hint">${Z(x.note)}</span></span><span class="meta">${fmt(x.m2)} m²</span></div>`).join("")}</div>
+    <p><b>${T("sel_count").replace("{n}", sel.length)}</b>${T("sel_area").replace("{a}", fmt(sel.reduce((t, f) => t + effectiveArea(f) * f.count, 0)))}</p>`;
   document.querySelectorAll("[data-incl]").forEach(cb => cb.onchange = () => { if (cb.checked) delete state.excluded[cb.dataset.incl]; else state.excluded[cb.dataset.incl] = true; regenerate(); });
   renderProgramCheck();
 }
@@ -4236,15 +4266,15 @@ function renderProgramSelect(){
 function renderProgramCheck(){
   const box = document.getElementById("program-check"); if (!box) return;
   const { tiers, support } = programCheck();
-  const mark = st => st === "ok" ? `<span class="badge verified">已有</span>` : st === "missing" ? `<span class="badge tocheck">漏了</span>` : st === "later" ? `<span class="badge assumed">以后</span>` : `<span class="badge assumed">由你定</span>`;
+  const mark = st => st === "ok" ? `<span class="badge verified">${T("pc_ok")}</span>` : st === "missing" ? `<span class="badge tocheck">${T("pc_missing")}</span>` : st === "later" ? `<span class="badge assumed">${T("pc_later")}</span>` : `<span class="badge assumed">${T("pc_yours")}</span>`;
   const missing = tiers.reduce((n, t) => n + t.items.filter(i => i.state === "missing").length, 0), missS = support.filter(s => s.state === "missing").length;
-  const line = it => `<div class="pr ${it.state === "ok" ? "pc-ok" : "off"}"><span>${mark(it.state)}</span><span><b>${it.zh}</b> <span class="hint">${it.by || ""}</span></span>
-    <span class="meta">${it.state === "missing" && it.addable && it.addable.length ? it.addable.map(id => `<button class="link" data-addfn="${id}">勾上 ${FUNCTIONS.find(f => f.id === id).name}</button>`).join("") : ""}</span></div>`;
-  box.innerHTML = `<div class="prog" style="margin-top:12px"><h3>查漏：对照温哥华战略和 14 个案例，${missing + missS ? `漏了 ${missing} 项功能、${missS} 项支持空间` : "没有发现漏项"}</h3>
-    <p class="hint" style="padding:6px 10px 0">依据：温哥华《社区中心战略》2022 目标 9、10；14 个读过平面的社区中心（<code>01_Research/Program_Consistency.md</code>）；支持空间按 Marpole 2021 的房间表。锚（泳池、冰场）和社区专属房间只提示，由你决定。</p>
-    ${tiers.map(t => `<div class="pr" style="display:block;background:#f3f7fa;font-weight:600">${t.id} · ${t.zh}</div>${t.items.map(line).join("")}`).join("")}
-    <div class="pr" style="display:block;background:#f3f7fa;font-weight:600">支持空间（最常被忘；数字借 Marpole 2021，ft²）</div>
-    ${support.map(s => `<div class="pr ${s.state === "ok" ? "pc-ok" : "off"}"><span>${mark(s.state)}</span><span><b>${s.zh}</b> <span class="hint">${s.state === "ok" ? `已并入「${s.by}」` : s.state === "later" ? "工具还不能排布" : `任务书未列；可按 Marpole 借用约 ${fmt(s.ft2)} ft²（假设）`}</span></span><span class="meta">${fmt(s.ft2)} ft²</span></div>`).join("")}
+  const line = it => `<div class="pr ${it.state === "ok" ? "pc-ok" : "off"}"><span>${mark(it.state)}</span><span><b>${Z(it.zh)}</b> <span class="hint">${it.by || ""}</span></span>
+    <span class="meta">${it.state === "missing" && it.addable && it.addable.length ? it.addable.map(id => `<button class="link" data-addfn="${id}">${T("pc_tick")} ${FUNCTIONS.find(f => f.id === id).name}</button>`).join("") : ""}</span></div>`;
+  box.innerHTML = `<div class="prog" style="margin-top:12px"><h3>${T("pc_title")}${missing + missS ? T("pc_missing_n").replace("{f}", missing).replace("{s}", missS) : T("pc_none")}</h3>
+    <p class="hint" style="padding:6px 10px 0">${T("pc_basis")}</p>
+    ${tiers.map(t => `<div class="pr" style="display:block;background:var(--surface-2);font-weight:600">${t.id} · ${Z(t.zh)}</div>${t.items.map(line).join("")}`).join("")}
+    <div class="pr" style="display:block;background:var(--surface-2);font-weight:600">${T("pc_support")}</div>
+    ${support.map(s => `<div class="pr ${s.state === "ok" ? "pc-ok" : "off"}"><span>${mark(s.state)}</span><span><b>${Z(s.zh)}</b> <span class="hint">${s.state === "ok" ? `${T("pc_merged")}「${s.by}」` : s.state === "later" ? T("pc_later_tool") : T("pc_borrow").replace("{n}", fmt(s.ft2))}</span></span><span class="meta">${fmt(s.ft2)} ft²</span></div>`).join("")}
   </div>`;
   box.querySelectorAll("[data-addfn]").forEach(b => b.onclick = () => { delete state.excluded[b.dataset.addfn]; regenerate(); });
 }
@@ -4260,8 +4290,8 @@ function renderProgramAreas(){
       <td class="num"><input type="number" min="1" step="0.1" value="${+a.toFixed(1)}" data-area="${f.id}" aria-label="${f.name} 单间净面积（平方米）" autocomplete="off"> ${statusBadge(areaStatusOf(f))}</td>
       <td class="num">${fmt(a * f.count)}</td>
       <td class="num"><input type="number" min="0" step="0.01" value="${f.minClearHeight ? f.minClearHeight.value : ""}" placeholder="无要求" data-clear="${f.id}" aria-label="${f.name} 最小净高（米）" autocomplete="off"> ${f.minClearHeight ? statusBadge(f.minClearHeight.status) : ""}</td>
-      <td>${f.floorReq ? f.floorReq.zh : "—"}${f.minClearHeight && f.minClearHeight.value > storeyClear + EPS ? `<div class="hint" style="color:var(--warn)">一层净高 ${fmt(storeyClear,1)} m 不够，需要挑空或加高</div>` : ""}</td>
-      <td>${changed ? `<button class="link" data-reset="${f.id}">恢复默认</button>` : ""}</td></tr>`;
+      <td>${f.floorReq ? Z(f.floorReq.zh) : "—"}${f.minClearHeight && f.minClearHeight.value > storeyClear + EPS ? `<div class="hint" style="color:var(--warn)">${T("clear_short").replace("{h}", fmt(storeyClear,1))}</div>` : ""}</td>
+      <td>${changed ? `<button class="link" data-reset="${f.id}">${T("reset_default")}</button>` : ""}</td></tr>`;
   };
   const act = FUNCTIONS.filter(f => isActive(f) && !f.outdoor);   // 半室外功能不算建筑面积（2026-10-19）
   const outAct = FUNCTIONS.filter(f => isActive(f) && f.outdoor), outNet = outAct.reduce((t, f) => t + effectiveArea(f) * f.count, 0);
@@ -4271,9 +4301,9 @@ function renderProgramAreas(){
   document.getElementById("program-areas").innerHTML = `<table class="areas">
     <tr><th>${T("th_fn")}</th><th>${T("th_count")}</th><th>${T("th_each")} m²</th><th>${T("th_total")} m²</th><th>${T("th_clear")} m</th><th>${T("th_floor")}</th><th></th></tr>
     ${PROGRAM_GROUPS.map(g => { const fs = g.ids.map(id => byId[id]).filter(isActive); return fs.length ? `<tr class="grp"><td colspan="7">${state.lang === "en" && g.en ? g.en : g.zh}</td></tr>` + fs.map(tr).join("") : ""; }).join("")}
-    <tr class="tot"><td colspan="3">室内功能净面积合计${outAct.length ? `（另有半室外与室外 ${fmt(outNet)} m²，不算建筑面积）` : ""}</td><td class="num">${fmt(net)}</td><td colspan="3"></td></tr>
-    <tr class="tot"><td colspan="3">× 组团系数 1.1–1.3（组团内走廊、内墙）</td><td class="num">${fmt(gg)}</td><td colspan="3"></td></tr>
-    <tr class="tot"><td colspan="3">× 建筑系数 ${ASSUMPTIONS.buildingFactor.value} = 总建筑面积（Marpole 2021 的系数）</td><td class="num">${fmt(gg * ASSUMPTIONS.buildingFactor.value)}</td><td colspan="3"></td></tr>
+    <tr class="tot"><td colspan="3">${T("tot_net")}${outAct.length ? T("tot_out").replace("{a}", fmt(outNet)) : ""}</td><td class="num">${fmt(net)}</td><td colspan="3"></td></tr>
+    <tr class="tot"><td colspan="3">${T("tot_group")}</td><td class="num">${fmt(gg)}</td><td colspan="3"></td></tr>
+    <tr class="tot"><td colspan="3">${T("tot_bldg").replace("{f}", ASSUMPTIONS.buildingFactor.value)}</td><td class="num">${fmt(gg * ASSUMPTIONS.buildingFactor.value)}</td><td colspan="3"></td></tr>
   </table>
   <div class="card dev" style="margin-top:10px"><b>给体块推演的提示</b><ul style="margin:4px 0;padding-left:18px">
     <li>可用楼面至少要有 <b>${fmt(net)} m²</b>（净面积）才放得下所有功能；按 Marpole 的系数，整栋建筑约 <b>${fmt(gg * ASSUMPTIONS.buildingFactor.value)} m²</b>。${skeletonOn() ? `流线骨架（${state.circ.type}，宽约 ${Math.round(circWidth())} m）和核（+${ASSUMPTIONS.coreExtra.value} m²）也占首层楼面，首层要比“必须首层的功能”再多留几百平方米。` : ""}</li>
@@ -4435,7 +4465,7 @@ function setMapView(map, x, y, w, h){
   const target = `${x} ${y} ${w} ${h}`, cur = map.getAttribute("viewBox");
   if (map.dataset.viewTarget === target) return;   // 已经在（或正在去）这个视野
   map.dataset.viewTarget = target;
-  const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = reducedMotion();
   if (!cur || !ANIME || reduced || !map.isConnected || document.getElementById("step3").offsetParent === null){ if (mapViewAnim){ mapViewAnim.cancel(); mapViewAnim = null; } map.setAttribute("viewBox", target); return; }
   const [cx, cy, cw, ch] = cur.split(/\s+/).map(Number);
   const c0 = [cx + cw / 2, cy + ch / 2], c1 = [x + w / 2, y + h / 2], T = { t:0 };
@@ -4557,8 +4587,8 @@ function massFitNotes(){
 }
 function massNotesHTML(notes){
   if (!notes.length) return "";
-  return `<div class="check bad" style="margin-bottom:6px"><b>体块放不下（工具不改体块，请调整）：</b><ul style="margin:4px 0 0;padding-left:18px">${notes.map(n =>
-    `<li><b>${n.name}</b>${n.mass ? `（原来在体块 ${n.mass}${n.level ? `、${n.level}` : ""}）` : ""}：${n.why.join("；")}</li>`).join("")}</ul></div>`;
+  return `<div class="check bad" style="margin-bottom:6px"><b>${T("mn_title")}</b><ul style="margin:4px 0 0;padding-left:18px">${notes.map(n =>
+    `<li><b>${n.name}</b>${n.mass ? `（${T("mn_was")} ${n.mass}${n.level ? `、${n.level}` : ""}）` : ""}：${n.why.join("；")}</li>`).join("")}</ul></div>`;
 }
 function renderMassingCheck(){
   const L = state.layout, act = FUNCTIONS.filter(isActive), lv = sortedLevels();
@@ -4569,12 +4599,12 @@ function renderMassingCheck(){
   if (state.uiMode === "user"){
     const needAll = L.net + L.skeletonArea + L.coreExtra, okAll = L.usableStart >= needAll - EPS, okG = ground >= groundNet - EPS;
     const okH = tall.every(f => maxReachableClear(f, L.spaces).best >= f.minClearHeight.value - EPS);
-    const probs = [!okAll ? `楼面还差 ${fmt(needAll - L.usableStart)} m²` : "", !okG ? `首层还差 ${fmt(groundNet - ground)} m²` : "", !okH ? `${tall.map(f => f.name).join("、")}的净高不够` : ""].filter(Boolean);
+    const probs = [!okAll ? `${T("short_floor")} ${fmt(needAll - L.usableStart)} m²` : "", !okG ? `${T("short_ground")} ${fmt(groundNet - ground)} m²` : "", !okH ? `${tall.map(f => f.name).join("、")}${T("clear_not_enough")}` : ""].filter(Boolean);
     const notesU = massFitNotes();
-    document.getElementById("massing-check").innerHTML = `<h3>体块够不够用</h3>${massNotesHTML(notesU)}${notesU.length && !probs.length ? "" : `<div class="check ${probs.length ? "bad" : "ok"}">${probs.length ? probs.join("；") : "够了：功能都放得下"}</div>`}${state.site.applied ? `<div style="font-size:12px;margin-top:4px">场地：${state.site.applied.label}</div>` : ""}`;
+    document.getElementById("massing-check").innerHTML = `<h3>${T("mc_h")}</h3>${massNotesHTML(notesU)}${notesU.length && !probs.length ? "" : `<div class="check ${probs.length ? "bad" : "ok"}">${probs.length ? probs.join("；") : T("mc_ok")}</div>`}${state.site.applied ? `<div style="font-size:12px;margin-top:4px">场地：${state.site.applied.label}</div>` : ""}`;
     return;
   }
-  document.getElementById("massing-check").innerHTML = `<h3>体块够不够用（实时）</h3>${massNotesHTML(massFitNotes())}
+  document.getElementById("massing-check").innerHTML = `<h3>${T("mc_h")}${T("live")}</h3>${massNotesHTML(massFitNotes())}
     <p class="hint" style="margin:0 0 4px">场地：${state.site.applied ? `<b>${state.site.applied.label}</b>（${state.site.applied.area}，${fmt(state.site.applied.m2)} m²，绿色虚线）<br>${contextLine()}` : `${state.site.area ? `${state.site.area}，` : ""}还没选场地，用 ${SITE.w} × ${SITE.d} m 的示意场地（第 3 步可选）`}</p>
     <div class="kv">
       <div>可用楼面（所有标高）</div><div>${ok(L.usableStart >= L.net + L.skeletonArea + L.coreExtra - EPS)} ${fmt(L.usableStart)} m² / 需要净面积 ${fmt(L.net)}${L.skeletonArea ? ` + 骨架 ${fmt(L.skeletonArea)} + 核 ${fmt(L.coreExtra)}` : ""} = ${fmt(L.net + L.skeletonArea + L.coreExtra)} m²</div>
@@ -4588,6 +4618,20 @@ function renderMassingCheck(){
 }
 
 // 使用者 / 开发者模式（2026-10-22，用户决定：默认使用者；开发者模式不变）
+// 深色模式开关（2026-10-23）：主题存在浏览器里（ccTool.theme）；首屏由 <head> 里的小脚本先定下来，这里只负责切换和按钮
+function setTheme(t){
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem("ccTool.theme", t); } catch (e) {}
+  renderThemeToggle();
+  if (window.applyTheme3D) window.applyTheme3D();   // 三维的底色、地面、边线一起换
+}
+function renderThemeToggle(){
+  const b = document.getElementById("theme-toggle"); if (!b) return;
+  const dark = document.documentElement.dataset.theme === "dark";
+  b.innerHTML = dark ? `${T("theme_light")} · <b>${T("theme_dark")}</b>` : `<b>${T("theme_light")}</b> · ${T("theme_dark")}`;
+  b.setAttribute("aria-pressed", dark ? "true" : "false");
+  b.onclick = () => setTheme(dark ? "light" : "dark");
+}
 function setUiMode(m){
   state.uiMode = m;
   try { localStorage.setItem("ccTool.uiMode", m); } catch (e) {}
@@ -4619,6 +4663,34 @@ document.querySelectorAll(".drawer").forEach(side => {
    中文是页面本身写的，表里只放英文；页面里由脚本生成的文字（清单、面板、说明）还是中文，以后逐步接进来。 */
 const I18N_EN = {
   title:"form follows program",
+  // 2026-10-23 补翻译：第 1–4 步的面板、侧栏、说明（脚本生成的用 T()，数据表里的中文用 Z()）
+  hdr_sub:"ARCH 540 Assignment 2 · rules in <code>_shared/Rules/</code> · north up",
+  s1_hint:"Tick the functions this community centre should have. “Must-have” comes from Vancouver’s Community Centre Strategy (2022), goal 9: every centre needs them. “Basic support” is what the building needs to run (lobby, admin, changing, services; all in the Marpole brief, the grouping is my judgement). “Optional” are rooms Marpole has that can be added or dropped. Areas and clear heights are confirmed in the next step.",
+  s2_hint:"Defaults come from the Marpole community centre brief (2021): each room area already includes its storage and support; a minimum clear height is given only where the brief states one. Edit directly; edited values are marked “user set” and can be reset at any time. The totals below show roughly how much floor area the next step needs.",
+  s3_hint:"Click a neighbourhood on the map (Vancouver’s 22 local areas), then a park or a few parcels, and press “Use this site”. The site boundary carries into massing (green dashed line); parts of a block outside it do not count as floor area. Entering a neighbourhood queries Vancouver Open Data online. You can also continue without a site, on the 90 × 52 m sample site.",
+  lbl_basis:"Climate basis", opt_basis_sun:"Facade sun (solar radiation)", opt_basis_bands:"South / middle / north bands (earlier assumption)", lbl_period:"Period",
+  lbl_south:"South band", lbl_middle:"Middle", lbl_north:"North band", bands_hint:"The three bands are only a scoring background, not containers; default 35 / 30 / 35 (assumed)",
+  plan_legend:"The plan shows the section at the chosen level: only blocks present at that level are drawn (base ≤ level &lt; top). Colour is the room’s stage (cool and light to warm and solid: exposed → controlled); blank is corridor and unassigned space. Solid ink line = external wall; dark blue dashed = a problem or suggestion (original position of a room that needs adjusting, suggested position, unmet adjacency, blocks touching with less than 5 m of contact); grey hatch = clear height under 3.0 m; pale dashed = block outline (only with several blocks) and voids. Small square at a room’s top left = locked; “void” after the area means the room takes the level above too. Blocks cannot be changed in the plan (go back to step 4). <b>Drag a room</b> to move it (snaps to 1 m, stays on this level; dark blue while dragging = outside the usable floor); a dragged room locks itself, and unlocked rooms it covers find a new place. Click a room to draw only its own unmet adjacencies; the switch above draws all of them.",
+  v3_hint:"3D view: left-drag to orbit, right-drag to pan, wheel to zoom. <b>Single-block edit:</b> double-click a block: it turns solid, the others and the rooms fade (context stays visible but cannot be picked and will not block face selection); double-click empty space or press Esc to exit. <b>White model:</b> top-right button, blocks only. <b>Context:</b> with a real site chosen, the top-right button shows or hides buildings within about 200 m (2009 data, treated as flat; light orange = existing buildings on the site). <b>Push/pull:</b> click a face to select it (turns orange) and drag the orange arrow along its normal; facades snap to 1 m, top and bottom to 0.1 m. While dragging only the block and the numbers update; on release the spaces are re-read and the rooms re-laid (user decision). Click empty space to deselect. Blue arrow points north; the orange frame is the level the plan shows. Rooms are laid out live as blocks change; for blocks only, press “White model”.",
+  req_badge:"Vancouver’s strategy requires it in every centre", later_h:"Add later (the tool cannot lay these out yet; Marpole areas listed for reference)",
+  sel_count:"{n} functions selected", sel_area:", net area {a} m² in total (areas can be changed in the next step).",
+  pc_ok:"have", pc_missing:"missing", pc_later:"later", pc_yours:"your call", pc_tick:"Tick", pc_title:"Gap check against the Vancouver strategy and 14 precedents: ", pc_missing_n:"{f} functions and {s} support spaces missing", pc_none:"nothing missing",
+  pc_basis:"Basis: Vancouver Community Centre Strategy 2022, goals 9 and 10; 14 community centres whose plans were read (<code>01_Research/Program_Consistency.md</code>); support spaces from the Marpole 2021 room list. Anchors (pool, rink) and neighbourhood-specific rooms are only flagged; your call.",
+  pc_support:"Support spaces (most often forgotten; figures borrowed from Marpole 2021, ft²)", pc_merged:"included in ", pc_later_tool:"the tool cannot lay this out yet", pc_borrow:"not in the brief; borrow about {n} ft² from Marpole (assumed)",
+  clear_short:"storey clear height {h} m is not enough: needs a void or a taller storey", reset_default:"Reset",
+  tot_net:"Indoor net area in total", tot_out:" (plus {a} m² semi-outdoor and outdoor, not counted as building area)", tot_group:"× cluster factor 1.1–1.3 (corridors and walls inside clusters)", tot_bldg:"× building factor {f} = gross floor area (Marpole 2021 factors)",
+  m_x:"West edge X", m_w:"Width (E–W)", m_base:"Base level", m_y:"South edge Y", m_d:"Depth (N–S)", m_top:"Top level", roof:"Roof", walls:"Walls:",
+  encl_exposed:"no roof: no sky shelter at all", encl_walls:" (walls: {list})", encl_tempered:"roof and four walls: an enclosed block; the rooms inside are tempered or controlled, each by “just enough”", encl_buffered:"roof and {n} walls ({list}): sky shelter plus shelter from the surroundings", encl_protected_one:"roof, only one wall ({list}): sky shelter", encl_protected_open:"roof, open on all sides: sky shelter",
+  add_level:"＋ Add level", circ_h:"Circulation skeleton", type:"Type", entry_at:"Entrance on", through:"Through to the far side (second entrance)", band_w:"Band width",
+  mn_title:"Does not fit (the tool does not change blocks; please adjust):", mn_was:"was in block", short_floor:"floor area short by", short_ground:"ground floor short by", clear_not_enough:": clear height not enough", mc_h:"Do the blocks fit?", mc_ok:"Yes: every function fits", live:" (live)",
+  as_usable:"Indoor usable space", as_spaces:"spaces, enclosed blocks", as_net:"Indoor net area", as_gross:"gross", as_outdoor:"Semi-outdoor and outdoor", as_space:"space", as_fn:"functions", none:"none", as_bad:"Not enough area: net area exceeds usable space by {a} m².", as_warn:"Net area fits; by the Marpole factors the gross area is still {a} m² short, so corridors will be tight.", as_ok:"Area is enough.", as_adj:"Adjacency (Marpole)", as_must:"must", as_other:"others", as_stage:"Stage areas",
+  sl_mass:"block", sl_from_encl:"(from the block’s enclosure)", sl_outdoor_only:"; semi-outdoor and outdoor functions only", sl_area:"Usable area", sl_low:"plus {a} m² below the clear height", sl_clear:"Clear height", open_air:"open air", sl_walls:"External walls", sl_rooms:"Rooms", sl_rooms_v:"{n}, {a} m² ({p}%); the rest is corridor and unassigned", sl_void:"Void", sl_void_v:"{a} m² taken by a tall room below; no slab here", sl_none:"No usable space at {l}.", sl_contact:"Block contacts at {l}: ", sl_and:" and ", sl_cw:": contact width ", sl_joined:"joined into one space", sl_apart:"under {w} m, not connected",
+  own_marker:"This function’s own issue: ", u1:"Not enough total area: usable space in enclosed blocks at all levels {a} m², indoor net area of all functions {b} m², short by {c} m². ",
+  free_open:"Open space of a suitable stage", free_all:"All usable space", free_left:" has {f} m² left; this function needs {n} m², short by {d} m²",
+  outdoor_why:"This is a semi-outdoor / outdoor function; its winter minimum is {stage}, so it can only go into a non-enclosed block whose stage is at least {stage}. Current space stages: {stages}. Add a block in step 4 and set roof and walls under “Enclosure” ({encl})", encl_b:"buffered = roof and at least two walls", encl_p:"protected = roof and fewer than two walls", encl_e:"exposed = no roof",
+  clear_why:"This function needs a clear height of at least {h} m ({status}, {note}); {floor} usable space reaches at most {best} m{where}, {need} m short. Raise the block top by at least {need} m so it spans two levels as a void", ground_:"ground-floor", all_:"all",
+  ctrl_text:"{k} cluster(s) · external wall {e} m ({p}% of the perimeter, {c} m facing away from the sun)",
+  touching:"touching", wind_word:" wind", push_tip:"Push/pull", sec_tip:"Section at", sec_ew:"E–W, cut along y", sec_ns:"N–S, cut along x",
   step1:"1 Choose functions", step2:"2 Areas and heights", step3:"3 Choose site", step4:"4 Massing", step5:"5 Confirm massing and functions", step6:"6 Show",
   s1_title:"Step 1 · Choose the functions to generate", s2_title:"Step 2 · Confirm areas and clear heights", s3_title:"Step 3 · Choose a site", s6_title:"Step 6 · Show",
   prev:"← Back", next2:"Next: confirm areas and heights →", next3:"Next: choose site →", next4:"Next: massing →", next5:"Next: lay out functions →",
@@ -4629,7 +4701,7 @@ const I18N_EN = {
   plan_level:"Plan level", chk_adj:"Draw every unmet adjacency", chk_sun:"Facade sun bands", how_plan:"How to read and use the plan",
   h_section:"Section", h_spaces:"Spaces (this level)", right_hint:"Click any room on the plan and this panel explains why it is there.",
   add_mass:"＋ Add block", ctx:"Context", sun:"Sun", wind:"Wind", white:"White model", exit_iso:"Exit single-block edit (Esc)",
-  tab_mass:"Edit block", mode_user:"User", mode_dev:"Developer",
+  tab_mass:"Edit block", mode_user:"User", mode_dev:"Developer", theme_light:"Light", theme_dark:"Dark",
   // 脚本生成的文字（第二批，2026-10-22）
   mo_label:"Options", mo_all:"Compare", mo_all_title:"Compare the four options", mo_changed:"(edited)", mo_pending:" (computing)", mo_ready:" (ready)",
   mo_ask:"Blocks were edited; switching discards that.", mo_switch:"Switch to", cancel:"Cancel", gen_opts:"Generate options", gen_title:"Generate four massing options from the functions (about 15 s)",
@@ -4648,7 +4720,28 @@ const I18N_EN = {
   d_hint:"Hover a row to light it up in the 3D view. All numbers come from the layout scoring.",
   tab_list:"Function list", btn_plan:"Plan", btn_axo:"Axo", fig_toggle:"People", lv_all:"Overall", levels_unit:"levels", gen_wait:"Generating option", chain_rules:"Rules", chain_encl:"Enclosure", chain_assign:"Assigned", manual:"set by you", just_enough:"just enough = minimum", r_none:"no rule", chain_more:"Rule texts and sources"
 };
-const I18N_ZH_EXTRA = { mo_label:"体块方案", mo_all:"对比", mo_all_title:"打开四个方案的对比", mo_changed:"（已改动）", mo_pending:"（后台计算中）", mo_ready:"（已算好）",
+const I18N_ZH_EXTRA = {
+  // 2026-10-23 补翻译的中文原文（脚本生成的那些）
+  req_badge:"温哥华战略要求每个社区中心都有", later_h:"以后加入（工具还不能排布，只列出 Marpole 的面积）",
+  sel_count:"已选 {n} 个功能", sel_area:"，净面积合计 {a} m²（下一步可以改面积）。",
+  pc_ok:"已有", pc_missing:"漏了", pc_later:"以后", pc_yours:"由你定", pc_tick:"勾上", pc_title:"查漏：对照温哥华战略和 14 个案例，", pc_missing_n:"漏了 {f} 项功能、{s} 项支持空间", pc_none:"没有发现漏项",
+  pc_basis:"依据：温哥华《社区中心战略》2022 目标 9、10；14 个读过平面的社区中心（<code>01_Research/Program_Consistency.md</code>）；支持空间按 Marpole 2021 的房间表。锚（泳池、冰场）和社区专属房间只提示，由你决定。",
+  pc_support:"支持空间（最常被忘；数字借 Marpole 2021，ft²）", pc_merged:"已并入", pc_later_tool:"工具还不能排布", pc_borrow:"任务书未列；可按 Marpole 借用约 {n} ft²（假设）",
+  clear_short:"一层净高 {h} m 不够，需要挑空或加高", reset_default:"恢复默认",
+  tot_net:"室内功能净面积合计", tot_out:"（另有半室外与室外 {a} m²，不算建筑面积）", tot_group:"× 组团系数 1.1–1.3（组团内走廊、内墙）", tot_bldg:"× 建筑系数 {f} = 总建筑面积（Marpole 2021 的系数）",
+  m_x:"西边 X", m_w:"宽（东西）", m_base:"底标高", m_y:"南边 Y", m_d:"深（南北）", m_top:"顶标高", roof:"屋顶", walls:"墙：",
+  encl_exposed:"没有屋顶：完全没有天空遮挡", encl_walls:"（有墙：{list}）", encl_tempered:"有屋顶、四面有墙：封闭体块；里面的功能区按“刚好够”各自是 tempered 或 controlled", encl_buffered:"有屋顶，{n} 面有墙（{list}）：有天空遮挡，且有其他环境遮挡", encl_protected_one:"有屋顶，只有 {list} 一面有墙：有天空遮挡", encl_protected_open:"有屋顶，四面开敞：有天空遮挡",
+  add_level:"＋ 添加标高", circ_h:"流线骨架", type:"类型", entry_at:"入口在", through:"穿越到对面（第二个入口）", band_w:"带宽",
+  mn_title:"体块放不下（工具不改体块，请调整）：", mn_was:"原来在体块", short_floor:"楼面还差", short_ground:"首层还差", clear_not_enough:"的净高不够", mc_h:"体块够不够用", mc_ok:"够了：功能都放得下", live:"（实时）",
+  as_usable:"室内可用空间", as_spaces:"个空间，封闭体块", as_net:"室内功能净面积", as_gross:"放大后", as_outdoor:"半室外与室外", as_space:"空间", as_fn:"功能", none:"无", as_bad:"面积不够：功能净面积比可用空间多 {a} m²。", as_warn:"净面积放得下；按 Marpole 的系数，总建筑面积还差 {a} m²，走廊会偏紧。", as_ok:"面积够。", as_adj:"邻接（Marpole）", as_must:"必须相邻", as_other:"其他", as_stage:"阶段面积",
+  sl_mass:"体块", sl_from_encl:"（由体块的围合方式推出）", sl_outdoor_only:"；只放半室外与室外功能", sl_area:"可用面积", sl_low:"另有 {a} m² 净高不足", sl_clear:"净高", open_air:"露天", sl_walls:"外墙长度", sl_rooms:"功能区", sl_rooms_v:"{n} 个，{a} m²（占 {p}%）；其余是走廊和未分配空间", sl_void:"挑空", sl_void_v:"{a} m² 被下层的高功能占用，这里不设楼板", sl_none:"{l} 处没有可用空间。", sl_contact:"{l} 的体块接触：", sl_and:" 与 ", sl_cw:" 接触宽度 ", sl_joined:"连成一个空间", sl_apart:"不足 {w} m，不连通",
+  own_marker:"这个功能自己的问题：", u1:"总面积不够：所有标高封闭体块里的可用空间合计 {a} m²，所有室内功能净面积合计 {b} m²，缺 {c} m²。",
+  free_open:"合适阶段的非封闭空间", free_all:"所有可用空间", free_left:"剩余 {f} m²，这个功能需要 {n} m²，缺 {d} m²",
+  outdoor_why:"这是半室外 / 室外功能，冬季最低 {stage}，只能放进非封闭体块里、阶段不低于 {stage} 的空间。现在的空间阶段：{stages}。可以在第 4 步加一个体块，在属性栏的“围合方式”里调屋顶和墙（{encl}）", encl_b:"buffered = 有屋顶、至少两面墙", encl_p:"protected = 有屋顶、少于两面墙", encl_e:"exposed = 没有屋顶",
+  clear_why:"这个功能要求净高至少 {h} m（{status}，{note}）；{floor}可用空间往上最多只能做到 {best} m{where}，差 {need} m。可以把体块顶面拉高至少 {need} m，让它跨两个标高形成挑空", ground_:"首层", all_:"所有",
+  ctrl_text:"{k} 团 · 外墙 {e} m（占周长 {p}%，背阳 {c} m）",
+  touching:"贴着", wind_word:"风", push_tip:"推拉", sec_tip:"剖面位置", sec_ew:"东西向，沿 y 切", sec_ns:"南北向，沿 x 切",
+  mo_label:"体块方案", mo_all:"对比", mo_all_title:"打开四个方案的对比", mo_changed:"（已改动）", mo_pending:"（后台计算中）", mo_ready:"（已算好）",
   mo_ask:"体块有改动，切换会丢掉", mo_switch:"切到", cancel:"取消", gen_opts:"生成体块方案", gen_title:"按功能生成四个体块起点（约 15 秒）",
   opt_A:"向阳长条", opt_B:"穿越紧凑", opt_C:"公园一侧敞开", opt_D:"单层铺开", tighten:"按功能收紧体块", delete:"删除", enclosure:"围合方式",
   core_upper:"核（上层）：楼梯、电梯、卫生间", core_label:"核：楼梯、电梯、卫生间", core_short:"核", lobby_bar:"门厅带", street:"街道", lobby:"门厅", skeleton_suffix:"（骨架）",
@@ -4661,18 +4754,55 @@ const I18N_ZH_EXTRA = { mo_label:"体块方案", mo_all:"对比", mo_all_title:"
   g_same:"同阶段", g_step:"差一级", g_jump:"跳两级以上", g_street:"门厅 / 街道", g_ext:"外墙",
   d_hint:"滑到某一行，三维里只亮那一类。数字都来自排布时的打分。",
   tab_list:"功能清单", btn_plan:"平面", btn_axo:"轴测", fig_toggle:"小人", lv_all:"全部", levels_unit:"层", gen_wait:"正在生成方案", chain_rules:"规则", chain_encl:"围合", chain_assign:"指派", manual:"手动指派", just_enough:"刚好够 = 最低阶段", r_none:"没有规则", chain_more:"规则原文和来源" };
-const I18N_ZH = { mode_user:"使用者", mode_dev:"开发者", ...I18N_ZH_EXTRA };
+const I18N_ZH = { mode_user:"使用者", mode_dev:"开发者", theme_light:"浅色", theme_dark:"深色", ...I18N_ZH_EXTRA };
+// 数据表里的中文 → 英文（2026-10-23）：楼层要求、方位、查漏清单、流线类型、时段名等；Z() 在英文界面时查表，查不到就原样返回
+const ZH_EN = {
+  // 规则原文、状态标签、阶段备注（决策卡"规则原文和来源"，2026-10-23）
+  "怕雨的功能，至少 protected":"Rain-sensitive functions: at least protected",
+  "怕风的功能，至少 buffered":"Wind-sensitive functions: at least buffered",
+  "久坐的功能，冬季至少 controlled；夏季至少 tempered":"Sedentary functions: at least controlled in winter; at least tempered in summer",
+  "剧烈活动能耐受较凉，tempered 就够":"Vigorous activity tolerates cooler conditions: tempered is enough",
+  "卫生、安全、精密要求的功能，controlled":"Functions with hygiene, safety or precision requirements: controlled",
+  "弱势使用者（老人、儿童）在同类功能基础上提高一级，上限 controlled":"Vulnerable users (seniors, children): one stage above the same function type, capped at controlled",
+  "中强度以上的室内活动，冬季至少 tempered，夏季至少 buffered":"Indoor activity of moderate intensity or more: at least tempered in winter, at least buffered in summer",
+  "部分脱衣的功能至少 tempered；完全脱衣的冬季至少 controlled":"Partly undressed functions at least tempered; fully undressed at least controlled in winter",
+  "已核实":"verified", "来源待核对":"source to check", "借用":"borrowed", "推断":"inferred", "假设":"assumed", "用户定义":"user defined", "用户决定":"user decision", "用户设定":"user set",
+  "借用（风界限）加推断（对应）":"borrowed (wind limits) plus inferred (mapping)", "推断（冬）；假设（夏）":"inferred (winter); assumed (summer)", "文献方向支持":"supported by the literature’s direction",
+  "用户决定（补上）；季节措辞为假设":"user decision (added); seasonal wording assumed", "用户决定（补上）；具体写法为假设":"user decision (added); exact wording assumed",
+  "R2 按站立取":"R2 taken as standing", "R8 按完全脱衣取":"R8 taken as fully undressed", "R8 按部分脱衣取":"R8 taken as partly undressed",
+  "假设：R2 按站立取（冬季挡风）；夏季有顶即可":"Assumed: R2 taken as standing (wind shelter in winter); a roof is enough in summer",
+  "假设：冬季要挡风（至少两面墙），夏季有顶即可；R6 儿童提高一级":"Assumed: wind shelter in winter (at least two walls), a roof is enough in summer; R6 raises one stage for children",
+  "假设：露天，按季节使用；冬季的适配要看借来的 PET 范围":"Assumed: open air, used by season; winter fit depends on the borrowed PET range",
+  "只按 R1 取（我的判断）；设备本身的要求未列入":"R1 only (my judgement); the equipment’s own requirements are not included",
+  "只按 R1（怕雨）取":"R1 (rain) only", "员工整天坐着办公，按久坐处理（我的判断）":"Staff sit all day: treated as sedentary (my judgement)",
+  "用户决定：夏季也 controlled":"User decision: controlled in summer too", "用户决定：按久坐处理":"User decision: treated as sedentary",
+  "必须首层":"Must be ground floor", "最好首层":"Prefer ground floor", "最好二层":"Prefer upper floor",
+  "南":"S", "北":"N", "东":"E", "西":"W", "东北":"NE", "东南":"SE", "西南":"SW", "西北":"NW",
+  "南面":"south face", "北面":"north face", "东面":"east face", "西面":"west face", "顶面":"top", "底面":"bottom",
+  "全年":"Whole year", "冬季（12–2 月）":"Winter (Dec–Feb)", "夏季（6–8 月）":"Summer (Jun–Aug)", "春季（3–5 月）":"Spring (Mar–May)", "秋季（9–11 月）":"Autumn (Sep–Nov)", "冬至日（12 月 21 日）":"Winter solstice (21 Dec)", "夏至日（6 月 21 日）":"Summer solstice (21 Jun)",
+  "必有（温哥华《社区中心战略》目标 9）":"Must-have (Vancouver Community Centre Strategy, goal 9)", "案例里几乎都有（14 个里 ≥ 11）":"Nearly every precedent has it (≥ 11 of 14)", "常见（温哥华项目几乎都有，提示）":"Common (nearly every Vancouver project; a prompt)", "片区级 / 场地专属（目标 10：每个片区至少一种；按场地）":"District-level / site-specific (goal 10: at least one per district; by site)",
+  "门厅、接待":"Lobby and reception", "体育馆":"Gymnasium", "多功能室":"Multipurpose room", "健身与康养":"Fitness and wellness", "小厨房":"Small kitchen", "青少年空间":"Youth space", "老年人空间":"Seniors space", "包容无障碍的卫生间":"Inclusive, accessible washrooms",
+  "更衣室（有体育馆或泳池就要）":"Changing rooms (needed with a gym or pool)", "行政 / 员工办公":"Administration / staff offices", "每个大件的储藏":"Storage for each major room", "门斗与排队区":"Vestibule and queuing area", "设备与后勤（机房、电气）":"Services and back of house (plant, electrical)",
+  "大厅 / 表演厅（带舞台）":"Hall / performance hall (with stage)", "商业 / 教学厨房":"Commercial / teaching kitchen", "托儿 / 学前 / 儿童室":"Childcare / preschool / children’s room", "艺术 / 手工 / 音乐室":"Arts / crafts / music room", "咖啡 / 小卖部":"Café / concession", "泳池（锚，由片区供给定）":"Pool (anchor; set by district supply)",
+  "双体育馆、专用艺术工作室、全规模社区厨房、较大健身中心、训练与运动表现、剧场、画廊":"Double gym, dedicated art studio, full community kitchen, larger fitness centre, training and performance, theatre, gallery", "球场小屋（公园场地）":"Fieldhouse (park sites)", "室外：直通室外的舞台 / 游戏场 / 篮球场、自行车棚":"Outdoor: stage / playground / basketball court opening to the outside, bike shelter",
+  "体育馆储藏（≈ 体育馆 8%）":"Gym storage (≈ 8% of the gym)", "多功能厅 / 活动室储藏":"Hall / activity room storage", "机房、空调、电气、泳池机房":"Plant, HVAC, electrical, pool plant", "清洁间（每层 / 每组团）":"Janitor room (per floor / cluster)", "员工卫生间、员工休息":"Staff washrooms, staff room", "急救室、救生员 / 员工办公":"First aid, lifeguard / staff office", "通用 / 家庭卫生间、成人护理台":"Universal / family washroom, adult change table", "门斗、排队、婴儿车停放、饮水":"Vestibule, queuing, stroller parking, drinking water", "青少年室内员工办公（无死角）":"Youth-room staff office (full sightlines)", "垃圾分类、IT、通信入口、发电机、电梯机房":"Waste sorting, IT, telecom entry, generator, lift machine room",
+  "室外泳池（池、池边、湿更衣）":"Outdoor pool (pool, deck, wet change)", "托儿中心（74 个名额）":"Childcare centre (74 places)", "球场小屋（球队更衣、室外卫生间）":"Fieldhouse (team change, outdoor washrooms)",
+  "Marpole 2021 净面积 14,605 ft²；室外，工具还不能排布":"Marpole 2021 net 14,605 ft²; outdoor, the tool cannot lay it out yet", "Marpole 2021 净面积 7,941 ft²；最好在屋顶层并连着室外活动场，还没做":"Marpole 2021 net 7,941 ft²; best on the roof level with an outdoor play area; not done yet", "Marpole 2021 净面积 1,230 ft²；从室外进入，还没做":"Marpole 2021 net 1,230 ft²; entered from outside; not done yet",
+  "不用骨架（门厅是贴入口墙的一个房间，旧做法）":"No skeleton (the lobby is a room on the entrance wall; old method)", "B1 穿越式门厅：垂直于入口墙的宽带，常两端都有入口（Churchill、Hillcrest）":"B1 Through-lobby: a wide band perpendicular to the entrance wall, often with entrances at both ends (Churchill, Hillcrest)", "B2 门厅带：沿入口墙的一条带，大件在两翼（Clayton）":"B2 Lobby band: a band along the entrance wall, big rooms in the wings (Clayton)", "A1 双侧街：垂直于入口墙的窄街，大件分列两侧（Sixteen Mile、Eastside）":"A1 Two-sided street: a narrow street perpendicular to the entrance wall, big rooms on both sides (Sixteen Mile, Eastside)", "A2 单侧街：沿入口墙的窄街，房间在另一侧、街朝外（Western North York、East Bayfront）":"A2 One-sided street: a narrow street along the entrance wall, rooms on the other side, street facing out (Western North York, East Bayfront)",
+};
+const Z = s => (state.lang === "en" && ZH_EN[s] != null) ? ZH_EN[s] : s;
 const T = (key, fallback) => (state.lang === "en" && I18N_EN[key] != null) ? I18N_EN[key] : (I18N_ZH[key] != null ? I18N_ZH[key] : (fallback != null ? fallback : key));
 function applyLang(lang){
   state.lang = lang;
   document.documentElement.lang = lang === "en" ? "en" : "zh";
   for (const el2 of document.querySelectorAll("[data-i18n]")){
-    const k = el2.dataset.i18n;
-    if (I18N_ZH[k] == null && !I18N_ZH.hasOwnProperty(k)) I18N_ZH[k] = el2.textContent;   // 第一次遇到：记下页面上的中文
+    const k = el2.dataset.i18n, asHtml = el2.hasAttribute("data-i18n-html");   // data-i18n-html：整段带 <b>/<code> 的说明，按 HTML 换
+    if (I18N_ZH[k] == null && !I18N_ZH.hasOwnProperty(k)) I18N_ZH[k] = asHtml ? el2.innerHTML : el2.textContent;   // 第一次遇到：记下页面上的中文
     const v = lang === "en" ? (I18N_EN[k] != null ? I18N_EN[k] : I18N_ZH[k]) : I18N_ZH[k];
-    if (v != null) el2.textContent = v;
+    if (v != null){ if (asHtml) el2.innerHTML = v; else el2.textContent = v; }
   }
   const lb = document.getElementById("lang-toggle"); if (lb) lb.innerHTML = lang === "en" ? `中 · <b>EN</b>` : `<b>中</b> · EN`;
+  renderThemeToggle();   // 浅色 / 深色的字也跟着换语言
   try { localStorage.setItem("ccTool.lang", lang); } catch (e) {}
   if (typeof setUiMode === "function" && state.uiMode) setUiMode(state.uiMode);   // 使用者 / 开发者的字也跟着换
   if (window.__langReady && typeof regenerate === "function" && typeof massSig === "function"){ state.lastSig = massSig(); regenerate(); }   // 功能名、房间标签、面板都重算一遍（不算"调整"）
@@ -4784,7 +4914,7 @@ function renderClimateCtrl(){
   const sun = state.climate.basis === "sun";
   document.getElementById("sel-basis").value = state.climate.basis;
   const per = document.getElementById("sel-climper");
-  if (!per.options.length) per.innerHTML = Object.entries(SUN_PERIODS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
+  if (!per.options.length) per.innerHTML = Object.entries(SUN_PERIODS).map(([k, v]) => `<option value="${k}">${Z(v.label)}</option>`).join("");
   per.value = state.climate.period;
   document.getElementById("lbl-climper").style.display = sun ? "" : "none";
   document.getElementById("band-ctrl").style.display = sun ? "none" : "";
@@ -4819,7 +4949,13 @@ renderer.setPixelRatio(window.devicePixelRatio);
 host.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff);
+// 三维的两套底色（2026-10-23 深色模式）：界面是深灰黑时，三维的纸、地面、网格、边线也换成深色系；图纸里房间的阶段色不变
+const PAL3D = {
+  light:{ bg:0xffffff, outer:0xfbfaf7, ground:0xf6f4ef, grid:0xddd8cc, lawn:0xe2edcf, road:0xe4e1da, roadFlat:0xe6e3dc, context:0xf4f2ee, ink:0x1f2a2e, inkSoft:0x6b6b6b, roomEdge:0x4a4a4a, frame:0xbbbbbb, faded:0xb8b8b8 },
+  dark:{ bg:0x151517, outer:0x151517,   /* 外圈地面和底色同色：浅色模式里 fbfaf7 对 ffffff 几乎看不出，深色也照此，不然 5→6 开头能看到一块灰色的周边范围（用户 2026-10-23） */ ground:0x202024, grid:0x2e2e33, lawn:0x27301f, road:0x2a2a2e, roadFlat:0x2c2c30, context:0x3a3a40, ink:0xd9d9de, inkSoft:0x9a9aa3, roomEdge:0xb0b0b8, frame:0x5a5a62, faded:0x4a4a50 },
+};
+const pal = () => PAL3D[document.documentElement.dataset.theme === "dark" ? "dark" : "light"];
+scene.background = new THREE.Color(pal().bg);
 scene.add(new THREE.AmbientLight(0xffffff, 0.75));
 const sun = new THREE.DirectionalLight(0xffffff, 0.9); sun.position.set(-40, 80, 60); scene.add(sun);
 
@@ -4834,7 +4970,7 @@ window.__v3 = { camera, controls, draw:() => draw() };   // 调试和截图用�
 const stat = new THREE.Group(); scene.add(stat); let statKey = "";
 // 晕染（2026-10-18）：半径 uR 以内显示场景，边缘按噪声起伏、颜色变淡并带一圈略深的“水痕”，像水彩在纸上洇开。
 // 平时 uR 很大，等于全部显示，不影响第 4、5 步。体块本身不参与晕染。
-const BLEED = { uR:{ value:1e6 }, uC:{ value:new THREE.Vector2() }, uBg:{ value:new THREE.Color(0xffffff) } };
+const BLEED = { uR:{ value:1e6 }, uC:{ value:new THREE.Vector2() }, uBg:{ value:new THREE.Color(pal().bg).convertLinearToSRGB() } };   // 晕染是在输出编码之后混色的，底色要给 sRGB 值；白色两种空间都是 1，深色不转就变成近黑（2026-10-23 用户发现）
 const BLEED_NOISE = `
 uniform float uR; uniform vec2 uC; uniform vec3 uBg; varying vec3 vBleedW;
 float bHash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -4895,17 +5031,17 @@ function buildStatic(){
   if (key === statKey) return; statKey = key;
   stat.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); stat.clear();
   if (ext){
-    const outer = new THREE.Mesh(new THREE.PlaneGeometry(SITE.w + 2 * ext, SITE.d + 2 * ext), new THREE.MeshBasicMaterial({ color:0xfbfaf7 }));
+    const outer = new THREE.Mesh(new THREE.PlaneGeometry(SITE.w + 2 * ext, SITE.d + 2 * ext), new THREE.MeshBasicMaterial({ color:pal().outer }));
     outer.rotation.x = -Math.PI/2; outer.position.set(SITE.w/2, -0.02, -SITE.d/2); stat.add(outer);
   }
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(SITE.w, SITE.d), new THREE.MeshBasicMaterial({ color:0xf6f4ef }));
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(SITE.w, SITE.d), new THREE.MeshBasicMaterial({ color:pal().ground }));
   ground.rotation.x = -Math.PI/2; ground.position.set(SITE.w/2, -0.01, -SITE.d/2); stat.add(ground);
   const gridPts = [];
   for (let x=0; x<=SITE.w; x+=10) gridPts.push(x,0,0, x,0,-SITE.d);
   for (let y=0; y<=SITE.d; y+=10) gridPts.push(0,0,-y, SITE.w,0,-y);
   gridPts.push(SITE.w,0,0, SITE.w,0,-SITE.d, 0,0,-SITE.d, SITE.w,0,-SITE.d);
   const gridGeo = new THREE.BufferGeometry(); gridGeo.setAttribute("position", new THREE.Float32BufferAttribute(gridPts, 3));
-  if (state.step !== 6) stat.add(new THREE.LineSegments(gridGeo, new THREE.LineBasicMaterial({ color:0xddd8cc })));   // 展示时不画网格
+  if (state.step !== 6) stat.add(new THREE.LineSegments(gridGeo, new THREE.LineBasicMaterial({ color:pal().grid })));   // 展示时不画网格
   for (const poly of (state.sitePolys || [])){   // 真实场地的边界（绿色）
     const pts = poly.map(p => new THREE.Vector3(p[0], 0.05, -p[1])); pts.push(pts[0]);
     stat.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color:0x5f8f4e })));
@@ -4927,7 +5063,7 @@ window.frame3DSmooth = () => {
   const c = new THREE.Vector3((x0 + x1) / 2, 0, -(y0 + y1) / 2), k = Math.max(1, Math.max(x1 - x0, y1 - y0) / 65);
   const pos = c.clone().add(new THREE.Vector3(-55, 65, 81).multiplyScalar(k));
   if (frameAnim){ frameAnim.cancel(); frameAnim = null; }
-  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches){ controls.target.copy(c); camera.position.copy(pos); controls.update(); draw(); return; }
+  if (reducedMotion()){ controls.target.copy(c); camera.position.copy(pos); controls.update(); draw(); return; }
   const t0 = controls.target.clone(), p0 = camera.position.clone(), T = { t: 0 };
   frameAnim = animate(T, { t: 1, duration: 650, ease: "inOutQuart",
     onUpdate: () => { controls.target.lerpVectors(t0, c, T.t); camera.position.lerpVectors(p0, pos, T.t); controls.update(); draw(); },
@@ -4947,14 +5083,14 @@ function buildEnv(){
   env.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); env.clear();
   if (key === "off") return;
   // 草坪
-  const lawnMat = new THREE.MeshBasicMaterial({ color:0xe2edcf });
+  const lawnMat = new THREE.MeshBasicMaterial({ color:pal().lawn });
   for (const poly of [...c.parks, ...(state.sitePolys || [])]){
     if (poly.length < 3) continue;
     const g = new THREE.ShapeGeometry(new THREE.Shape(poly.map(q => new THREE.Vector2(q[0], q[1])))); g.rotateX(-Math.PI/2); g.translate(0, 0.04, 0);
     env.add(new THREE.Mesh(g, lawnMat));
   }
   // 道路（按道路红线宽度画成带状）
-  const roadMat = new THREE.MeshLambertMaterial({ color:0xe4e1da }), pos = [];
+  const roadMat = new THREE.MeshLambertMaterial({ color:pal().road }), pos = [];
   for (const st of c.streets){
     const hw = st.w / 2;
     for (let k = 0; k < st.pts.length - 1; k++){
@@ -4964,7 +5100,7 @@ function buildEnv(){
       for (const q of [a, b, cc, a, cc, d]) pos.push(q[0], 0.02, -q[1]);
     }
   }
-  if (pos.length){ const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals(); env.add(new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color:0xe6e3dc, side:THREE.DoubleSide }))); }
+  if (pos.length){ const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals(); env.add(new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color:pal().roadFlat, side:THREE.DoubleSide }))); }
   // 树木：树干按胸径，树冠半径按高度的 0.3（示意，数据里没有冠幅）
   // 退线（2026-10-18 用户决定）：树干离体块外墙不到 treeClear 米的树不显示；不画线
   const trees = visibleTrees();
@@ -5144,7 +5280,7 @@ let showFly = null;   // 第 5 → 6 步的飞行（2026-10-22，用户要求：
 // 展示视角（第 6 步）。fly = 从现在的位置连视角、视野角一起飞过去（1.3 秒），场景先不换，到位后再调 done（渐变 + 晕染）；
 // 回第 5 步也一样飞回原来的轴测。系统设了"减少动效"时直接跳。（2026-10-23 重写：原来从正上方起飞，第 5 步已经是轴测后不再需要）
 window.setShowCamera = (on, fly, done) => {
-  const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = reducedMotion();
   const finish = () => { if (done) done(); else rebuild(); };
   const flyTo = (pos, target, fov) => {
     const p0 = camera.position.clone(), t0 = controls.target.clone(), f0 = camera.fov, T = { t:0 };
@@ -5179,7 +5315,7 @@ function buildContext(){
   if (key === ctxKey) return; ctxKey = key;
   ctx.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); ctx.clear();
   if (!on) return;
-  const matOut = new THREE.MeshLambertMaterial({ color:0xf4f2ee }), matIn = new THREE.MeshLambertMaterial({ color:0xf3dcc2, transparent:true, opacity:0.6, depthWrite:false });
+  const matOut = new THREE.MeshLambertMaterial({ color:pal().context }), matIn = new THREE.MeshLambertMaterial({ color:0xf3dcc2, transparent:true, opacity:0.6, depthWrite:false });
   const edgeOut = new THREE.LineBasicMaterial({ color:0xb0aca4 }), edgeIn = new THREE.LineBasicMaterial({ color:0xc9874a });
   for (const b of c.items) for (const poly of b.polys){
     if (poly.length < 3 || (show && b.inSite)) continue;   // 展示时不显示场地内的现有建筑
@@ -5244,7 +5380,7 @@ function drawSun(){
   const rows = ["S", "E", "W", "N", "R"].filter(k => R.sum[k]).map(k => { const g = R.sum[k], a = g.h / g.n;
     return `<tr><td>${names[k]}</td><td>平均 ${f1(a)} ${u}</td><td>${R.total ? Math.round(a / R.total * 100) : 0}%</td>${rad ? `<td class="hint">直射 ${f1(g.dir / g.n)} · 散射 ${f1(g.dif / g.n)}</td>` : ""}</tr>`; }).join("");
   box.innerHTML = `<select id="sun-mode"><option value="hours" ${rad ? "" : "selected"}>直射日照时数</option><option value="rad" ${rad ? "selected" : ""}>太阳辐射</option></select>
-    <select id="sun-period">${Object.entries(SUN_PERIODS).map(([k, v]) => `<option value="${k}" ${k === state.sun.period ? "selected" : ""}>${v.label}</option>`).join("")}</select>（近似）
+    <select id="sun-period">${Object.entries(SUN_PERIODS).map(([k, v]) => `<option value="${k}" ${k === state.sun.period ? "selected" : ""}>${Z(v.label)}</option>`).join("")}</select>（近似）
     <div class="ramp"></div><div style="display:flex;justify-content:space-between"><span>0 ${u}</span><span>${f1(R.total)} ${u}（${rad ? "无遮挡水平面" : "太阳在地平线以上的小时数"}）</span></div>
     <table>${rows}</table>
     <div class="hint">${rad ? `太阳辐射 = 直射（DNI × 入射角余弦，被挡不算）+ 散射（DHI，按均匀天空，只算看得到的天空）；不算地面和墙面反射。气象：${WEATHER.name}（机场站，离场地约 8 km）。百分比相对无遮挡水平面。` : "百分比相对太阳在地平线以上的小时数。"}
@@ -5293,9 +5429,9 @@ function drawWind(){
   // 说明框（2026-10-19 用户要求精简：只留季节和几种风的选项）
   const box = document.getElementById("v3-windbox");
   box.innerHTML = `<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">${Object.entries(WIND_SEASONS).map(([k, v]) =>
-      `<button class="chip ${k === w.season ? "on" : ""}" data-wseason="${k}" title="${v.label}">${v.label.replace(/（.*/, "")}</button>`).join("")}</div>
+      `<button class="chip ${k === w.season ? "on" : ""}" data-wseason="${k}" title="${Z(v.label)}">${Z(v.label).replace(/[（(].*/, "")}</button>`).join("")}</div>
     <div style="margin-top:5px">${list.map((x, i) => `<label style="display:block;cursor:pointer"><input type="radio" name="wscen" value="${i}" ${x === sc ? "checked" : ""}>
-      <b>${x.name}风</b> ${fmt(x.freq * 100)}% · ${fmt(x.v, 1)} m/s</label>`).join("")}</div>`;
+      <b>${Z(x.name)}${T("wind_word")}</b> ${fmt(x.freq * 100)}% · ${fmt(x.v, 1)} m/s</label>`).join("")}</div>`;
   box.style.display = "";
   const reset = () => { windCache.key = ""; rebuild(); renderMassPanel(); };
   box.querySelectorAll("[data-wseason]").forEach(b => b.onclick = () => { w.season = b.dataset.wseason; w.pick = 0; reset(); });
@@ -5402,8 +5538,9 @@ let FOCUS_PARTNERS = new Set(), focusFly = null, savedFocusView = null, reasonGr
 // setStep 先登记一次“下次重建要过渡”；rebuild 时把旧的一组挪到旁边淡出（0.22 秒），新的一组从地面下方升起并淡入（0.48 秒，快起慢停），
 // 功能房间和名字按排布顺序每隔 28 毫秒出一个。只改材质透明度和位置，不碰数据；系统设了“减少动效”时不做。
 const STEP_FX = { pending:false, timer:null, old:null, items:[], oldMats:[] };
-window.stepFxRequest = () => { if (!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) STEP_FX.pending = true; };
+window.stepFxRequest = o => { if (!reducedMotion()) STEP_FX.pending = o || { lift:0.8, stagger:true }; };   // o 可指定升起高度、是否错开、时长（开关用）
 window.stepFxState = () => ({ running: !!STEP_FX.timer, items: STEP_FX.items.length, oldKept: !!STEP_FX.old });   // 测试用：过渡是否在跑
+window.camTest = () => ({ pos: camera.position.toArray().map(v => Math.round(v * 10) / 10), target: controls.target.toArray().map(v => Math.round(v * 10) / 10), flying: !!focusFly, isolate: state.isolate });   // 测试用：相机在哪、在不在飞
 const disposeAll = g => g.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); });
 function stepFxDropOld(){ if (!STEP_FX.old) return; scene.remove(STEP_FX.old); disposeAll(STEP_FX.old); STEP_FX.old = null; }
 function stepFxFinish(){   // 立刻收尾：材质和位置回到最终状态，旧的一组丢掉
@@ -5412,8 +5549,8 @@ function stepFxFinish(){   // 立刻收尾：材质和位置回到最终状态�
   STEP_FX.items = []; STEP_FX.oldMats = [];
   stepFxDropOld();
 }
-function stepFxStart(){
-  const LIFT = 0.8, RISE = 480, FADE = 220, HOLD = 120, STEP = 28, MAXI = 18;
+function stepFxStart(o){   // o：{ lift 升起高度 m, stagger 房间是否错开, rise 升起时长 ms }
+  const LIFT = o.lift != null ? o.lift : 0.8, RISE = o.rise || 480, FADE = 220, HOLD = o.stagger === false ? 0 : 120, STEP = o.stagger === false ? 0 : 28, MAXI = 18;
   const firstRoom = dyn.children.findIndex(o => o.userData.fxRoom != null);
   const seen = new Map(), items = [];
   dyn.children.forEach((o, i) => {
@@ -5447,7 +5584,7 @@ function stepFxStart(){
    推拉过程不走这里；换步骤的过渡（STEP_FX）优先；系统设了"减少动效"时不做。 */
 const MASS_FX = { pending:false, old:null, anim:null, group:null };
 window.massFxRequest = stages => {
-  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (reducedMotion()) return;
   MASS_FX.old = state.masses.map(m => ({ b:bboxOf(m.points), base:m.base, top:m.top, encl:isEnclosed(m) }));
   MASS_FX.stages = stages || null;   // 有演化步骤就一步步播（橡皮泥），没有就直接从旧变到新
   MASS_FX.pending = true;
@@ -5485,7 +5622,7 @@ function massFxSegment(olds, news, dur, clay, done){
   const unit = new THREE.BoxGeometry(1, 1, 1), unitEdges = new THREE.EdgesGeometry(unit);
   for (const p of pairs){
     p.mesh = new THREE.Mesh(unit, new THREE.MeshLambertMaterial({ color: clay ? 0xEFEAE0 : 0xd9d4c7, transparent: true, opacity: 0, depthWrite: !!clay }));
-    p.edges = new THREE.LineSegments(unitEdges, new THREE.LineBasicMaterial({ color: 0x1f2a2e, transparent: true, opacity: 0 }));
+    p.edges = new THREE.LineSegments(unitEdges, new THREE.LineBasicMaterial({ color: pal().ink, transparent: true, opacity: 0 }));
     g.add(p.mesh); g.add(p.edges);
   }
   const lerp = (a, b, t) => a + (b - a) * t;
@@ -5560,6 +5697,7 @@ function rebuild(){
   for (const g of [stat, ctx, env]) g.traverse(o => { if (o.material) bleedMat(o.material); });
   const show = state.step === 6;
   stepFxFinish();   // 上一次过渡若还在跑，先收尾
+  hoverReset();     // 场景要重建，悬停抬起的那一间先放下（对象会被换掉）
   const fx = STEP_FX.pending; STEP_FX.pending = false;
   const mfx = MASS_FX.pending && !fx; MASS_FX.pending = false; MASS_FX.old = mfx ? MASS_FX.old : null; MASS_FX.stages = mfx ? MASS_FX.stages : null;
   if (fx && dyn.children.length){ const g = new THREE.Group(); for (const o of dyn.children.slice()) g.add(o); scene.add(g); STEP_FX.old = g; }   // 旧的一组留着淡出
@@ -5587,7 +5725,7 @@ function rebuild(){
     const mesh = new THREE.Mesh(geo, mat);
     if (!faded && !show) mesh.userData.massId = m.id;   // 变淡的体块、展示时的体块不参与点选
     dyn.add(mesh);
-    const edge = new THREE.LineBasicMaterial({ color: show ? 0x8a4b1a : faded ? 0xb8b8b8 : on ? 0x2b5d7a : white ? 0x6b6b6b : 0x1f2a2e, transparent: faded || !encl, opacity: faded ? 0.6 : encl ? 1 : 0.35 });
+    const edge = new THREE.LineBasicMaterial({ color: show ? 0x8a4b1a : faded ? pal().faded : on ? 0x2b5d7a : white ? pal().inkSoft : pal().ink, transparent: faded || !encl, opacity: faded ? 0.6 : encl ? 1 : 0.35 });
     dyn.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), edge));
     if (!encl){
       const E = enclosureOf(m), b = bboxOf(m.points), H = m.top - m.base, t = 0.4, wt = 0.3;
@@ -5639,7 +5777,7 @@ function rebuild(){
   for (const l of (white || show ? [] : state.levels)){
     const on = l.id === lv.id;
     const fx0 = Math.max(0, WIN.i0 - 10), fx1 = Math.min(SITE.w, WIN.i1 + 10), fy0 = Math.max(0, WIN.j0 - 10), fy1 = Math.min(SITE.d, WIN.j1 + 10);   // 只框体块附近
-    dyn.add(outline([[fx0,fy0],[fx1,fy0],[fx1,fy1],[fx0,fy1]], l.elevation, on ? 0xe08a00 : 0xbbbbbb));
+    dyn.add(outline([[fx0,fy0],[fx1,fy0],[fx1,fy1],[fx0,fy1]], l.elevation, on ? 0xe08a00 : pal().frame));
   }
   // 剖面线（2026-10-22，用户要求）：第 5 步在三维里画出剖面切在哪：地上一条蓝虚线、一片很淡的竖直面、顶上一个蓝把手；拖把手可以挪剖面
   secMarker = null;
@@ -5674,16 +5812,16 @@ function rebuild(){
     const g = new THREE.PlaneGeometry(r.x1 - r.x0, r.y1 - r.y0); g.rotateX(-Math.PI/2);
     const mesh = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: r.skeleton ? new THREE.Color(0xf6f3ec) : css(STAGE_COLORS[roomStageOf(r)].slice(4, -1)), side:THREE.DoubleSide, transparent: faded, opacity: op, depthWrite: !faded }));   // 主流线（骨架）用浅色地面，和功能房间分开（2026-10-22）
     mesh.position.set((r.x0 + r.x1)/2, r.elevation + 0.03 + (isFocus ? 0.4 : 0), -(r.y0 + r.y1)/2); mesh.userData.roomId = r.id; dyn.add(mesh);
-    const ol = outline([[r.x0,r.y0],[r.x1,r.y0],[r.x1,r.y1],[r.x0,r.y1]], r.elevation + 0.05 + (isFocus ? 0.4 : 0), faded ? 0xbbbbbb : 0x4a4a4a);
+    const ol = outline([[r.x0,r.y0],[r.x1,r.y0],[r.x1,r.y1],[r.x0,r.y1]], r.elevation + 0.05 + (isFocus ? 0.4 : 0), faded ? pal().faded : pal().roomEdge);
     if (faded){ ol.material.transparent = true; ol.material.opacity = 0.5; }
     dyn.add(ol);
     if (r.spans.length > 1){   // 挑空的功能：画出它的高度
       const h = r.clear, box = new THREE.BoxGeometry(r.x1 - r.x0, h, r.y1 - r.y0);
       box.translate((r.x0 + r.x1)/2, r.elevation + h/2, -(r.y0 + r.y1)/2);
       dyn.add(new THREE.Mesh(box, new THREE.MeshBasicMaterial({ color: css(STAGE_COLORS[roomStageOf(r)].slice(4, -1)), transparent:true, opacity: faded ? 0.1 : 0.35, depthWrite:false })));
-      dyn.add(new THREE.LineSegments(new THREE.EdgesGeometry(box), new THREE.LineBasicMaterial({ color: faded ? 0xbbbbbb : 0x2b5d7a })));
+      dyn.add(new THREE.LineSegments(new THREE.EdgesGeometry(box), new THREE.LineBasicMaterial({ color: faded ? pal().faded : 0x2b5d7a })));
     }
-    for (const o of dyn.children.slice(fxBefore)) o.userData.fxRoom = fxRi;
+    for (const o of dyn.children.slice(fxBefore)){ o.userData.fxRoom = fxRi; o.userData.hoverRoom = r.id; }   // hoverRoom：悬停时整间一起抬
     fxRi++;
   }
   // 中庭（2026-10-22）：从首层地面到屋顶的室内通高体积（淡色玻璃感）+ 屋顶天窗框；白模里也画，表达体块上的通高空间
@@ -5718,7 +5856,7 @@ function rebuild(){
       if (state.step === 5 && state.levelFocus && !state.planMode && r.levelId !== state.levelFocus && !(r.spans || []).includes(state.levelFocus)) return;   // 单独看某一层时只标这一层
       const nm = r.core ? T("core_short") : r.label.replace(/^核（上层）.*/, "核").replace(/^Core \(upper\).*/, "Core");
       const lb = floorLabel(nm, `${fmt(r.area)} m²`, r.x0, r.y0, r.x1, r.y1, r.elevation + 0.08, "#1f2a2e");
-      lb.userData.fxRoom = ri; dyn.add(lb);   // 名字和它的房间一起出场
+      lb.userData.fxRoom = ri; lb.userData.hoverRoom = r.id; dyn.add(lb);   // 名字和它的房间一起出场、一起抬起
     });
     for (const a of (state.layout.atria || [])){
       const lvA = sortedLevels().find(l => l.id === a.levelId);
@@ -5742,12 +5880,52 @@ function rebuild(){
   bar.style.display = state.isolate || focusNow ? "block" : "none";
   if (state.isolate) bar.textContent = `单独编辑 ${state.isolate}：其他体块和功能变淡显示，只能选这个体块的面`;
   else if (focusNow){ const fr = state.layout && state.layout.rooms.find(q => q.id === state.focusRoom); bar.textContent = `${T("focus_bar")}${fr ? fr.label : ""}`; }
-  if (fx) stepFxStart();   // 换步骤：新的一组升起、旧的一组淡出（第一帧由计时器画）
+  if (fx) stepFxStart(fx);   // 换步骤：新的一组升起、旧的一组淡出（第一帧由计时器画）
   if (mfx) massFxStart(); else if (MASS_FX.anim || MASS_FX.clay){ if (MASS_FX.clay) for (const o of dyn.children) o.visible = false; else massFxHide(); }   // 换方案 / 收紧：体块从旧形状变到新形状；过渡没完又重画时继续藏着真体块（橡皮泥阶段连房间一起藏）
   draw();
 }
 
-function draw(){ renderer.render(scene, camera); }
+// 重绘合并（2026-10-23）：一帧里不管多少条动画、多少处代码叫 draw()，只真正画一次（同一轮任务结束时画，不等下一帧）
+let drawQueued = false;
+function drawNow(){ drawQueued = false; renderer.render(scene, camera); }
+function draw(){ if (drawQueued) return; drawQueued = true; queueMicrotask(drawNow); }
+// 三维动画的总收尾（2026-10-23）：换步骤时一次把相机飞行、换步骤过渡、体块变形、晕染、理由线全部停掉，不再各自碰运气
+window.fx3DCancelAll = () => {
+  if (frameAnim){ frameAnim.cancel(); frameAnim = null; }
+  if (showFly){ showFly.cancel(); showFly = null; }
+  if (focusFly){ focusFly.cancel(); focusFly = null; }
+  for (const a of reasonAnims) a.cancel(); reasonAnims = []; reasonGroups = {};
+  stepFxFinish(); massFxFinish(); window.stopBleed(); hoverReset();
+};
+// 深色模式（2026-10-23）：三维里的底色、地面、网格、边线按主题取；换主题时清掉缓存键让静态层重建
+// 悬停抬起（2026-10-23，用户要求；参考 iPadOS 指针停在图标上时图标微微浮起）：第 5 步轴测里，光标停在哪个房间上，
+// 这一间的底面、轮廓、名字一起抬 0.25 m（0.22 秒，快起慢停）；移开就落回。只改位置，不碰数据；重建场景时自动放下。
+const HOVER = { id:null, items:[], anim:null, LIFT:0.25 };
+window.hoverTest = () => ({ id: HOVER.id, lifted: HOVER.items.length, running: !!HOVER.anim });   // 测试用
+function hoverSet(id){
+  if (id === HOVER.id) return;
+  if (HOVER.anim){ HOVER.anim.cancel(); HOVER.anim = null; }
+  const prev = HOVER.items, next = id ? dyn.children.filter(o => o.userData.hoverRoom === id) : [];
+  for (const o of next) if (o.userData.y0 == null) o.userData.y0 = o.position.y;
+  const up = next.map(o => ({ o, from:o.position.y, to:o.userData.y0 + HOVER.LIFT }));
+  const down = prev.filter(o => !next.includes(o) && o.parent === dyn).map(o => ({ o, from:o.position.y, to:o.userData.y0 }));
+  HOVER.id = id; HOVER.items = next;
+  renderer.domElement.style.cursor = id ? "pointer" : "";
+  if (!up.length && !down.length) return;
+  const P = { t:0 };
+  HOVER.anim = animate(P, { t:1, duration:220, ease:"outQuart",
+    onUpdate:() => { for (const u of up) u.o.position.y = u.from + (u.to - u.from) * P.t; for (const d of down) d.o.position.y = d.from + (d.to - d.from) * P.t; draw(); },
+    onComplete:() => { HOVER.anim = null; } });
+}
+function hoverRooms(e){
+  if (state.step !== 5 || state.planMode || state.focusRoom || drag || secDrag){ if (HOVER.id) hoverSet(null); return; }
+  setRay(e);
+  const rh = ray.intersectObjects(dyn.children.filter(o => o.userData.roomId));
+  hoverSet(rh.length ? rh[0].object.userData.roomId : null);
+}
+function hoverReset(){ if (HOVER.anim){ HOVER.anim.cancel(); HOVER.anim = null; } HOVER.id = null; HOVER.items = []; renderer.domElement.style.cursor = ""; }
+renderer.domElement.addEventListener("pointerleave", () => hoverSet(null));
+window.applyTheme3D = () => { const p = pal(); scene.background.set(p.bg); BLEED.uBg.value.set(p.bg).convertLinearToSRGB(); statKey = ""; envKey = ""; ctxKey = ""; rebuild(); };
 // 功能名字的牌子：贴图按文字缓存（不随每次重画释放）
 const LABEL_TEX = new Map();
 function labelTexture(text, sub, color){
@@ -5839,10 +6017,10 @@ renderer.domElement.addEventListener("pointermove", e => {
     if (np === secDrag.last) return;
     secDrag.last = np; state.section.pos = np;
     if (secMarker){ if (secDrag.ew) secMarker.position.z = -(np + 0.5); else secMarker.position.x = np + 0.5; }
-    tip.style.display = "block"; tip.textContent = `剖面位置 ${np} m（${secDrag.ew ? "东西向，沿 y 切" : "南北向，沿 x 切"}）`;
+    tip.style.display = "block"; tip.textContent = `${T("sec_tip")} ${np} m（${secDrag.ew ? T("sec_ew") : T("sec_ns")}）`;
     renderSection(); draw(); return;
   }
-  if (!drag) return;
+  if (!drag){ hoverRooms(e); return; }   // 没在推拉：看光标停在哪个房间上（悬停抬起）
   const s1 = axisParam(e, drag.axis); if (s1 == null) return;
   const vert = drag.f === "top" || drag.f === "bottom";
   let d = vert ? Math.round((s1 - drag.s0) * 10) / 10 : Math.round(s1 - drag.s0), snapLv = null;
@@ -5855,7 +6033,7 @@ renderer.domElement.addEventListener("pointermove", e => {
   drag.d = d; drag.moved = applyPush(drag, d);
   const b = bboxOf(drag.m.points);
   tip.style.display = "block";
-  tip.textContent = `推拉 ${drag.m.id} 的${FACE_ZH[drag.f]}：${drag.moved >= 0 ? "+" : ""}${fmt(drag.moved, vert ? 1 : 0)} m · ${vert ? `底 ${fmt(drag.m.base,1)} / 顶 ${fmt(drag.m.top,1)} m` : `${b.w} × ${b.d} m`} · ${snapLv ? ` · 吸附到 ${snapLv.name}（${fmt(snapLv.elevation, 1)} m）` : ""} · 松开后重新排布`;
+  tip.textContent = `${T("push_tip")} ${drag.m.id} ${Z(FACE_ZH[drag.f])}：${drag.moved >= 0 ? "+" : ""}${fmt(drag.moved, vert ? 1 : 0)} m · ${vert ? `底 ${fmt(drag.m.base,1)} / 顶 ${fmt(drag.m.top,1)} m` : `${b.w} × ${b.d} m`} · ${snapLv ? ` · 吸附到 ${snapLv.name}（${fmt(snapLv.elevation, 1)} m）` : ""} · 松开后重新排布`;
   renderMassPanel(); rebuild();   // 拖动时只更新体块和数字（用户决定）
 });
 renderer.domElement.addEventListener("pointerup", e => {
@@ -5887,7 +6065,7 @@ renderer.domElement.addEventListener("pointerup", e => {
 const STAGE_HEX = { exposed:0xE7EEF2, protected:0xCFDBD9, buffered:0xD9CFB0, tempered:0xD4A95A, controlled:0x8C4A2F };
 function flyCamera(pos, target, ms, done){
   if (focusFly){ focusFly.cancel(); focusFly = null; }
-  const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = reducedMotion();
   if (reduced || !ms){ controls.target.copy(target); camera.position.copy(pos); controls.update(); draw(); if (done) done(); return; }
   const t0 = controls.target.clone(), p0 = camera.position.clone(), T0 = { t:0 };
   focusFly = animate(T0, { t:1, duration:ms, ease:"inOutQuart",
@@ -6000,10 +6178,10 @@ function drawRoomReasons(r){
     if (a.missing || !a.ra || !a.rb || a.rule.kind === "exterior") continue;
     const q = a.ra.id === r.id ? a.rb : a.rb.id === r.id ? a.ra : null; if (!q) continue;
     const pts = [toV(cx, cy, cz), toV((q.x0 + q.x1) / 2, (q.y0 + q.y1) / 2, q.elevation + 0.9)];
-    const m = a.ok ? new THREE.LineBasicMaterial({ color:0x1f2a2e, transparent:true, opacity:0, depthTest:false }) : new THREE.LineDashedMaterial({ color:0x0052FF, dashSize:1.2, gapSize:0.8, transparent:true, opacity:0, depthTest:false });
+    const m = a.ok ? new THREE.LineBasicMaterial({ color:pal().ink, transparent:true, opacity:0, depthTest:false }) : new THREE.LineDashedMaterial({ color:0x0052FF, dashSize:1.2, gapSize:0.8, transparent:true, opacity:0, depthTest:false });
     m.userData.full = 1;
     const ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), m); ln.computeLineDistances(); ln.renderOrder = 9; dyn.add(ln); mats.adj.push(m);
-    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 10, 10), new THREE.MeshBasicMaterial({ color: a.ok ? 0x1f2a2e : 0x0052FF, transparent:true, opacity:0, depthTest:false }));
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 10, 10), new THREE.MeshBasicMaterial({ color: a.ok ? pal().ink : 0x0052FF, transparent:true, opacity:0, depthTest:false }));
     dot.material.userData.full = 1; dot.position.copy(pts[1]); dot.renderOrder = 9; dyn.add(dot); mats.adj.push(dot.material);
   }
   // 3 阶段：按阶段色描边 + "需要 X · 空间 Y"
@@ -6036,17 +6214,17 @@ function enterIsolate(id){
   if (!state.isolate) savedView = { pos:camera.position.clone(), target:controls.target.clone() };
   const b = bboxOf(m.points), c = toV((b.x0 + b.x1) / 2, (b.y0 + b.y1) / 2, (m.base + m.top) / 2);
   const off = camera.position.clone().sub(controls.target);
-  controls.target.copy(c); camera.position.copy(c).add(off); controls.update();
   state.isolate = id; state.selectedMass = id; state.selectedFace = null; state.section.pos = null;
   regenerate();
+  flyCamera(c.clone().add(off), c, 500);   // 2026-10-23：镜头飞过去，不再直接跳（其他体块同时变淡）
 }
 window.enterIsolate = enterIsolate;
 window.projTest = (x, y, z) => { const v = toV(x, y, z).project(camera), r = renderer.domElement.getBoundingClientRect(); return [r.left + (v.x + 1) / 2 * r.width, r.top + (1 - v.y) / 2 * r.height]; };   // 测试用：平面坐标 → 屏幕位置
 function exitIsolate(){
   if (!state.isolate) return;
   state.isolate = null; state.selectedFace = null;
-  if (savedView){ camera.position.copy(savedView.pos); controls.target.copy(savedView.target); controls.update(); savedView = null; }
   rebuild();
+  if (savedView){ flyCamera(savedView.pos, savedView.target, 500); savedView = null; }   // 2026-10-23：飞回原来的位置
 }
 renderer.domElement.addEventListener("dblclick", e => {
   setRay(e);
@@ -6060,9 +6238,11 @@ renderer.domElement.addEventListener("dblclick", e => {
 });
 window.addEventListener("keydown", e => { if (e.key === "Escape"){ exitIsolate(); exitRoomFocus(); } });
 document.getElementById("v3-exit").onclick = () => { exitIsolate(); exitRoomFocus(); };
-document.getElementById("v3-white").onclick = () => { state.whiteModel = !state.whiteModel; rebuild(); };
-document.getElementById("v3-sun").onclick = () => { state.sun.on = !state.sun.on; rebuild(); };
-document.getElementById("v3-wind").onclick = () => { state.wind.on = !state.wind.on; rebuild(); };
+// 三个开关（2026-10-23）：换成淡入淡出 0.3 秒（不升起、不错开），用换步骤过渡的同一套机制
+const TOGGLE_FX = { lift:0, stagger:false, rise:300 };
+document.getElementById("v3-white").onclick = () => { state.whiteModel = !state.whiteModel; window.stepFxRequest(TOGGLE_FX); rebuild(); };
+document.getElementById("v3-sun").onclick = () => { state.sun.on = !state.sun.on; window.stepFxRequest(TOGGLE_FX); rebuild(); };
+document.getElementById("v3-wind").onclick = () => { state.wind.on = !state.wind.on; window.stepFxRequest(TOGGLE_FX); rebuild(); };
 
 window.render3D = rebuild;
 resize(); rebuild();

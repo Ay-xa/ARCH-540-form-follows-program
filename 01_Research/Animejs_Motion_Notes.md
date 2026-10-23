@@ -125,6 +125,9 @@ createTimeline({ defaults: { duration: 600, ease: 'outQuart' } })
 
 1. **先替换"晕染"**：把 `playBleed` 的手写循环换成 `animate`，行为不变，用来验证库接得通、`onUpdate: draw` 的模式对。**已做（2026-10-22）**：importmap 加了 `animejs`，`playBleed` 改为 `animate(BLEED.uR, { value: R, duration: 6500, ease: t => t*t*(3-2t), onUpdate: draw })`；实测半径 27 → 170 左右、6.5 秒收尾、中途退回第 5 步会停，和原来一致。
 2. **换步骤的过渡**：`setStep` 时旧体块淡出 200 ms、新内容升起 400 ms（`outQuart`），房间按 `stagger(30)` 落位。只动 `dyn` 组里的网格，不碰数据和规则。**已做（2026-10-22）**：`setStep` 登记一次 `stepFxRequest()`，下一次 `rebuild` 把旧的一组整组挪到旁边淡出 0.22 秒（`outSine`），新的一组从地面下方 0.8 m 升起并淡入 0.48 秒（`outQuart`）；体块和标高框先出，功能房间和它们的名字按排布顺序每隔 28 ms 出一间（最多错开 18 间），中庭、核、流线、风在房间中段出。整条过渡用一个 `createTimer` 驱动，每帧只 `draw()` 一次（没有用一百多个 `animate` 各自重绘）。任何别的重建（推拉、改标高）会先 `stepFxFinish()` 立刻收尾。系统设了"减少动效"时跳过。实测 4→5 / 5→4 约 0.9 秒、113 个物件，5→6 和晕染同时开始，6→5 晕染正确停掉；截图 `04_Presentation/screenshots/2026-10-22_v01_step_transition_0/1/2.jpg`。
+2b. **底层整理（已做，2026-10-23）**：三维重绘合并（`draw()` 一帧只画一次，用微任务合并同一轮里的多次调用）；`reducedMotion()` 一处判断；`fx3DCancelAll()` 在 `setStep` 开头把所有三维动画一次停掉。单独编辑进出改成 `flyCamera` 飞行；三个开关用 `stepFxRequest({ lift:0, stagger:false, rise:300 })` 做淡入淡出。深色模式下三维底色和边线按 `PAL3D` 取，图纸的纸不变。
+   - 测试时的坑：浏览器面板隐藏时页面不出帧，anime 引擎不走，动画看起来"卡住"；在页面里 `import` 同一个 jsDelivr 地址拿到同一个引擎，`engine.update()` 手动推帧就能验证逻辑。
+2c. **悬浮抬起（已做，2026-10-23）**：参考 iPadOS 的指针效果（Apple 人机界面指南 "Pointing devices"：指针停在元素上，元素微微放大、抬起并带阴影；网页上的复刻可看 ipad-cursor 这个开源库）。我们的做法：三维里 `pointermove` 时射线找房间，整间（底面 + 轮廓 + 名字）用一条 `animate` 抬 0.25 m，0.22 秒 `outQuart`，每帧只 `draw()` 一次；平面里纯 CSS：`.room:hover{transform:translateY(-1.5px) scale(1.015); filter:drop-shadow(...)}`，`transform-box:fill-box` 让 SVG 组绕自己中心放大。注意平面的滑动重排也改 `transform`，期间给 svg 加 `sliding` 关掉过渡。
 3. **方案 A/B/C/D 切换**：同一组体块从旧位置补间到新位置（而不是重建），看得出"哪里变了"。这一步要改重建逻辑，等 1、2 稳了再做。
 4. 推拉松手的 `spring` 回弹：最后做，锦上添花。
 
