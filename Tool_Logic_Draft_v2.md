@@ -4,6 +4,8 @@
 
 > 日期说明（2026-10-22 核对对话记录后补）：本稿和 `_shared/Rules/` 里标“用户 2026-10-17”的决定，凡涉及范围更正、五个阶段、R7–R8、咖啡、体块交互的，实际发生在 2026-10-18 凌晨 00:41–04:27（同一次对话的延续）。
 
+> 研究策略（哪种研究方法、工具在论文里的角色）见 `01_Research/Research_Strategy.md`（用户确认，2026-10-22），先读它再读本稿。
+
 ## 〇、研究命题与框架（用户 2026-10-15；2026-10-22 从对话记录补入）
 - **Topic statement（用户原文）：** “Conditioned space can be reinterpreted as a calibrated gradient between climatic protection and environmental exposure, supporting year-round public occupation in Vancouver.”
 - **三个支柱的关系（用户原话）：** “气候基础设施承载行为，气候基础设施来调节阈值，阈值引出行为。”阈值分两种并行：**气候阈值**（物理）和**心理使用阈值**（来自热 / 光条件和使用者对空间的感知）。三者重叠处是乡土智慧（vernacular intelligence），是调节手法（tool bucket）的来源，具体建筑特点待收集。

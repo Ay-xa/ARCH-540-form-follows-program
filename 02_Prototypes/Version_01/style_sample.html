@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>样板页 · Minimalist Modern · 社区中心体块推演工具</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     1. 设计变量（design tokens）
+     界面外壳的颜色、字体、阴影、圆角都只在这里定义。
+     图纸自身的颜色（阶段色阶、纸、墨线）单独一组，含义不变。
+     ============================================================ */
+  :root{
+    /* 界面（Minimalist Modern） */
+    --background:#FAFAFA;
+    --foreground:#0F172A;
+    --muted:#F1F5F9;
+    --muted-foreground:#64748B;
+    --accent:#0052FF;
+    --accent-secondary:#4D7CFF;
+    --accent-foreground:#FFFFFF;
+    --border:#E2E8F0;
+    --card:#FFFFFF;
+    --ring:#0052FF;
+    --gradient:linear-gradient(135deg,var(--accent),var(--accent-secondary));
+    --gradient-text:linear-gradient(to right,var(--accent),var(--accent-secondary));
+
+    --radius-sm:8px; --radius:12px; --radius-lg:16px;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.06);
+    --shadow-md:0 4px 6px rgba(0,0,0,.07);
+    --shadow-lg:0 10px 15px rgba(0,0,0,.08);
+    --shadow-xl:0 20px 25px rgba(0,0,0,.10);
+    --shadow-accent:0 4px 14px rgba(0,82,255,.25);
+    --shadow-accent-lg:0 8px 24px rgba(0,82,255,.35);
+
+    --font-display:"Calistoga","Noto Serif SC",Georgia,serif;
+    --font-ui:"Inter","Noto Sans SC",system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+    --font-mono:"JetBrains Mono","Noto Sans SC",ui-monospace,Menlo,monospace;
+
+    --ease:cubic-bezier(.16,1,.3,1);
+
+    /* 图纸（不变：颜色是数据，不是装饰） */
+    --exposed:#E7EEF2; --protected:#CFDBD9; --buffered:#D9CFB0; --tempered:#D4A95A; --controlled:#8C4A2F;
+    --paper:#FFFFFF; --ink:#1F2A2E; --inkline:#B9B3A6;
+    /* 图纸上"问题 / 建议"的虚线：和界面主色统一成一种蓝，意思都是"看这里" */
+    --flag:var(--accent);
+    --ok:#1E7F4F; --warn:#B4541C; --bad:#A3212D;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--background);color:var(--foreground);font:14px/1.6 var(--font-ui);-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;position:relative;overflow-x:hidden}
+  /* 页面角落的两团淡蓝光晕：让底色不是死平的 */
+  body::before,body::after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(150px);pointer-events:none;background:var(--accent)}
+  body::before{width:520px;height:520px;left:-200px;top:-180px;opacity:.05}
+  body::after{width:420px;height:420px;right:-160px;bottom:-160px;opacity:.04}
+  button,input,select{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:4px}
+  .num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:12.5px}
+
+  /* ============================================================
+     2. 入场：整页只有一次编排好的进入动画（头、左、中、右依次浮起）
+     ============================================================ */
+  .rise{opacity:0;transform:translateY(28px);animation:rise .7s var(--ease) both;animation-delay:calc(var(--i,0)*.1s + .05s)}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.7}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @media (prefers-reduced-motion:reduce){
+    .rise{animation:none;opacity:1;transform:none}
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  }
+
+  /* ============================================================
+     3. 页头：标题（Calistoga）、六步、状态、两个切换
+     ============================================================ */
+  .top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:14px 28px;background:rgba(250,250,250,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+  .brand h1{margin:0;font:400 24px/1.1 var(--font-display);letter-spacing:-.01em}
+  .brand .sub{color:var(--muted-foreground);font-size:12px;margin-top:3px}
+  .stepper{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .step{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 13px 0 9px;border:1px solid var(--border);border-radius:999px;background:var(--card);color:var(--muted-foreground);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s ease-out;white-space:nowrap}
+  .step i{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--muted);color:var(--muted-foreground);font-style:normal;font-family:var(--font-mono);font-size:11px}
+  .step.done{color:var(--foreground);border-color:rgba(0,82,255,.3)}
+  .step.done i{background:rgba(0,82,255,.08);color:var(--accent)}
+  .step.on{background:var(--gradient);border-color:transparent;color:#fff;box-shadow:var(--shadow-accent)}
+  .step.on i{background:rgba(255,255,255,.22);color:#fff}
+  .step:hover:not(.on){border-color:rgba(0,82,255,.3);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+  .step-arrow{width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;flex:none;opacity:.55}
+  .step-arrow svg{width:9px;height:9px}
+  .top .right{margin-left:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+
+  /* 胶囊标签：每个区块的小标题；点可以跳动表示"在算" */
+  .pill{display:inline-flex;align-items:center;gap:9px;height:28px;padding:0 13px;border-radius:999px;border:1px solid rgba(0,82,255,.3);background:rgba(0,82,255,.05);color:var(--accent);font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;white-space:nowrap}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+  .pill .dot.live{animation:pulse 2s ease-in-out infinite}
+  .pill.quiet{border-color:var(--border);background:var(--card);color:var(--muted-foreground)}
+  .pill.quiet .dot{background:var(--muted-foreground)}
+
+  /* 分段开关：中 / EN、使用者 / 开发者 */
+  .seg{display:inline-flex;padding:3px;border:1px solid var(--border);border-radius:999px;background:var(--card);box-shadow:var(--shadow-sm)}
+  .seg button{height:30px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:var(--muted-foreground);font-size:12.5px;font-weight:500;cursor:pointer;transition:all .2s ease-out}
+  .seg button.on{background:var(--foreground);color:#fff}
+  .seg button:hover:not(.on){color:var(--foreground)}
+
+  /* ============================================================
+     4. 三栏：左（功能清单）、中（图纸）、右（解释）
+     ============================================================ */
+  .layout{display:grid;grid-template-columns:300px minmax(0,1fr) 340px;gap:22px;padding:22px 28px 48px;max-width:1540px;margin:0 auto}
+  .col{min-width:0;display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-md);padding:16px 18px;transition:box-shadow .3s ease-out,transform .3s ease-out}
+  .card:hover{box-shadow:var(--shadow-lg)}
+  .card h3{margin:0 0 4px;font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .card .meta{color:var(--muted-foreground);font-size:12.5px}
+  .sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 8px}
+  .sec-head .count{color:var(--muted-foreground);font-size:12.5px}
+
+  /* 功能行：左边阶段色块（图纸颜色），右边面积（等宽数字） */
+  .rows{display:flex;flex-direction:column;gap:2px}
+  .row{display:grid;grid-template-columns:14px 1fr auto;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s ease-out;border:1px solid transparent}
+  .row:hover{background:var(--muted);transform:translateX(2px)}
+  .row.sel{background:rgba(0,82,255,.06);border-color:rgba(0,82,255,.25)}
+  .row .sw{width:14px;height:14px;border-radius:3px;border:1px solid rgba(15,23,42,.18)}
+  .row .nm{font-weight:500;font-size:13.5px}
+  .row .nm small{display:block;color:var(--muted-foreground);font-weight:400;font-size:11.5px;line-height:1.3}
+  .row .lock{display:inline-block;width:7px;height:7px;background:var(--foreground);margin-right:5px;vertical-align:1px}
+  .lv{display:flex;align-items:baseline;justify-content:space-between;padding:8px 10px 4px;color:var(--muted-foreground);font-size:12px;border-top:1px solid var(--border);margin-top:4px}
+  .lv:first-child{border-top:0;margin-top:0}
+  .lv b{color:var(--foreground);font-weight:600}
+  .empty{padding:14px 10px;color:var(--muted-foreground);font-size:13px;border:1px dashed var(--border);border-radius:var(--radius-sm);text-align:center}
+
+  /* 按钮：主（渐变、抬起）、次（描边）、幽灵 */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--foreground);font-size:13.5px;font-weight:500;cursor:pointer;transition:all .2s ease-out;white-space:nowrap}
+  .btn:hover{border-color:rgba(0,82,255,.3);background:var(--muted);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+  .btn:active{transform:scale(.98)}
+  .btn.primary{background:var(--gradient);border-color:transparent;color:var(--accent-foreground);box-shadow:var(--shadow-sm)}
+  .btn.primary:hover{box-shadow:var(--shadow-accent-lg);filter:brightness(1.1)}
+  .btn.primary svg{transition:transform .2s ease-out}
+  .btn.primary:hover svg{transform:translateX(4px)}
+  .btn.ghost{border-color:transparent;color:var(--muted-foreground)}
+  .btn.ghost:hover{background:transparent;box-shadow:none;color:var(--foreground)}
+  .btn.sm{height:36px;padding:0 14px;font-size:13px}
+  .btn svg{width:16px;height:16px}
+  .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .toolbar .readout{color:var(--muted-foreground);font-size:12.5px;margin-left:4px}
+  .field{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted-foreground)}
+  .field select{height:40px;padding:0 34px 0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--card) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2.5'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 12px center;color:var(--foreground);font-weight:500;-webkit-appearance:none;appearance:none;cursor:pointer}
+  .field select:focus{outline:none;box-shadow:0 0 0 2px var(--background),0 0 0 4px var(--ring)}
+  .check{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--muted-foreground);cursor:pointer}
+  .check input{width:16px;height:16px;accent-color:var(--accent)}
+
+  /* ============================================================
+     5. 图纸：纸是纯白的，外壳退后；标题块是这一页最响的地方
+     ============================================================ */
+  .sheet{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-xl);overflow:hidden}
+  .sheet svg{display:block;width:100%;height:auto;background:var(--paper);touch-action:none;user-select:none}
+  .sheet svg text{font-family:var(--font-ui);font-size:11.5px;fill:var(--ink);pointer-events:none}
+  .sheet svg text.area{font-family:var(--font-mono);font-size:10.5px;fill:var(--muted-foreground)}
+  .sheet svg .rm{stroke:var(--ink);stroke-width:.8}
+  .sheet svg .rm.sel{stroke:var(--flag);stroke-width:2.5}
+  .sheet svg .wall{fill:none;stroke:var(--ink);stroke-width:2.2}
+  .sheet svg .flag{fill:none;stroke:var(--flag);stroke-width:1.6;stroke-dasharray:6 5}
+  .sheet svg .site{fill:none;stroke:var(--inkline);stroke-width:1;stroke-dasharray:3 4}
+  .sheet svg .void{fill:url(#hatch)}
+  .titleblock{position:relative;display:flex;flex-wrap:wrap;gap:14px 36px;align-items:flex-end;padding:22px 26px 20px;border-top:2px solid var(--foreground);background:var(--card)}
+  .titleblock .big{position:relative;isolation:isolate;display:inline-block;font:400 44px/1 var(--font-display);letter-spacing:-.02em;white-space:nowrap}
+  .titleblock .big .bar{position:absolute;left:0;bottom:-4px;height:12px;width:100%;border-radius:2px;background:linear-gradient(to right,rgba(0,82,255,.15),rgba(77,124,255,.1));z-index:-1}
+  .titleblock .big em{font-style:normal;background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .titleblock .lines{flex:1 1 220px;color:var(--muted-foreground);font-size:12.5px;line-height:1.5}
+  .titleblock .lines b{color:var(--foreground);font-weight:500}
+  .ramp{flex:none;display:grid;grid-template-columns:repeat(5,62px);font-family:var(--font-mono);font-size:10px;color:var(--muted-foreground);letter-spacing:.02em}
+  .ramp i{display:block;height:12px;margin-bottom:5px}
+  .ramp span:first-child i{border-radius:3px 0 0 3px}.ramp span:last-child i{border-radius:0 3px 3px 0}
+  .counts{display:flex;gap:16px;font-size:12.5px;color:var(--muted-foreground)}
+  .counts b{color:var(--accent);font-weight:600;font-family:var(--font-mono)}
+  .counts .flagged b{color:var(--foreground)}
+  .northmark{position:absolute;right:26px;top:18px;display:flex;align-items:center;gap:6px;color:var(--muted-foreground);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.15em}
+
+  /* 三维卡片：抽象的体块图 + 慢转的虚线环；这是这一页唯一"活"的装饰 */
+  .view3d{position:relative;overflow:hidden;min-height:250px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;background:radial-gradient(circle at 30% 20%,rgba(0,82,255,.08),transparent 55%),var(--card)}
+  .view3d .txt h3{margin:0 0 6px;font-size:16px}
+  .view3d .txt p{margin:0;color:var(--muted-foreground);font-size:13px;max-width:36ch}
+  .view3d .btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .scene{position:relative;width:220px;height:200px;flex:none}
+  .ring{position:absolute;inset:6px;border:1.5px dashed rgba(0,82,255,.35);border-radius:50%;animation:spin 60s linear infinite}
+  .mass{position:absolute;border-radius:6px;box-shadow:var(--shadow-lg)}
+  .mass.a{left:48px;top:58px;width:110px;height:64px;background:linear-gradient(135deg,#fff,#eef2f7);border:1px solid var(--border);animation:float 5s ease-in-out infinite}
+  .mass.b{left:90px;top:96px;width:86px;height:50px;background:var(--gradient);box-shadow:var(--shadow-accent);animation:float 4s ease-in-out infinite;animation-delay:-1.4s}
+  .mass.c{left:34px;top:112px;width:58px;height:36px;background:var(--controlled);opacity:.85;animation:float 5s ease-in-out infinite;animation-delay:-2.6s}
+  .dots{position:absolute;right:12px;top:14px;display:grid;grid-template-columns:repeat(3,6px);gap:7px}
+  .dots i{width:6px;height:6px;border-radius:50%;background:rgba(0,82,255,.3)}
+  .cornerblk{position:absolute;right:8px;bottom:8px;width:22px;height:22px;border-radius:5px;background:var(--accent);box-shadow:var(--shadow-accent)}
+
+  /* ============================================================
+     6. 右栏：为什么放这里。判定一段反白（深板岩 + 点纹），是聚光灯
+     ============================================================ */
+  .verdict{position:relative;overflow:hidden;margin:14px -18px;padding:18px 18px 16px;background:var(--foreground);color:rgba(255,255,255,.92)}
+  .verdict::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,#fff 1px,transparent 1px);background-size:32px 32px;opacity:.06;pointer-events:none}
+  .verdict::after{content:"";position:absolute;right:-60px;top:-60px;width:180px;height:180px;border-radius:50%;background:var(--accent-secondary);filter:blur(60px);opacity:.35;pointer-events:none}
+  .verdict .lbl{position:relative;font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
+  .verdict .st{position:relative;font:400 26px/1.1 var(--font-display);letter-spacing:-.01em}
+  .verdict .st em{font-style:normal;background:linear-gradient(to right,#7DA2FF,#B9CBFF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .verdict .note{position:relative;margin-top:6px;font-size:12.5px;color:rgba(255,255,255,.7)}
+  .adj{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .adj li{display:grid;grid-template-columns:20px 1fr;gap:8px;align-items:start;font-size:13px}
+  .adj li .k{color:var(--muted-foreground)}
+  .adj li .ic{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700}
+  .adj li.ok .ic{background:rgba(30,127,79,.12);color:var(--ok)}
+  .adj li.no .ic{background:rgba(163,33,45,.1);color:var(--bad)}
+  .why{position:relative;overflow:hidden;margin:12px 0 0;padding:12px 14px;border-left:3px solid var(--accent);background:rgba(0,82,255,.04);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:13px}
+  .why .q{font:400 120px/0 var(--font-display);color:rgba(0,82,255,.10);position:absolute;right:6px;top:54px;pointer-events:none}
+  .tag{display:inline-block;padding:2px 9px;border-radius:999px;border:1px solid var(--border);color:var(--muted-foreground);font-size:11px;margin-left:6px;vertical-align:1px}
+  .tag.user{border-color:rgba(0,82,255,.35);color:var(--accent);background:rgba(0,82,255,.05)}
+
+  /* 底部说明：样板页的身份 */
+  .note-bottom{grid-column:1/-1;color:var(--muted-foreground);font-size:12.5px;max-width:78ch}
+
+  /* ============================================================
+     7. 窄屏：先合右栏，再合左栏；按钮占满一行
+     ============================================================ */
+  @media (max-width:1180px){
+    .layout{grid-template-columns:280px minmax(0,1fr)}
+    .col.right{grid-column:1/-1}
+  }
+  @media (max-width:820px){
+    .top{padding:12px 16px;gap:12px}
+    .layout{grid-template-columns:1fr;padding:16px 16px 40px;gap:14px}
+    .stepper{order:3;width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+    .top .right{margin-left:0}
+    .toolbar .btn{flex:1 1 100%}
+    .titleblock{gap:12px}
+    .titleblock .big{font-size:36px}
+    .view3d{grid-template-columns:1fr}
+    .scene{margin:0 auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="top rise" style="--i:0">
+  <div class="brand">
+    <h1 data-i18n="title">社区中心体块推演工具</h1>
+    <div class="sub" data-i18n="subtitle">ARCH 540 作业二。北在上。</div>
+  </div>
+  <nav class="stepper" aria-label="steps">
+    <button class="step done"><i>1</i><span data-i18n="s1">选择功能</span></button><span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <button class="step done"><i>2</i><span data-i18n="s2">面积与净高</span></button><span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <button class="step done"><i>3</i><span data-i18n="s3">选场地</span></button><span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <button class="step done"><i>4</i><span data-i18n="s4">体块推演</span></button><span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <button class="step on" aria-current="step"><i>5</i><span data-i18n="s5">确认体块与功能</span></button><span class="step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <button class="step"><i>6</i><span data-i18n="s6">效果展示</span></button>
+  </nav>
+  <div class="right">
+    <span class="pill"><span class="dot live"></span><span data-i18n="live">排布完成</span></span>
+    <div class="seg" id="mode" role="group" aria-label="mode">
+      <button class="on" data-i18n="mode_user">使用者</button><button data-i18n="mode_dev">开发者</button>
+    </div>
+    <div class="seg" id="lang" role="group" aria-label="language">
+      <button class="on" data-lang="zh">中</button><button data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- 左：功能清单 -->
+  <aside class="col left rise" style="--i:1">
+    <button class="btn ghost sm" style="align-self:flex-start;padding-left:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span data-i18n="back4">回到体块推演</span></button>
+
+    <div class="card">
+      <div class="sec-head"><span class="pill"><span class="dot"></span><span data-i18n="placed">已放入</span></span><span class="count"><span class="num">15</span> · <span class="num">2,315 m²</span></span></div>
+      <div class="rows">
+        <div class="lv"><b>Level 01</b><span><span class="num">15</span> · <span class="num">2,315 m²</span></span></div>
+        <div class="row"><span class="sw" style="background:var(--protected)"></span><span class="nm"><span class="lock" title="locked"></span><span data-i18n="f_lobby">门厅（骨架）</span></span><span class="num">420 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--buffered)"></span><span class="nm"><span class="lock"></span><span data-i18n="f_core">核：楼梯、电梯、卫生间</span></span><span class="num">66 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--tempered)"></span><span class="nm"><span data-i18n="f_gym">体育馆</span><small data-i18n="f_gym_note">挑空至 Level 02</small></span><span class="num">753 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_flex">灵活多功能室</span><span class="num">128 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_hall">大多功能厅</span><span class="num">209 m²</span></div>
+        <div class="row sel" aria-selected="true"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_seniors">老年中心</span><span class="num">129 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_kitchen">商业/教学厨房</span><span class="num">56 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_change">更衣淋浴与卫生间</span><span class="num">195 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_admin">行政办公</span><span class="num">129 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_art">艺术手工室</span><span class="num">72 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--tempered)"></span><span class="nm" data-i18n="f_dance">健身/舞蹈工作室</span><span class="num">68 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_studio">小工作室</span><span class="num">50 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_music">小多功能室（音乐）</span><span class="num">18 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_meet1">小会议/活动室 1</span><span class="num">12 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm" data-i18n="f_meet2">小会议/活动室 2</span><span class="num">10 m²</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-head"><span class="pill quiet"><span class="dot"></span><span data-i18n="flagged">需要调整</span></span><span class="count num">0</span></div>
+      <div class="empty" data-i18n="flagged_empty">所有放入的功能都满足规则。</div>
+    </div>
+
+    <div class="card">
+      <div class="sec-head"><span class="pill quiet"><span class="dot"></span><span data-i18n="unplaced">未放入</span></span><span class="count num">4</span></div>
+      <div class="rows">
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm"><span data-i18n="u1">青少年活动室</span><small data-i18n="u1_why">形状放不下</small></span><span class="num">110 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--controlled)"></span><span class="nm"><span data-i18n="u2">幼儿活动室</span><small data-i18n="u2_why">面积被分割</small></span><span class="num">95 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--tempered)"></span><span class="nm"><span data-i18n="u3">多功能活动室 2</span><small data-i18n="u3_why">面积不够</small></span><span class="num">140 m²</span></div>
+        <div class="row"><span class="sw" style="background:var(--buffered)"></span><span class="nm"><span data-i18n="u4">储藏</span><small data-i18n="u4_why">没有合适的区域</small></span><span class="num">40 m²</span></div>
+      </div>
+    </div>
+    <p class="meta" style="padding:0 6px" data-i18n="left_hint">点一个功能，右侧可以调整它的面积、楼层、锁定和阶段。</p>
+  </aside>
+
+  <!-- 中：图纸 -->
+  <section class="col centre rise" style="--i:2">
+    <div class="toolbar">
+      <button class="btn primary"><span data-i18n="confirm">确认，进入效果展示</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button class="btn" data-i18n="options">推荐排布方案（含邻接）</button>
+      <button class="btn" data-i18n="relayout">重新排布（锁定的不动）</button>
+      <span class="readout"><span data-i18n="strategy">排布方式：渐变优先</span></span>
+    </div>
+    <div class="toolbar">
+      <label class="field"><span data-i18n="plan_level">平面标高</span><select><option>Level 01 (0.0 m)</option><option>Level 02 (4.5 m)</option></select></label>
+      <label class="field"><span data-i18n="basis">气候依据</span><select><option data-i18n="basis_sun">外墙受晒（太阳辐射）</option><option data-i18n="basis_bands">南 / 中 / 北分带</option></select></label>
+      <label class="check"><input type="checkbox"><span data-i18n="chk_adj">画出所有不满足的邻接</span></label>
+    </div>
+
+    <div class="sheet">
+      <svg viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="plan">
+        <defs>
+          <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#9FB7D9" stroke-width="1"/></pattern>
+        </defs>
+        <!-- 场地 -->
+        <rect class="site" x="30" y="26" width="840" height="420" rx="2"/>
+        <text class="area" x="36" y="440">90 × 52 m</text>
+        <!-- 北 -->
+        <g transform="translate(846,56)"><circle r="12" fill="none" stroke="#1F2A2E" stroke-width="1"/><path d="M0 -9 L4 4 L0 1 L-4 4 Z" fill="#1F2A2E"/><text x="0" y="28" text-anchor="middle" style="font-size:10px">N</text></g>
+        <!-- 房间：北排 -->
+        <rect class="rm" x="150" y="80" width="160" height="140" fill="#CFDBD9"/>
+        <rect x="156" y="86" width="7" height="7" fill="#1F2A2E"/>
+        <text x="170" y="100" data-i18n="p_lobby">门厅</text><text class="area" x="158" y="116">420 m²</text>
+        <rect class="rm" x="310" y="80" width="70" height="140" fill="#D9CFB0"/>
+        <rect x="316" y="86" width="7" height="7" fill="#1F2A2E"/>
+        <text x="330" y="100" data-i18n="p_core">核</text><text class="area" x="318" y="116">66 m²</text>
+        <rect class="rm" x="380" y="80" width="240" height="140" fill="#D4A95A"/>
+        <rect class="void" x="380" y="80" width="240" height="140" opacity=".35"/>
+        <text x="392" y="100" data-i18n="p_gym">体育馆</text><text class="area" x="392" y="116" data-i18n="p_gym_area">753 m² · 挑空</text>
+        <rect class="rm" x="620" y="80" width="130" height="140" fill="#D4A95A"/>
+        <text x="632" y="100" data-i18n="p_dance">健身/舞蹈</text><text class="area" x="632" y="116">68 m²</text>
+        <!-- 走廊 -->
+        <rect x="150" y="220" width="600" height="34" fill="#FFFFFF" stroke="none"/>
+        <text class="area" x="430" y="242" text-anchor="middle" data-i18n="p_corr">走廊</text>
+        <!-- 房间：南排 -->
+        <rect class="rm" x="150" y="254" width="230" height="146" fill="#8C4A2F"/>
+        <text x="162" y="274" fill="#fff" style="fill:#fff" data-i18n="p_hall">大多功能厅</text><text class="area" x="162" y="290" style="fill:rgba(255,255,255,.75)">209 m²</text>
+        <rect class="rm sel" x="380" y="254" width="130" height="146" fill="#8C4A2F"/>
+        <text x="392" y="274" style="fill:#fff" data-i18n="p_seniors">老年中心</text><text class="area" x="392" y="290" style="fill:rgba(255,255,255,.75)">129 m²</text>
+        <rect class="rm" x="510" y="254" width="140" height="146" fill="#8C4A2F"/>
+        <text x="522" y="274" style="fill:#fff" data-i18n="p_flex">灵活多功能室</text><text class="area" x="522" y="290" style="fill:rgba(255,255,255,.75)">128 m²</text>
+        <rect class="rm" x="650" y="254" width="100" height="146" fill="#8C4A2F"/>
+        <text x="660" y="274" style="fill:#fff" data-i18n="p_kitchen">厨房</text><text class="area" x="660" y="290" style="fill:rgba(255,255,255,.75)">56 m²</text>
+        <!-- 外墙 -->
+        <rect class="wall" x="150" y="80" width="600" height="320"/>
+        <!-- 问题 / 建议：老年中心 ↔ 公共卫生间（在核里）必须相邻，不满足 -->
+        <path class="flag" d="M445 327 C 445 260, 345 260, 345 150"/>
+        <circle cx="345" cy="150" r="4" fill="#0052FF"/>
+        <circle cx="445" cy="327" r="4" fill="#0052FF"/>
+        <!-- 入口 -->
+        <path d="M230 400 l0 26" stroke="#1F2A2E" stroke-width="1.6"/><path d="M222 418 l8 8 8-8" fill="none" stroke="#1F2A2E" stroke-width="1.6"/>
+        <text class="area" x="230" y="440" text-anchor="middle" data-i18n="p_entry">主入口</text>
+      </svg>
+      <div class="titleblock">
+        <div>
+          <div class="big">Level <em>01</em><span class="bar"></span></div>
+        </div>
+        <div class="lines">
+          <div><span data-i18n="tb_elev">标高</span> <b class="num">0.0 m</b></div>
+          <div data-i18n="tb_basis">冬季（12–2 月），按外墙受晒排布</div>
+          <div><span data-i18n="tb_site">示意场地</span> <b class="num">90 × 52 m</b></div>
+          <div class="counts" style="margin-top:8px"><span class="flagged"><span data-i18n="tb_flagged">需要调整</span> <b>0</b></span><span><span data-i18n="tb_unplaced">未放入</span> <b>4</b></span></div>
+        </div>
+        <div class="ramp">
+          <span><i style="background:var(--exposed)"></i>exposed</span>
+          <span><i style="background:var(--protected)"></i>protected</span>
+          <span><i style="background:var(--buffered)"></i>buffered</span>
+          <span><i style="background:var(--tempered)"></i>tempered</span>
+          <span><i style="background:var(--controlled)"></i>controlled</span>
+        </div>
+        <div class="northmark" data-i18n="north">北在上</div>
+      </div>
+    </div>
+
+    <div class="card view3d">
+      <div class="txt">
+        <span class="pill" style="margin-bottom:10px"><span class="dot"></span><span data-i18n="v3_label">三维</span></span>
+        <h3 data-i18n="v3_title">功能随体块实时排布</h3>
+        <p data-i18n="v3_desc">点击体块的一个面推拉它，功能区会重新找位置；双击一个体块可以单独编辑。</p>
+        <div class="btns">
+          <button class="btn sm" data-i18n="v3_sun">日照</button>
+          <button class="btn sm" data-i18n="v3_wind">风</button>
+          <button class="btn sm" data-i18n="v3_white">白模</button>
+        </div>
+      </div>
+      <div class="scene" aria-hidden="true">
+        <div class="ring"></div>
+        <div class="mass a"></div><div class="mass b"></div><div class="mass c"></div>
+        <div class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="cornerblk"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 右：为什么放这里 -->
+  <aside class="col right rise" style="--i:3">
+    <div class="card" style="position:relative;overflow:hidden">
+      <span class="pill" style="margin-bottom:12px"><span class="dot"></span><span data-i18n="why_label">为什么放这里</span></span>
+      <h3 data-i18n="r_name">老年中心<span class="tag user" data-i18n="tag_user">用户设定</span></h3>
+      <div class="meta">Level 01 · <span class="num">129 m²</span> · <span class="num">7 × 19 m</span></div>
+
+      <div class="verdict">
+        <div class="lbl" data-i18n="v_label">冬季阶段</div>
+        <div class="st"><em>controlled</em> <span data-i18n="v_state">满足</span></div>
+        <div class="note" data-i18n="v_note">刚好够：这个房间需要的最低阶段和它所在空间的阶段相同。</div>
+      </div>
+
+      <ul class="adj">
+        <li class="no"><span class="ic">✕</span><span><span class="k" data-i18n="adj_must">必须相邻</span>：<span data-i18n="adj_must_v">公共卫生间</span></span></li>
+        <li class="no"><span class="ic">✕</span><span><span class="k" data-i18n="adj_better">最好相邻</span>：<span data-i18n="adj_better_v">商业/教学厨房</span></span></li>
+        <li class="ok"><span class="ic">✓</span><span><span class="k" data-i18n="adj_out">直通室外</span>：<span data-i18n="adj_out_v">室外</span></span></li>
+      </ul>
+
+      <div class="why"><span class="q">“</span><span data-i18n="why_text">贴着冬季受晒较多的外墙（排前 85%）。平面上的蓝色虚线是它还没满足的邻接。</span></div>
+
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn primary sm"><span data-i18n="lock">锁定位置</span></button>
+        <button class="btn sm" data-i18n="move">换一层</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 data-i18n="adj_title">这一层的邻接</h3>
+      <div class="meta" data-i18n="adj_sub">15 个功能里有 13 个满足全部"必须相邻"。</div>
+      <ul class="adj" style="margin-top:10px">
+        <li class="ok"><span class="ic">✓</span><span><span data-i18n="a1">门厅 — 核</span></span></li>
+        <li class="ok"><span class="ic">✓</span><span><span data-i18n="a2">体育馆 — 更衣淋浴</span></span></li>
+        <li class="no"><span class="ic">✕</span><span><span data-i18n="a3">老年中心 — 公共卫生间</span></span></li>
+        <li class="no"><span class="ic">✕</span><span><span data-i18n="a4">厨房 — 大多功能厅（接触宽度不足 5 m）</span></span></li>
+      </ul>
+    </div>
+  </aside>
+
+  <p class="note-bottom rise" style="--i:4" data-i18n="sample_note">这是一张样板页：只换界面外壳（颜色、字体、按钮、卡片、动效），平面上的阶段色阶、墨线和"问题 / 建议"虚线的含义不变。页面上的数字是示意，不是工具算出来的结果。</p>
+</main>
+
+<script>
+/* 中 / EN 切换：页面上标了 data-i18n 的文字都在这张表里。
+   中文是页面本身写的，所以表里只需要英文。 */
+const EN = {
+  title:"Community Centre Massing Tool", subtitle:"ARCH 540 Assignment 2. North is up.",
+  s1:"Choose functions", s2:"Areas and heights", s3:"Choose site", s4:"Massing", s5:"Confirm massing and functions", s6:"Show",
+  live:"Layout complete", mode_user:"User", mode_dev:"Developer",
+  back4:"Back to massing",
+  placed:"Placed", flagged:"Needs adjustment", flagged_empty:"Every placed function meets the rules.", unplaced:"Unplaced",
+  f_lobby:"Lobby (spine)", f_core:"Core: stairs, lift, washrooms", f_gym:"Gymnasium", f_gym_note:"Double height to Level 02",
+  f_flex:"Flexible multipurpose room", f_hall:"Large multipurpose hall", f_seniors:"Seniors centre", f_kitchen:"Commercial / teaching kitchen",
+  f_change:"Change, shower and washrooms", f_admin:"Administration", f_art:"Arts and crafts room", f_dance:"Fitness / dance studio",
+  f_studio:"Small studio", f_music:"Small multipurpose room (music)", f_meet1:"Small meeting room 1", f_meet2:"Small meeting room 2",
+  u1:"Youth lounge", u1_why:"Shape does not fit", u2:"Preschool room", u2_why:"Floor area is split", u3:"Multipurpose room 2", u3_why:"Not enough floor area", u4:"Storage", u4_why:"No suitable zone",
+  left_hint:"Pick a function to adjust its area, level, lock and stage on the right.",
+  confirm:"Confirm and show", options:"Suggest layouts (with adjacency)", relayout:"Re-layout (locked ones stay)", strategy:"Strategy: gradient first",
+  plan_level:"Plan level", basis:"Climate basis", basis_sun:"Facade sun exposure (solar radiation)", basis_bands:"South / middle / north bands", chk_adj:"Draw every unmet adjacency",
+  p_lobby:"Lobby", p_core:"Core", p_gym:"Gymnasium", p_gym_area:"753 m² · double height", p_dance:"Fitness / dance", p_corr:"Corridor", p_hall:"Large hall", p_seniors:"Seniors centre", p_flex:"Flexible room", p_kitchen:"Kitchen", p_entry:"Main entrance",
+  tb_elev:"Elevation", tb_basis:"Winter (Dec–Feb), placed by facade sun exposure", tb_site:"Sample site", tb_flagged:"Needs adjustment", tb_unplaced:"Unplaced", north:"North is up",
+  v3_label:"3D", v3_title:"Functions follow the massing live", v3_desc:"Click a face of a block to push or pull it and the rooms find new places. Double-click a block to edit it alone.",
+  v3_sun:"Sun", v3_wind:"Wind", v3_white:"White model",
+  why_label:"Why here", r_name:"Seniors centre", tag_user:"User set",
+  v_label:"Winter stage", v_state:"met", v_note:"Just enough: the lowest stage this room needs is the stage of the space it sits in.",
+  adj_must:"Must be adjacent", adj_must_v:"public washrooms", adj_better:"Better adjacent", adj_better_v:"commercial / teaching kitchen", adj_out:"Direct outdoor access", adj_out_v:"yes",
+  why_text:"Against an outer wall with high winter sun exposure (top 15%). The blue dashed line on the plan is the adjacency it still misses.",
+  lock:"Lock position", move:"Move to another level",
+  adj_title:"Adjacencies on this level", adj_sub:"13 of 15 functions meet all of their must-be-adjacent rules.",
+  a1:"Lobby — Core", a2:"Gymnasium — Change rooms", a3:"Seniors centre — Public washrooms", a4:"Kitchen — Large hall (contact under 5 m wide)",
+  sample_note:"This is a style sample: only the interface shell changes (colour, type, buttons, cards, motion). The stage colour ramp, ink lines and blue dashed flags on the plan keep their meaning. The numbers are illustrative, not computed by the tool."
+};
+const ZH = {};
+const nodes = [...document.querySelectorAll('[data-i18n]')];
+nodes.forEach(el => {
+  const k = el.dataset.i18n;
+  // 带小标签的标题（如"老年中心 + 用户设定"）只换第一段文字
+  ZH[k] = el.firstChild && el.firstChild.nodeType === 3 && el.children.length ? el.firstChild.textContent : el.textContent;
+});
+function setLang(lang){
+  const T = lang === 'en' ? EN : ZH;
+  nodes.forEach(el => {
+    const k = el.dataset.i18n; if (!(k in T)) return;
+    if (el.firstChild && el.firstChild.nodeType === 3 && el.children.length) el.firstChild.textContent = T[k];
+    else el.textContent = T[k];
+  });
+  document.documentElement.lang = lang === 'en' ? 'en' : 'zh';
+  document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
+  try { localStorage.setItem('a2-sample-lang', lang); } catch (e) {}
+}
+document.querySelectorAll('#lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+document.querySelectorAll('#mode button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#mode button').forEach(x => x.classList.toggle('on', x === b));
+}));
+let saved = 'zh';
+try { saved = localStorage.getItem('a2-sample-lang') || 'zh'; } catch (e) {}
+if (saved === 'en') setLang('en');
+</script>
+</body>
+</html>
