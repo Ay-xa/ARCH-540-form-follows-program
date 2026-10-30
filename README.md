@@ -1,3 +1,30 @@
+# form follows program — ARCH 540 Assignment 2 · 阶段性提交（2026-10-29）
+
+**Milestone submission** of the Assignment 2 folder from the ARCH-540 working repository, with its commit history (18 commits, 2026-10-14 → 10-29).
+这是 ARCH-540 工作仓库里 `Assignment_2` 文件夹的阶段性提交版，连同它的提交历史一起拆出来；之后的修改继续在工作仓库里做。
+
+## 从哪里看起 / Where to start
+
+| 要看什么 | 位置 |
+|---|---|
+| **工具本身**（form follows program，六步：选功能 → 面积与净高 → 选场地 → 体块推演 → 确认体块与功能 → 效果展示） | `02_Prototypes/Version_01/index.html`。直接用浏览器打开即可；需要联网（three.js、anime.js 从 CDN 加载，场地数据查温哥华开放数据）。开了 GitHub Pages 后网址是 `https://<用户名>.github.io/<仓库名>/02_Prototypes/Version_01/` |
+| 工具的用法和每一步做了什么 | `02_Prototypes/Version_01/README.md` |
+| 规则与功能库（阶段规则、排布准则、功能库） | `02_Prototypes/_shared/Rules/` |
+| 研究策略（thesis 的方向标） | `01_Research/Research_Strategy.md` |
+| 文献笔记、案例流线归纳 | `01_Research/`（`Circulation_Patterns.md` 等） |
+| GP1 Progress Review #1 的网页版与讲稿 | `04_Presentation/web/index.html`、`04_Presentation/GP1_Progress_Review_1_*.md` |
+| 过程截图 | `04_Presentation/screenshots/` |
+| 工具逻辑草稿、逐步记录 | `Tool_Logic_Draft_v2.md`、`Architecture_Massing_Level_Space_Program.md` |
+
+## 说明 / Notes
+
+- 案例的图纸（3 份 PDF、41 张平面图）**没有放进这个仓库**（版权），留在本地；它们在 `01_Research/Circulation_Patterns.md` 里按来源引用。
+- 气候数据（温哥华 CWEC2020，EPW）已转成 JavaScript 嵌在工具里；转换脚本在 `03_Data/`。
+- 文献 PDF 不进仓库，见 `README.md` 下方"文献的存放"。
+- 工作仓库：github.com/Ay-xa/ARCH-540（`Assignment_2/`）。本次提交的标签：`submission-2026-10-29`。
+
+---
+
 # Assignment 2
 
 ARCH 540 第二次作业的工作文件夹。建于 2026-10-14，作业题目与方向待定，结构随设计推进再调整。
