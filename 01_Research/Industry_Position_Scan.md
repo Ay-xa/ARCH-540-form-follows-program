@@ -52,7 +52,7 @@
 1. **性能分析仍是"事后检查"。** Forma 2025–2026 的更新重点就是把分析变成早期的比较输入。[Forma blog](https://blogs.autodesk.com/forma/2026/01/19/my-top-five-favorite-features-of-forma-site-design-in-2025/)
 2. **按图像出方案的生成式 AI 不懂性能，也接不上 CAD/BIM。** [ScienceDirect 2026 立面生成综述](https://www.sciencedirect.com/science/article/pii/S0360132326008450)
 3. **黑箱：** 设计师看不懂 AI 的理由，就不信任、也不采用。[EC3 2024](https://ec-3.org/publication/ec32024_277/)
-4. **半户外过渡空间的研究集中在暖热或温和气候**，寒冷、季节差异大的地区是空白。[MDPI Buildings 15(15):2777](https://www.mdpi.com/2075-5309/15/15/2777)、[Energy & Buildings 综述](https://www.sciencedirect.com/science/article/abs/pii/S0378778825008461)
+4. **半户外过渡空间的研究集中在暖热或温和气候**，冬季温和多雨、且把雨纳入的研究是空白。（2026-10-26 改：原写“寒冷、季节差异大的地区是空白”。依据 [Ma 2026](Ma_2026_sTCA_Corridor_Atrium.md)：西安寒冷地区的中庭走廊已有研究，但西安冬季冷而干，且没有考虑雨。）[MDPI Buildings 15(15):2777](https://www.mdpi.com/2075-5309/15/15/2777)、[Energy & Buildings 综述](https://www.sciencedirect.com/science/article/abs/pii/S0378778825008461)（2026-10-26 已读 Hou 2025 原文核对：支持这一说法，研究地点以东亚、东南亚为主，大多数在湿热气候；笔记见 [Hou_2025_Semi_Outdoor_Transitional_Spaces.md](Hou_2025_Semi_Outdoor_Transitional_Spaces.md)。MDPI 那篇仍只看过摘要）
 5. **寒冷城市不能只看日照、风、温度**，还要考虑雪、雨、湿滑地面和能见度。舒适指数仍不含降雨（对应 Literature_To_Tool_Decisions 的 D16）。[Springer IJB 2019](https://link.springer.com/article/10.1007/s00484-019-01852-5)
 6. **气候变化让历史天气文件过时。** UVic PCIC 已经做出温哥华的未来天气文件，结论是供暖需求下降、制冷需求上升。规范是否会要求使用未来气候文件**未核实**。[UVic](https://dspace.library.uvic.ca/items/5e8e6684-c704-4d2e-8480-2c81bdbafde9)
 
@@ -66,6 +66,8 @@
 | AI 代理模型（surrogate model） | Infrared.City | 用上千次 CFD 训练，1 秒内出风、热、日照结果，接 Rhino/Revit | 将来可以替代本研究的气候输入 | [datadrivenaec](https://datadrivenaec.com/tools/infrared-city)；Salzburg Research 介绍页 |
 | 体素城市模型（开源） | VoxCity（kunifujiwara，MIT） | Python 体素城市模型 + 日照 / 天空可见度 / 绿视率分析；数据来自 OSM、Microsoft Footprints、全球 1 m 树冠图、FABDEM | 不是温哥华本地数据；需 Google Earth Engine 账号、Python 3.10–3.13，不能嵌进网页；无 CFD。用户 2026-10-19 决定不合并，只参考其思路在工具内自实现（日照时数 → 辐射 → 替代分带，已做）；以后若做 Colab 对比需先加 OBJ 导出。只读了文档，未运行 | GitHub kunifujiwara/VoxCity |
 | LLM + 布局 | 多智能体 LLM 布局系统（ASCE 2025）；EnergAI（Energies 2025） | 气泡图再到平面；以能耗为目标优化 | 最接近本研究的"AI 代理"部分，但不涉及舒适梯度和活动匹配 | [ASCE](https://doi.org/10.1061/JCCEE5.CPENG-7723)、[MDPI Energies](https://www.mdpi.com/1996-1073/18/22/5921) |
+| 平面图转通风模型（开源） | AURA（Stanford，2026 预印本） | 在平面图图片或 PDF 上画框 → 自动修正几何 → 带 Airflow Network 的 EnergyPlus 模型；三套公寓的案例显示布局对通风和温度的影响与窗户、材料相当或更大 | 走到“平面 → 通风和温度”就停了，不判断活动需要的防护，也不排功能；住宅、夏季、温和气候。2026-10-26 已读全文，笔记见 [NwagwuUmeEzeoke_2026_AURA_Floor_Plan_Airflow.md](NwagwuUmeEzeoke_2026_AURA_Floor_Plan_Airflow.md)（这一行的证据强度是 A，本文其他条目仍是 B） | SSRN 6791324；[GitHub](https://github.com/juliet29/aura) |
+| AI 代理接模拟软件（MCP） | EnergyPlus-MCP + 对话式 / 多代理工作流（LBNL，2026，*J. Building Performance Simulation*） | AI 调用 EnergyPlus 的工具检查、修改、模拟、读结果；判断交给语言模型，确定性步骤交给规则代码；决定权留在人手里 | 只做能耗，不涉及活动匹配和排布；借用的是“AI 判断 + 规则执行”的分工和“白名单”约束。2026-10-26 已读全文（证据强度 A），笔记见 [Li_2026_MCP_Agentic_Energy_Modelling.md](Li_2026_MCP_Agentic_Energy_Modelling.md) | doi 10.1080/19401493.2026.2653969 |
 | 进化算法布局 | EPSAP / FPOP | 生成平面，再按热性能优化 | 节能效果只有约 5.5% | [arXiv](https://arxiv.org/abs/1410.0948v1) |
 | 城市尺度舒适代理模型 | UHTC-NN 等 | 即时预测城市热舒适地图 | 城市尺度，不是单体建筑 | 见搜索结果，未单独记录 |
 
@@ -75,7 +77,7 @@
 
 > 已有研究要么把温度梯度当作节能手段（thermal onion），要么在暖热气候里研究单个半户外空间的舒适阈值，要么让 AI 以能耗为目标排布局。还没有工具把"形体 → 分级气候保护 → 按季节匹配活动"串起来，并放在寒冷多雨的温哥华。概念上可以接续 Rahm 的气象建筑；缓冲层可以用 Lacaton & Vassal 的实测作依据。
 
-**优势：** 寒冷多雨气候是文献空白；规则可解释，回应黑箱问题；以活动匹配取代能耗作为目标。
+**优势：** 冬季温和多雨、且把雨纳入的研究是文献空白（2026-10-26 依据 Ma 2026 修正，原写“寒冷多雨气候”）；规则可解释，回应黑箱问题；以活动匹配取代能耗作为目标。
 **弱点：** 没有温哥华阈值（只能借用）；降雨没有依据；气候区目前只是相对排序，还不是计算结果。
 
 ---

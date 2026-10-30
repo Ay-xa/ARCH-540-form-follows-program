@@ -1,0 +1,1195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Just Enough</title>
+<meta name="description" content="GP1 progress review, 28 October 2026. Conditioning as a calibrated gradient of climatic protection: the argument as one scroll-driven page.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Schibsted+Grotesk:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --paper:#F2F4F1; --paper-2:#E8ECE8; --ink:#1B2622; --ink-2:#56625D; --line:#C9D1CC; --line-2:#DFE5E0;
+  --fir:#2A7354; --mint:#BFE3CF; --mint-2:#DDEBE1;
+  --s0:#6F8CA6; --s1:#7FA8AA; --s2:#A3BD8E; --s3:#D7B35E; --s4:#C4613A;
+  --act:#DCE4EC; --spa:#EFE6C4; --dec:#F0DCD0;
+  --ochre:#B08A33;
+  --display:"Newsreader", Georgia, "Times New Roman", serif;
+  --text:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --rail-w:236px;
+  --copy-w:430px;
+  --gutter:48px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--fir)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--fir);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;margin:0}
+p{margin:0 0 1em}
+ul{margin:0 0 1em;padding-left:1.1em}
+li{margin-bottom:.35em}
+.quote{font-family:var(--display);font-style:italic;font-size:1.35rem;line-height:1.3;color:var(--ink);margin:0 0 1em;font-weight:400}
+.src{color:var(--ink-2);font-size:.86rem}
+.small{font-size:.9rem;color:var(--ink-2)}
+strong{font-weight:600}
+.beat ul{font-size:.94rem}
+.beat ul li{margin-bottom:.5em}
+
+/* ---------- masthead ---------- */
+.masthead{position:fixed;top:0;left:0;right:0;height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:30;font-size:.86rem;color:var(--ink-2);pointer-events:none;background:linear-gradient(var(--paper) 55%, rgba(242,244,241,0))}
+.masthead b{font-weight:700;color:var(--ink)}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr)}
+.rail{position:sticky;top:0;height:100vh;padding:64px 14px 24px 24px;border-right:1px solid var(--line);font-size:.8rem;line-height:1.3;overflow:hidden}
+.rail-h{font-family:var(--display);font-size:1rem;color:var(--ink);margin:0 0 6px}
+.rail ol{list-style:none;margin:0;padding:0}
+.rail li{position:relative;margin:0 0 4px}
+.rail a{display:block;text-decoration:none;color:var(--ink-2);padding:7px 8px 8px 10px;border-radius:3px;border-left:2px solid transparent}
+.rail a:hover{color:var(--ink)}
+.rail a b{display:block;font-weight:700;color:var(--ink);letter-spacing:.01em}
+.rail a span{display:block;margin-top:2px}
+.rail a em{display:block;font-style:normal;margin-top:5px;color:var(--fir);font-size:.72rem}
+.rail li.on a{background:var(--mint);border-left-color:var(--fir);color:var(--ink)}
+.rail li.on a em{color:var(--ink)}
+.rail .here{margin:2px 0 6px 10px;padding-left:10px;border-left:2px dotted var(--fir);color:var(--fir);font-size:.74rem;font-weight:700}
+.rail .gp2{opacity:.78}
+.rail .gp2 .rail-h::before{content:"";display:inline-block;width:28px;border-top:1px dotted var(--ink-2);vertical-align:middle;margin-right:6px}
+
+/* ---------- hero ---------- */
+.hero{padding:96px var(--gutter) 48px;max-width:1240px}
+.hero .kicker{color:var(--ink-2);font-size:.9rem;margin-bottom:22px}
+.hero h1{font-size:clamp(3.4rem,8vw,7rem);letter-spacing:-.02em;line-height:.95;font-weight:300}
+.hero h1 small{display:block;font-size:clamp(1.3rem,2.4vw,1.9rem);font-style:italic;margin-top:10px;letter-spacing:0;font-weight:400;color:var(--ink-2)}
+.hero .q{margin:36px 0 0;max-width:34em}
+.hero .photos{position:relative;margin:40px 0 0;aspect-ratio:1600/945;max-height:72vh;overflow:hidden;background:var(--paper-2);cursor:crosshair;
+  --mx:62%; --my:68%; --r:clamp(180px, 26vw, 420px); --wx:0%}
+.hero .photos img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none}
+/* the winter-rain layer sits on top; it shows inside the soft circle that follows the cursor, and to the left of the bar */
+.hero .photos .rain{
+  -webkit-mask-image:radial-gradient(circle var(--r) at var(--mx) var(--my), rgba(0,0,0,1) 0, rgba(0,0,0,1) 56%, rgba(0,0,0,.8) 70%, rgba(0,0,0,.4) 86%, rgba(0,0,0,0) 100%), linear-gradient(to right, #000 var(--wx), transparent var(--wx));
+          mask-image:radial-gradient(circle var(--r) at var(--mx) var(--my), rgba(0,0,0,1) 0, rgba(0,0,0,1) 56%, rgba(0,0,0,.8) 70%, rgba(0,0,0,.4) 86%, rgba(0,0,0,0) 100%), linear-gradient(to right, #000 var(--wx), transparent var(--wx));
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; -webkit-mask-composite:source-over; mask-composite:add;
+  opacity:0; animation:rain-in 1.6s ease .9s forwards}
+@keyframes rain-in{to{opacity:1}}
+.hero .photos .ring{position:absolute;left:var(--mx);top:var(--my);width:calc(var(--r)*2);height:calc(var(--r)*2);transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(255,255,255,.35);pointer-events:none;opacity:0;animation:rain-in 1.6s ease .9s forwards}
+.hero .hint{display:block;margin-top:6px;font-size:.8rem;color:var(--fir)}
+/* the bar: drag it across; winter rain fills in to its left */
+.hero .bar{position:absolute;top:0;bottom:0;left:var(--wx);width:28px;margin-left:-14px;cursor:ew-resize;touch-action:none}
+.hero .bar::before{content:"";position:absolute;top:0;bottom:0;left:13px;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.hero .bar button{all:unset;position:absolute;top:50%;left:50%;width:44px;height:44px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.3);cursor:ew-resize;display:flex;align-items:center;justify-content:center;gap:5px;color:var(--ink)}
+.hero .bar button:focus-visible{outline:2px solid var(--fir);outline-offset:2px}
+.hero .bar button i{width:0;height:0;border:6px solid transparent}
+.hero .bar button i:first-child{border-right-color:var(--ink);border-left:0}
+.hero .bar button i:last-child{border-left-color:var(--ink);border-right:0}
+.hero .tag{position:absolute;top:12px;left:12px;padding:4px 9px;font-size:.74rem;background:rgba(27,38,34,.72);color:#fff;border-radius:2px;pointer-events:none;opacity:0;transition:opacity .3s}
+.hero .photos.wiped .tag{opacity:1}
+.hero figcaption{margin-top:10px;font-size:.86rem;color:var(--ink-2);max-width:60em}
+.hero .photos.noimg{display:none}
+.hero .noimg-note{display:none;margin:40px 0 0;padding:14px 16px;border:1px dashed var(--line);color:var(--ink-2);font-size:.9rem;max-width:40em}
+.hero .photos.noimg + .noimg-note{display:block}
+
+
+/* ---------- plaza strip: moves sideways 1:1 with the page scroll ---------- */
+.strip{margin:36px 0 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);padding-bottom:6px}
+.strip .lead{padding:18px var(--gutter) 12px;margin:0;font-size:.92rem;color:var(--ink-2);max-width:62em}
+.strip .track-wrap{overflow:hidden;width:100%}
+.strip .track{display:flex;width:max-content;will-change:transform}
+.strip .set{display:flex;gap:10px;padding-right:10px}
+.strip figure{margin:0;height:240px;flex:none;position:relative;background:var(--paper-2)}
+.strip img{height:100%;width:auto;display:block}
+.strip figcaption{position:absolute;left:0;bottom:0;padding:4px 9px;font-size:.72rem;background:rgba(27,38,34,.62);color:#fff}
+.strip .credit{padding:8px var(--gutter) 2px;margin:0;font-size:.76rem;color:var(--ink-2)}
+@media (max-width:1100px){ .strip figure{height:160px} }
+@media (prefers-reduced-motion:reduce){ .strip .track-wrap{overflow-x:auto} }
+
+/* ---------- story: copy + sticky stage ---------- */
+.story{display:grid;grid-template-columns:var(--copy-w) minmax(0,1fr);gap:var(--gutter);padding:0 var(--gutter)}
+.copy{min-width:0}
+.beat{padding:34vh 0 22vh;border-top:1px solid var(--line-2)}
+.beat:first-child{border-top:0;padding-top:18vh}
+.beat h2{font-size:2.05rem;margin:0 0 .6em;letter-spacing:-.01em;line-height:1.08}
+.beat h3{font-family:var(--text);font-size:1.12rem;font-weight:700;margin:1.6em 0 .5em;line-height:1.3}
+.beat h3.band{font-family:var(--display);font-weight:400;font-size:1.55rem;display:inline-block;background:var(--mint);padding:3px 12px 4px 8px;margin:1.6em 0 .7em;line-height:1.2}
+.beat .lede{font-size:1.04rem}
+.beat .status{color:var(--ink-2);font-size:.9rem;border-left:2px solid var(--line);padding-left:12px;margin:1.2em 0}
+
+.stage-col{min-width:0}
+.stage{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center}
+.stage-box{position:relative;width:min(100%, calc((100vh - 96px) * 4 / 3));aspect-ratio:4/3}
+.layer{position:absolute;inset:0;opacity:0;transition:opacity .45s ease;pointer-events:none}
+.layer.live{pointer-events:auto}
+.layer svg{width:100%;height:100%;display:block;overflow:visible}
+#L-sections{inset:0 -7%}
+#L-roadmap{inset:-5% -11%}
+.layer text{font-family:var(--text);fill:var(--ink)}
+.layer .lab{font-size:15px}
+.layer .lab-2{font-size:13px;fill:var(--ink-2)}
+.layer .disp{font-family:var(--display);font-size:22px}
+.ov{position:absolute;opacity:0;transition:opacity .35s ease}
+.ov.on{opacity:1}
+
+/* stage chips (five stages) */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:.4em 0 1em}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--ink-2)}
+.chip i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.sw0{background:var(--s0)}.sw1{background:var(--s1)}.sw2{background:var(--s2)}.sw3{background:var(--s3)}.sw4{background:var(--s4)}
+
+/* stage definitions list */
+.defs{list-style:none;padding:0;margin:0 0 1em}
+.defs li{display:grid;grid-template-columns:14px 100px 1fr;gap:10px;align-items:baseline;padding:5px 0;border-top:1px solid var(--line-2)}
+.defs li i{width:14px;height:14px;border-radius:2px;transform:translateY(2px)}
+.defs b{font-weight:700}
+
+/* premise blocks */
+.premise{margin:0 0 1.4em}
+.premise h3{margin-top:0}
+.premise .arrow{color:var(--fir);font-weight:600}
+.premise p{font-size:.96rem}
+mark.hl{--k:0;background:linear-gradient(rgba(201,65,62,.16),rgba(201,65,62,.16)) no-repeat 0 0 / calc(var(--k)*100%) 100%;color:color-mix(in srgb, #B8322F calc(var(--k)*100%), currentColor);padding:1px 0;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+@media (prefers-reduced-motion:reduce){mark.hl{--k:1 !important}}
+
+/* rules list */
+.rules{list-style:none;margin:0 0 1em;padding:0}
+.rules li{border-top:1px solid var(--line-2)}
+.rules button{all:unset;display:grid;grid-template-columns:34px 1fr;gap:10px;width:100%;padding:9px 6px 10px 4px;cursor:pointer;color:var(--ink);font:inherit;line-height:1.35;border-left:2px solid transparent}
+.rules button:hover{background:var(--paper-2)}
+.rules li.on button{background:var(--mint-2);border-left-color:var(--fir)}
+.rules .rid{font-weight:800;color:var(--fir);font-size:.9rem;padding-top:2px}
+.rules .stmt{font-size:.95rem}
+.rules .ev{display:block;font-size:.78rem;margin-top:3px;color:var(--ink-2)}
+.rules .ev.own{color:var(--ochre)}
+.rules .basis{display:none;font-size:.84rem;color:var(--ink-2);margin-top:5px}
+.rules li.on .basis{display:block}
+.ev-key{display:flex;gap:14px;font-size:.8rem;color:var(--ink-2);margin:0 0 .8em}
+.ev-key i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:0}
+.ev-key .lit i{background:var(--fir)}
+.ev-key .own i{background:var(--ochre)}
+
+/* results table (copy column) */
+table.res{border-collapse:collapse;width:100%;font-size:.9rem;margin:.4em 0 1em}
+table.res th,table.res td{text-align:left;padding:5px 6px;border-top:1px solid var(--line-2)}
+table.res th{font-weight:700;color:var(--ink-2);font-size:.8rem}
+table.res td.n{font-variant-numeric:tabular-nums;text-align:right}
+table.res th.n{text-align:right}
+
+/* overlays in the stage */
+.ov-method{inset:0}
+.ov-method .qa{position:absolute;width:30%;font-size:.84rem;line-height:1.35;color:var(--ink)}
+.ov-method .qa em{display:block;font-style:normal;margin-top:5px;font-size:.74rem;color:var(--fir);font-weight:700}
+.ov-method .qa.space{left:62%;top:14%}
+.ov-method .qa.activity{left:2%;top:74%}
+.ov-method .qa.decision{left:68%;top:74%}
+.ov-focus{left:50%;top:50%;transform:translate(-50%,-50%);width:63%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.ov-focus .inner{width:100%}
+.kit{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 12px;width:100%}
+.kit figure{margin:0;text-align:center;font-size:.78rem;line-height:1.25;color:var(--ink);opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}
+.kit figure.in{opacity:1;transform:none}
+.kit svg{width:100%;height:auto;display:block;margin-bottom:4px}
+.kit figcaption span{display:block;color:var(--ink-2);font-size:.7rem;margin-top:2px}
+.ov-sketch{left:0;right:0;top:50%;transform:translateY(-50%)}
+.ov-sketch .wipe{position:relative;width:100%;aspect-ratio:2000/667;overflow:hidden;background:#fff;border:1px solid var(--line)}
+.ov-sketch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;clip-path:inset(0 100% 0 0)}
+.ov-sketch .pen{position:absolute;top:0;bottom:0;width:2px;background:var(--fir);left:0;opacity:.8}
+.ov-sketch figcaption{font-size:.8rem;color:var(--ink-2);margin-top:8px;display:flex;justify-content:space-between;gap:12px}
+.ov-sketch figcaption span{flex:1}
+.ov-band{left:50%;top:50%;transform:translate(-50%,-50%);width:66%}
+.ov-band .legend{display:flex;justify-content:space-between;gap:6px;font-size:.76rem;color:var(--ink-2);margin-top:6px}
+.ov-band .selrule{font-size:.86rem;margin:0 0 10px;min-height:2.6em;line-height:1.3}
+.ov-band .selrule b{color:var(--fir)}
+.ov-results{left:4%;right:4%;top:50%;transform:translateY(-50%)}
+.ov-results .grid{display:grid;grid-template-columns:1.05fr 1fr;gap:18px;align-items:start}
+.ov-results .shots{display:grid;gap:10px}
+.ov-results .shots img{width:100%;display:block;border:1px solid var(--line)}
+.ov-results figcaption{font-size:.74rem;color:var(--ink-2);margin-top:3px}
+.ov-results .note{font-size:.78rem;color:var(--ink-2);margin:6px 0 0}
+.ov-payoff{left:50%;top:1%;transform:translate(-50%,0);width:74%;text-align:center}
+.ov-payoff .quote{font-size:1.25rem;margin:0}
+
+/* footer */
+.biblio{padding:56px var(--gutter) 8px;border-top:1px solid var(--line);max-width:1240px}
+.biblio h2{font-size:1.6rem;margin:0 0 .4em;letter-spacing:-.01em}
+.biblio .small{margin:0 0 1.6em}
+.biblio ol{list-style:none;margin:0;padding:0;columns:2;column-gap:var(--gutter);font-size:.84rem;line-height:1.45;color:var(--ink)}
+.biblio li{break-inside:avoid;padding-left:1.6em;text-indent:-1.6em;margin:0 0 .7em}
+.biblio a{color:var(--ink-2);word-break:break-all}
+@media (max-width:1100px){ .biblio ol{columns:1} }
+.foot{padding:40px var(--gutter) 60px;color:var(--ink-2);font-size:.86rem;border-top:1px solid var(--line);max-width:1240px}
+.cta{display:inline-block;margin:.4em 0 1em;padding:11px 18px;border:1.5px solid var(--fir);color:var(--fir);text-decoration:none;font-weight:700;border-radius:3px}
+.cta:hover{background:var(--mint-2)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  :root{--gutter:22px}
+  .layout{grid-template-columns:minmax(0,1fr)}   /* minmax(0,…): the nowrap rail must scroll inside its column, not widen the page */
+  .rail{position:sticky;top:0;height:auto;z-index:25;border-right:0;border-bottom:1px solid var(--line);background:var(--paper);padding:52px 12px 8px;overflow-x:auto;white-space:nowrap}
+  .rail .rail-h{display:inline-block;margin:0 10px 0 0;vertical-align:middle}
+  .rail ol{display:inline-flex;gap:4px;vertical-align:middle}
+  .rail li{margin:0}
+  .rail a{padding:5px 8px;border-left:0;border-bottom:2px solid transparent}
+  .rail a span,.rail a em{display:none}
+  .rail li.on a{border-bottom-color:var(--fir)}
+  .rail .here{display:inline-block;margin:0 10px;border-left:0;vertical-align:middle}
+  .rail .gp2{display:inline-block;margin-left:10px}
+  .story{display:flex;flex-direction:column}
+  .stage-col{order:-1;position:sticky;top:92px;z-index:20;background:var(--paper);border-bottom:1px solid var(--line-2)}
+  .stage{position:static;height:46vh}
+  .stage-box{width:min(100%, calc(44vh * 4 / 3))}
+  .beat{padding:10vh 0 14vh}
+  .beat h2{font-size:1.6rem}
+  .ov-method .qa{font-size:.68rem}
+  .layer .lab{font-size:18px}.layer .lab-2{font-size:16px}
+  .ov-band{width:92%}
+  .ov-band .selrule{font-size:.74rem;min-height:0}
+  .ov-band .legend{font-size:.62rem}
+  .ov-results .grid{grid-template-columns:1fr}
+  .ov-results .shots{display:none}
+  .ov-sketch figcaption{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .layer,.ov,.kit figure{transition:none}
+  .hero .photos .rain{animation:none;opacity:1}
+}
+html:not(.js) .stage{position:static;height:auto}
+html:not(.js) .layer{position:relative;opacity:1;margin-bottom:24px}
+html:not(.js) .ov{position:relative;opacity:1;transform:none}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<div class="masthead"><span><b>Just Enough</b> &nbsp; GP1 progress review</span><span>28 October 2026</span></div>
+
+<div class="layout">
+
+<!-- ===== roadmap rail: text version of the GP1 → GP2 diagram, always in view ===== -->
+<nav class="rail" aria-label="Where this review sits in GP1 and GP2">
+  <div class="rail-h">GP1</div>
+  <ol>
+    <li data-step="observation"><a href="#problem"><b>Observation</b><span>Climate affects public life</span></a></li>
+    <li data-step="critique"><a href="#thesis"><b>Critique</b><span>Challenging the uniform indoor environmental control mode</span><em>Logical argument</em></a></li>
+    <li data-step="research"><a href="#activity"><b>Research</b><span>Establishing the relationship between activities, climate and space</span><em>Logical argument, case study, simulation, interpretive</em></a></li>
+    <li data-step="translation"><a href="#decision"><b>Translation</b><span>Converting performance requirements into spatial decisions</span><em>Case study, simulation, correlational</em></a></li>
+  </ol>
+  <div class="gp2">
+    <div class="rail-h">GP2</div>
+    <ol>
+      <li data-step="experiment"><a href="#payoff"><b>Experiment</b><span>Generate, compare and validate spatial options</span><em>Simulation, qualitative</em></a></li>
+      <li data-step="synthesis"><a href="#payoff"><b>Architectural synthesis</b><span>Translate research into architectural design</span><em>Logical argument, qualitative</em></a></li>
+      <li data-step="open"><a href="#payoff"><b>Open ending</b><span>From a design experiment to an evolvable design method</span><em>Logical argument</em></a></li>
+    </ol>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===== hero ===== -->
+<header class="hero">
+  <div class="kicker">ARCH 548 GP1, progress review 1</div>
+  <h1>Just Enough<small>Conditioning as a calibrated gradient</small></h1>
+  <p class="quote q">What if conditioning is not a fixed property of a room, but a changing relationship between climate, activity, architecture, and season?</p>
+  <figure class="photos-wrap" style="margin:0">
+    <div class="photos" id="photos">
+      <img src="assets/bridge_dry_aligned.jpg" alt="Picnic tables under a Vancouver bridge in dry weather, people sitting with coats on" onerror="document.getElementById('photos').classList.add('noimg')">
+      <img class="rain" src="assets/bridge_rain_annotated.jpg" alt="The same tables in winter rain, annotated: rain protection from the overpass, lateral wind, wind-driven rain, low physical comfort" onerror="document.getElementById('photos').classList.add('noimg')">
+      <div class="ring" aria-hidden="true"></div>
+      <span class="tag" aria-hidden="true">winter rain</span>
+      <div class="bar" id="wipe-bar"><button type="button" id="wipe-handle" role="slider" aria-label="How much of the photo shows winter rain" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i><i></i></button></div>
+    </div>
+    <p class="noimg-note">The photographs load when this page is opened from its own folder (double-click index.html, or serve the repository). This preview was opened without its folder.</p>
+    <figcaption>Picnic tables under a Vancouver bridge. The overpass keeps the rain off from above, but wind and wind-driven rain still reach the tables.<span class="hint" id="hint">Move the cursor to look through the circle, or drag the bar across the photo: winter rain fills in behind it.</span></figcaption>
+  </figure>
+</header>
+
+<!-- ===== Vancouver's pop-up plazas: the strip slides sideways at the speed you scroll ===== -->
+<section class="strip" aria-label="Vancouver pop-up plazas">
+  <p class="lead">The same question in other places: Vancouver's pop-up plazas and rain-friendly plazas, where public life gathers when the weather allows and thins out when it does not. Photographs 3 to 8 are from the City of Vancouver's Shape Your City gallery.</p>
+  <div class="track-wrap"><div class="track" id="strip-track"><div class="set">
+      <figure><img src="assets/plazas/cambie_18th.jpg" alt="Pop-up plaza, W 18th Avenue and Cambie Street" loading="lazy"><figcaption>Pop-up plaza, W 18th Avenue and Cambie Street</figcaption></figure>
+      <figure><img src="assets/plazas/spyglass_pingpong.jpg" alt="False Creek Energy Centre, Spyglass Place" loading="lazy"><figcaption>False Creek Energy Centre, Spyglass Place</figcaption></figure>
+      <figure><img src="assets/plazas/granville_14th.jpg" alt="W 14th Avenue and Granville Street pop-up plaza" loading="lazy"><figcaption>W 14th Avenue and Granville Street pop-up plaza</figcaption></figure>
+      <figure><img src="assets/plazas/cambie_18th_b.jpg" alt="W 18th Avenue and Cambie Street pop-up plaza" loading="lazy"><figcaption>W 18th Avenue and Cambie Street pop-up plaza</figcaption></figure>
+      <figure><img src="assets/plazas/carrall.jpg" alt="Carrall Street pop-up plaza" loading="lazy"><figcaption>Carrall Street pop-up plaza</figcaption></figure>
+      <figure><img src="assets/plazas/bute_alberni.jpg" alt="Bute Street and Alberni Street pop-up plaza" loading="lazy"><figcaption>Bute Street and Alberni Street pop-up plaza</figcaption></figure>
+      <figure><img src="assets/plazas/cambie_bridge_north.jpg" alt="Cambie Bridge North rain-friendly plaza" loading="lazy"><figcaption>Cambie Bridge North rain-friendly plaza</figcaption></figure>
+      <figure><img src="assets/plazas/burrard_bridge_north.jpg" alt="Burrard Bridge North rain-friendly plaza" loading="lazy"><figcaption>Burrard Bridge North rain-friendly plaza</figcaption></figure>
+    </div></div></div>
+  <p class="credit">Photographs 1 and 2 by the author. Photographs 3 to 8: City of Vancouver, <a href="https://www.shapeyourcity.ca/pop-up-plazas/photos/20078">Shape Your City, pop-up plazas photo gallery</a>, reproduced for an academic review.</p>
+</section>
+
+<div class="story">
+<div class="copy">
+
+<!-- ===== 1 problem ===== -->
+<article class="beat" id="problem" data-beat="problem" data-step="observation">
+  <h2>Weather shapes public life here, and buildings answer with one line.</h2>
+  <p class="lede">Public life in Vancouver is strongly shaped by weather. Rain and cold in winter can make some public activities hard to sustain. At the same time, buildings usually organise environmental control around one clear boundary between inside and outside.</p>
+  <p><strong>First observation: different activities need different environments.</strong> A person running, a person having coffee and a person working at a laptop for hours do not need the same temperature, wind, rain shelter or stability.</p>
+  <p><strong>Problem:</strong> why does early-stage layout so rarely use the adaptive capacity of different activities to decide how much protection a space needs? Typically, we fix the location, size and use of rooms first, and only then work out how to reach the intended conditions.</p>
+  <h3 class="band">The literature that revealed the problem</h3>
+  <ul>
+    <li><strong>City of Vancouver documents:</strong> <mark class="hl">the public is asking for sheltered, heated places to stay.</mark> <em>Hot Tea, Rain City</em> (2018): about 1,200 participants and 96 feedback cards, qualitative. <em>Downtown Public Space Strategy</em> (2021) <mark class="hl">calls for "year-round" and "rain-friendly" public spaces.</mark></li>
+    <li><strong>Vernacular literature (Oliver, Turan):</strong> <mark class="hl">buildings once mediated climate rather than shutting it out.</mark></li>
+    <li><strong>Mora and Bean (2018):</strong> <mark class="hl">ASHRAE 55 is itself a binary. Mechanically conditioned buildings use PMV; naturally conditioned buildings use the adaptive model; there is nothing in between.</mark> The adaptive model also requires an outdoor mean of at least 10 °C, which Vancouver does not meet from about November to April.</li>
+    <li><strong>Hou (2025), Ma (2026):</strong> <mark class="hl">most research on semi-outdoor spaces is in hot, humid climates. Very little addresses a mild, wet winter. This is a gap.</mark></li>
+    <li><strong>Tool literature (Forma, AURA, Li 2026):</strong> existing tools go from form to performance, or from plan to airflow. <mark class="hl">None puts "how much protection an activity needs" into the layout. This is also a gap.</mark></li>
+  </ul>
+</article>
+
+<!-- ===== 2 thesis ===== -->
+<article class="beat" id="thesis" data-beat="thesis" data-step="observation">
+  <h2>Thesis statement</h2>
+  <p class="quote">Conditioned space can be reinterpreted as a calibrated gradient of climatic protection and exposure, where activity-specific environmental needs and microclimatic conditions guide spatial arrangement and protection strategies.</p>
+  <h3>Research question</h3>
+  <p>How can activity-specific environmental requirements inform early-stage spatial organization to reduce the potential for over-conditioning while maintaining acceptable comfort and usability?</p>
+</article>
+
+<!-- ===== 3 method: the roadmap, shown whole for the first time ===== -->
+<article class="beat" id="method" data-beat="method">
+  <h2>Method, and where I am</h2>
+  <p class="lede">Logical argumentation is the backbone. GP1 moves from observation to critique, research and translation; GP2 takes the experiment on to architectural synthesis and an open ending. Each step carries its own tactics, shown beside it.</p>
+  <p>The dashed box marks where the work is now: between critique and research. The tool runs and testing has started; the spatial strategies and the kit-of-parts are not yet compiled.</p>
+  <p class="small">From here on, the diagram comes back at the start of each step with that step lit.</p>
+</article>
+
+<!-- ===== 4 critique: the claim ===== -->
+<article class="beat" id="critique" data-beat="critique" data-step="critique">
+  <h2>Critique: not on or off, but five stages</h2>
+  <p class="lede"><strong>Opportunity:</strong> people doing different activities need different environmental conditions. This difference is a design opportunity that spatial organisation has not yet used. Architecture often treats environmental comfort as something provided to space after its organization.</p>
+  <p><strong>Claim:</strong> conditioning is not "on or off" but a five-stage gradient from exposed to controlled, and each activity gets just enough protection. The relationship between activity and climate builds a conditioning gradient, which is then turned into principles for spatial organisation.</p>
+  <h3>Five stages, defined by enclosure</h3>
+  <ul class="defs">
+    <li><i class="sw0"></i><b>exposed</b><span>no roof</span></li>
+    <li><i class="sw1"></i><b>protected</b><span>roof, with fewer than two walls</span></li>
+    <li><i class="sw2"></i><b>buffered</b><span>roof, with at least two walls</span></li>
+    <li><i class="sw3"></i><b>tempered</b><span>fully enclosed, without mechanical conditioning</span></li>
+    <li><i class="sw4"></i><b>controlled</b><span>mechanically conditioned</span></li>
+  </ul>
+</article>
+
+<!-- ===== 5 direction: the three fields (end of the critique) ===== -->
+<article class="beat" id="direction" data-beat="direction" data-step="critique">
+  <h2>Direction: three fields, one intelligence</h2>
+  <p class="lede"><strong>Direction:</strong> massing determines the level of protection; the level of protection determines which activities a space can host. Spatial strategies then adjust conditions further, helping the space host those activities.</p>
+  <p>Climate infrastructure hosts spatial behaviour and supports an inhabitable climate threshold; the threshold is derived from behaviour. Where the three overlap is the vernacular intelligence this thesis tries to recover: buildings that mediate climate instead of shutting it out.</p>
+  <p><strong>How it is tested:</strong> for now, rules and simulation are used to compare configurations. Next, I will add AI-assisted explanation, and test actual performance and the limits of use against a baseline and measurements.</p>
+  <p><strong>Outcome:</strong> not a single optimal answer, but a logic that brings environmental performance into design decisions earlier and lets them be compared and checked.</p>
+  <p class="quote">From performance evaluation to performance-informed spatial design.</p>
+  <p><strong>Vision:</strong> from fixed rooms with fixed settings, towards architecture that can change with climate and activity.</p>
+</article>
+
+<!-- ===== 6 premises: the research step opens into three questions ===== -->
+<article class="beat" id="premises" data-beat="premises" data-step="research" style="min-height:150vh">
+  <h2>Premises from the literature</h2>
+  <p class="lede">The research step asks three questions, one for each field of the diagram, and each uses its own method. They are the next three parts of this review.</p>
+  <ul>
+    <li><strong>Activity:</strong> what environmental conditions do different activities need, and how much variation can they tolerate? Logical argument, built on borrowed correlational studies.</li>
+    <li><strong>Space (architectural framework):</strong> which spatial strategies can provide these conditions without relying fully on mechanical systems? Case study, interpretive.</li>
+    <li><strong>Decision (threshold):</strong> how can architects compare these strategies early in design and translate environmental performance into layout decisions? Simulation.</li>
+  </ul>
+  <p class="small">Keep scrolling: the three fields open into the three questions.</p>
+</article>
+
+<!-- ===== 6 activity: P1, P2, P3 ===== -->
+<article class="beat" id="activity" data-beat="activity" data-step="research">
+  <h2>Activity: what conditions do activities need, and how much variation can they tolerate?</h2>
+  <p class="lede">Borrowed correlational studies, used as steps in a logical argument. None of them was made in Vancouver, so every threshold is labelled and replaceable.</p>
+
+  <div class="premise">
+    <h3>P1 The binary is not necessary</h3>
+    <p>Kim (2019): the stage changes what people expect. <mark class="hl">Under natural ventilation, people tolerate more temperature variation than under air conditioning.</mark> People also adjust their clothing more actively than the ASHRAE 55 clothing model predicts, so standards underestimate how much people adapt by themselves.</p>
+    <p>Hou (2025): <mark class="hl">when people can come and go freely, they tolerate a wider range.</mark> The review cites Nakano et al.: in semi-outdoor spaces, people tolerate a range two to three times wider than PPD predicts, provided they can leave freely and stay for a short time.</p>
+    <p>Pérez-Fargallo (2025): <mark class="hl">when people feel too cold or too warm, they first adjust themselves (clothing, hot drinks) before using heating or opening windows.</mark> Intermediate stages can rely on people adapting first.</p>
+  </div>
+
+  <div class="premise">
+    <h3>P2 Comfort depends on the activity and the person</h3>
+    <p>Zhang (2024), Lau (2026): <mark class="hl">comfort varies with activity intensity and with the person. The more intense the activity, the lower the neutral PET; people over 75 have a neutral PET about 4 °C higher.</mark></p>
+    <p>Cambridge and Sheffield thresholds: borrowed values. Their seasonal mean temperatures are almost the same as Vancouver's, and there is <mark class="hl">no local PET study for Vancouver</mark>.</p>
+    <p>Nikolopoulou and Lykoudis (2006), two more findings: neutral temperature follows the previous season, <mark class="hl">so the same weather feels different in autumn and in spring</mark>; and <mark class="hl">people who come by choice tolerate more discomfort than people passing through</mark>, working or waiting.</p>
+    <p>Krüger (2017), Glasgow: <mark class="hl">the neutral band (PET 10–18 °C)</mark> sits below the original PET neutral range (18–23 °C). <mark class="hl">People in a cool climate accept lower temperatures.</mark></p>
+    <p>City of Toronto (2025): acceptable UTCI ranges are set by season and time of day. Its design advice separates active areas (shade and ventilation) from seating areas (a choice of sun and shade). It gives no values by activity.</p>
+    <p>Kenawy and Elkadi (2018), Melbourne: activity intensity is expressed as <mark class="hl">metabolic rate: sitting 1 met, standing 1.2 met, walking 2 met</mark>.</p>
+  </div>
+  <div class="premise">
+    <h3>P3 Comfort shapes use, but does not decide it</h3>
+    <p>Zacharias (2001), Eliasson (2007): <mark class="hl">comfort affects whether people use a space, but does not decide it</mark>. In Montreal, the share of people sitting tracks air temperature closely (r = 0.92), but presence is not satisfaction. In Gothenburg, weather explains about half of the variation in attendance. Zacharias also found that at about 20 °C, as many people sit in the sun as in the shade.</p>
+    <p>Nikolopoulou and Lykoudis (2006): <mark class="hl">the purpose of a visit changes how much discomfort people accept. Those who come by choice tolerate more; those passing through, working or waiting tolerate less.</mark></p>
+  </div>
+</article>
+
+<!-- ===== 7 space ===== -->
+<article class="beat" id="space" data-beat="space" data-step="research">
+  <h2>Space: which strategies give these conditions without relying fully on mechanical systems?</h2>
+  <p class="lede">Case studies, read interpretively. The strategies are being collected as a kit-of-parts; each one is a way of moving a space one stage along the gradient without a machine.</p>
+  <ul>
+    <li><strong>Vernacular strategies:</strong> veranda or arcade (rain shelter and social edge), courtyard (microclimate), thermal mass, operable envelope.</li>
+    <li><strong>Semi-outdoor strategies for colder climates (Hou 2025):</strong> prioritise winter sun, enclose the windward side against winter wind, use a moderately translucent roof, plant deciduous trees.</li>
+    <li><strong>Passive strategies:</strong> winter garden as a buffer (Lacaton and Vassal); radiant heat: in semi-outdoor spaces, radiant temperature comes mainly from the surrounding surfaces, so the roof material matters (Bouyer 2007); shade: mean radiant temperature has the largest effect on PET, so shading is the key strategy (Hartabela 2021).</li>
+    <li><strong>Psychological adjustment:</strong> a light or glazed roof makes a space feel more like outdoors and lowers expectations (Hou 2025).</li>
+    <li><strong>Rain shelter (City of Vancouver guidelines):</strong> canopies 3.0–5.0 m high, with a depth-to-height ratio of about 7:10.</li>
+  </ul>
+  <h3>Three sketches from the kit</h3>
+  <p>An oculus that opens to the winter sun and shades the summer sun; kitchen, dining and garden as nested enclosures, each one stage further out; and a site where flows cross a single covered point. The parts are drawn before they are compiled, so that each one can be placed on the gradient.</p>
+  <p class="status">Status: collecting has started. The strategies are not yet compiled or connected to the tool.</p>
+</article>
+
+<!-- ===== 8 decision ===== -->
+<article class="beat" id="decision" data-beat="decision" data-step="translation">
+  <h2>Decision: rules R1–R8</h2>
+  <p class="lede">For each activity in each season, all the rules it triggers are found, and the highest stage they ask for becomes its minimum stage. That minimum is "just enough". A space below it cannot host the activity; a space above it is over-conditioned. The first version covers winter.</p>
+  <p class="small">Select a rule to place it on the gradient. A filled marker is winter, an open marker is summer.</p>
+  <div class="ev-key"><span class="lit"><i></i>From the literature</span><span class="own"><i></i>My own step or assumption</span></div>
+  <ol class="rules" id="rules"></ol>
+  <p>In short: five of eight come from the literature (R1–R4, R6); R5 is an assumption; R7 and R8 are my own decisions.</p>
+</article>
+
+<!-- ===== 9 test ===== -->
+<article class="beat" id="test" data-beat="test" data-step="translation">
+  <h2>Testing the argument with the tool</h2>
+  <p class="lede">The purpose is to test whether the theory can produce spatial decisions that are actually useful. The tool is the runnable version of the argument, not the result itself.</p>
+  <h3>The tool does three things</h3>
+  <ul>
+    <li><strong>Assigns a level of protection</strong> from activity needs and environmental data, using R1–R8.</li>
+    <li><strong>Generates and compares layouts</strong> within basic geometric constraints. Test bed: a community centre (Marpole 2021 functional program, Sunset Park site). It is the test bed, not the subject. The plan layers from buffered through tempered to controlled; controlled spaces gather on the winter-sun side.</li>
+    <li><strong>Explains</strong> why a space suits or does not suit an activity. Click a room to see which façade it uses, what it is next to, which stage it needs, the rule behind that stage, and the evidence behind the rule.</li>
+  </ul>
+  <h3>Four massing options, compared with each other only</h3>
+  <table class="res">
+    <thead><tr><th>Option</th><th class="n">Unassigned space</th><th class="n">Sun exposure</th><th class="n">Gradient sequence</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td class="n">14%</td><td class="n">66%</td><td class="n">70%</td></tr>
+      <tr><td>B</td><td class="n">11%</td><td class="n">69%</td><td class="n">71%</td></tr>
+      <tr><td>C</td><td class="n">15%</td><td class="n">57%</td><td class="n">69%</td></tr>
+      <tr><td>D</td><td class="n">10%</td><td class="n">45%</td><td class="n">68%</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Relative values: they rank the options against each other and say nothing on their own.</p>
+  <h3>What it shows</h3>
+  <ul>
+    <li>the argument can be written as rules and run;</li>
+    <li>it produces a recognisable layered organisation;</li>
+    <li>every decision can be traced.</li>
+  </ul>
+  <h3>What it does not yet show</h3>
+  <ul>
+    <li>how much mechanically conditioned area the gradient saves compared with an all-controlled layout (the baseline comparison is the next step);</li>
+    <li>whether the five stages match real levels of thermal protection;</li>
+    <li>whether a tempered space is comfortable in a Vancouver winter.</li>
+  </ul>
+  <p class="status">One caveat: the current version still weighs compactness and sun before the gradient when choosing a layout. This will change.</p>
+</article>
+
+<!-- ===== 10 payoff ===== -->
+<article class="beat" id="payoff" data-beat="payoff" data-step="research">
+  <h2>What comes next</h2>
+  <p class="lede">The research step continues. The link between activity and space is still the thinnest part of the argument: more case studies to read, and a kit-of-parts to build out from them, so that each spatial strategy can be placed on the gradient and tested in the tool.</p>
+  <h3>Design principles (kit-of-parts)</h3>
+  <p>Each case is turned into a spatial principle that can be reused in new buildings. From 26 community centre plans: the large rooms are visible from the lobby; a through-lobby links street and park; a covered outdoor promenade extends the interior street, which corresponds directly to buffered public space. Next step: turn the collected strategies into a reusable kit-of-parts.</p>
+  <h3>Two questions for the reviewers</h3>
+  <ul>
+    <li>Is the gradient convincing without local measurements?</li>
+    <li>Where does the research logic, from activity to space to decision, need to be straightened out?</li>
+  </ul>
+  <a class="cta" href="../../02_Prototypes/Version_01/index.html">Open the tool</a>
+</article>
+
+</div><!-- /copy -->
+
+<!-- ===== the stage ===== -->
+<div class="stage-col">
+<div class="stage" aria-hidden="true">
+<div class="stage-box" id="stagebox">
+
+  <!-- world A: one wall, then five bands -->
+  <div class="layer" id="L-wall">
+    <svg viewBox="0 0 800 600">
+      <defs>
+        <pattern id="rain" width="14" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+          <line x1="7" y1="0" x2="7" y2="14" stroke="#6F8CA6" stroke-width="1.2" stroke-linecap="round"/>
+        </pattern>
+      </defs>
+      <g id="wA-rain" opacity="0"><rect x="40" y="90" width="330" height="330" fill="url(#rain)"/></g>
+      <line x1="40" y1="430" x2="760" y2="430" stroke="#1B2622" stroke-width="1.5"/>
+      <g id="wA-bands"></g>
+      <g id="wA-labels" opacity="0">
+        <text class="lab" x="60" y="470">outside: the weather as it comes</text>
+        <text class="lab" x="740" y="470" text-anchor="end">inside: one setting, all year</text>
+        <text class="lab-2" x="400" y="505" text-anchor="middle">one boundary, two conditions</text>
+      </g>
+      <g id="wA-names" opacity="0"></g>
+    </svg>
+  </div>
+
+  <!-- world C: five sections assembling -->
+  <div class="layer" id="L-sections">
+    <svg viewBox="0 0 1000 440" id="secsvg"></svg>
+  </div>
+
+  <!-- world D: the GP1 → GP2 roadmap, redrawn so the highlight can move -->
+  <div class="layer" id="L-roadmap">
+    <svg viewBox="40 48 1120 632" id="rmsvg"></svg>
+  </div>
+
+  <!-- world B: the three fields (Venn), which open into the three sub-questions -->
+  <div class="layer" id="L-circles">
+    <svg viewBox="0 0 800 600" id="circsvg">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1B2622"/></marker>
+      </defs>
+      <g id="venn-rain" opacity="0" stroke="#9AA7AE" stroke-width="1.6" stroke-linecap="round"></g>
+      <circle id="c-space" fill="#EFE6C4" stroke="#1B2622" stroke-width="1.2" fill-opacity=".92"/>
+      <circle id="c-activity" fill="#DCE4EC" stroke="#1B2622" stroke-width="1.2" fill-opacity=".92"/>
+      <circle id="c-decision" fill="#F0DCD0" stroke="#1B2622" stroke-width="1.2" fill-opacity=".92"/>
+      <text class="lab" id="t-space" text-anchor="middle">Space</text>
+      <text class="lab" id="t-activity" text-anchor="middle">Activity</text>
+      <text class="lab" id="t-decision" text-anchor="middle">Decision</text>
+      <g id="venn-extra" opacity="0"></g>
+    </svg>
+
+    <!-- method: the three sub-questions beside the circles -->
+    <div class="ov ov-method" id="ov-method">
+      <div class="qa space">Which spatial strategies can provide these conditions without relying fully on mechanical systems?<em>Case study, interpretive</em></div>
+      <div class="qa activity">What environmental conditions do different activities need, and how much variation can they tolerate?<em>Logical argument</em></div>
+      <div class="qa decision">How can architects compare these strategies early in design and translate environmental performance into layout decisions?<em>Simulation</em></div>
+    </div>
+
+    <!-- activity: the range chart -->
+    <div class="ov ov-focus" id="ov-activity">
+      <svg class="inner" viewBox="0 0 460 340" id="actchart">
+        <g font-family="Schibsted Grotesk, Arial, sans-serif" font-size="13" fill="#1B2622">
+          <line x1="40" y1="124" x2="440" y2="124" stroke="#56625D" stroke-width="1"/>
+          <g id="ticks"></g>
+          <text x="440" y="142" text-anchor="end" fill="#56625D">PET, °C</text>
+          <g id="band-orig" opacity="0"><rect y="58" height="18" fill="#D7B35E" fill-opacity=".85"/><text y="52" x="40">original PET neutral range, 18–23 °C</text></g>
+          <g id="band-glas" opacity="0"><rect y="92" height="18" fill="#7FA8AA" fill-opacity=".9"/><text y="86" x="40">Glasgow neutral band, 10–18 °C (Krüger 2017)</text></g>
+          <g id="shift-old" opacity="0"><line y1="164" y2="164" stroke="#C4613A" stroke-width="2"/><polygon fill="#C4613A"/><text y="158" x="40">about 4 °C warmer for people over 75 (Lau, Zhang)</text></g>
+          <g id="tol" opacity="0">
+            <text y="206" x="40">range PPD predicts, and the range accepted when people can leave freely (Hou 2025)</text>
+            <rect id="tol-base" x="140" y="214" width="80" height="10" fill="#6F8CA6"/>
+            <rect id="tol-wide" x="140" y="232" width="80" height="10" fill="none" stroke="#6F8CA6" stroke-width="1.5"/>
+            <text id="tol-txt" x="236" y="241" fill="#56625D">×1</text>
+          </g>
+          <g id="met" opacity="0">
+            <text y="282" x="40">intensity as metabolic rate (Kenawy and Elkadi 2018)</text>
+            <g transform="translate(60,290)"><use href="#fig-sit" /><text x="22" y="30">sitting, 1 met</text></g>
+            <g transform="translate(190,290)"><use href="#fig-stand" /><text x="22" y="30">standing, 1.2 met</text></g>
+            <g transform="translate(330,290)"><use href="#fig-walk" /><text x="22" y="30">walking, 2 met</text></g>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <!-- space: the kit-of-parts glyphs, then the sketches -->
+    <div class="ov ov-focus" id="ov-space"><div class="inner kit" id="kit"></div></div>
+    <figure class="ov ov-sketch" id="ov-sketch" style="margin:0">
+      <div class="wipe"><img id="sketch-img" src="assets/kit_of_parts_sketch.jpg" alt="Three hand sketches: an oculus detail with winter and summer sun angles; a section through kitchen, dining and garden as nested enclosures; an axonometric of a site with flows crossing a covered point"><div class="pen" id="sketch-pen"></div></div>
+      <figcaption><span>Oculus detail: open to the winter sun, shaded from the summer sun.</span><span>Kitchen, dining, garden: nested enclosures, each one stage further out.</span><span>Site axon: flows crossing a single covered point.</span></figcaption>
+    </figure>
+
+    <!-- decision: the rule on the band -->
+    <div class="ov ov-band" id="ov-decision">
+      <p class="selrule" id="selrule"></p>
+      <svg viewBox="0 0 600 120" id="bandsvg">
+        <g id="band-segs"></g>
+        <g id="band-pins"></g>
+      </svg>
+      <div class="legend"><span>exposed</span><span>protected</span><span>buffered</span><span>tempered</span><span>controlled</span></div>
+    </div>
+
+    <!-- test: results -->
+    <div class="ov ov-results" id="ov-test">
+      <div class="grid">
+        <div>
+          <svg viewBox="0 0 420 300" id="ressvg"></svg>
+          <p class="note">Four massing options on the Sunset Park test bed. Bars are relative scores, read against each other only.</p>
+        </div>
+        <div class="shots">
+          <figure style="margin:0"><img src="../screenshots/2026-10-23_v01_light_step5_axo.jpg" alt="The tool: massing with rooms placed, coloured by stage from exposed to controlled"><figcaption>Rooms placed on a massing, coloured by stage.</figcaption></figure>
+          <figure style="margin:0"><img src="../screenshots/2026-10-20_v01_stage_sequence.jpg" alt="The tool: plan with rooms, their required stage, and the rule and evidence behind each one"><figcaption>Click a room: its stage, the rule, and the evidence.</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- payoff -->
+    <div class="ov ov-payoff" id="ov-payoff"><p class="quote">From performance evaluation to performance-informed spatial design.</p></div>
+  </div>
+
+  <!-- shared symbols -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <g id="fig-stand" stroke="#1B2622" stroke-width="2" stroke-linecap="round" fill="none"><circle cx="8" cy="4" r="3.5" fill="#1B2622" stroke="none"/><line x1="8" y1="8" x2="8" y2="22"/><line x1="8" y1="22" x2="3" y2="34"/><line x1="8" y1="22" x2="13" y2="34"/><line x1="8" y1="12" x2="2" y2="20"/><line x1="8" y1="12" x2="14" y2="20"/></g>
+      <g id="fig-sit" stroke="#1B2622" stroke-width="2" stroke-linecap="round" fill="none"><circle cx="8" cy="4" r="3.5" fill="#1B2622" stroke="none"/><line x1="8" y1="8" x2="8" y2="21"/><line x1="8" y1="21" x2="17" y2="21"/><line x1="17" y1="21" x2="17" y2="34"/><line x1="8" y1="12" x2="15" y2="16"/></g>
+      <g id="fig-walk" stroke="#1B2622" stroke-width="2" stroke-linecap="round" fill="none"><circle cx="8" cy="4" r="3.5" fill="#1B2622" stroke="none"/><line x1="8" y1="8" x2="9" y2="21"/><line x1="9" y1="21" x2="1" y2="33"/><line x1="9" y1="21" x2="16" y2="31"/><line x1="8" y1="12" x2="1" y2="17"/><line x1="8" y1="12" x2="15" y2="12"/></g>
+    </defs>
+  </svg>
+
+</div><!-- /stage-box -->
+</div><!-- /stage -->
+</div><!-- /stage-col -->
+
+</div><!-- /story -->
+
+<!-- ===== bibliography ===== -->
+<section class="biblio" id="bibliography" aria-labelledby="biblio-h">
+  <h2 id="biblio-h">Bibliography</h2>
+  <p class="small">The sources behind this page, in Chicago style, as listed in the written outline. 29 entries.</p>
+  <ol>
+    <li>Bouyer, J., J. Vinet, P. Delpech, and S. Carré. "Thermal Comfort Assessment in Semi-Outdoor Environments: Application to Comfort Study in Stadia." <em>Journal of Wind Engineering and Industrial Aerodynamics</em> 95 (2007): 963–76. <a href="https://doi.org/10.1016/j.jweia.2007.01.022">https://doi.org/10.1016/j.jweia.2007.01.022</a>.</li>
+    <li>City of Toronto. <em>Pedestrian Level Wind Study: Terms of Reference Guide</em>. Toronto: City of Toronto, June 2022.</li>
+    <li>City of Toronto. <em>Thermal Comfort Guidelines 2025: For Large Area Studies, Public Realm Capital Projects &amp; Large Site Developments</em>. Toronto: City of Toronto, January 2025.</li>
+    <li>City of Vancouver. <em>Design and Development Guidelines</em>. Vancouver: City of Vancouver, 2025. Amended February 3, 2026.</li>
+    <li>City of Vancouver. <em>Downtown Public Space Strategy</em>. Vancouver: City of Vancouver, 2021.</li>
+    <li>City of Vancouver. <em>Places for People Downtown: Hot Tea, Rain City Winter Engagement Summary</em>. Vancouver: City of Vancouver, 2018.</li>
+    <li>Eliasson, I., I. Knez, U. Westerberg, S. Thorsson, and F. Lindberg. "Climate and Behaviour in a Nordic City." <em>Landscape and Urban Planning</em> 82 (2007): 72–84.</li>
+    <li>Hartabela, Dadang, Bart Julien Dewancker, and Mochamad Donny Koerniawan. "A Relationship between Micro-Meteorological and Personal Variables of Outdoor Thermal Comfort: A Case Study in Kitakyushu, Japan." <em>Sustainability</em> 13 (2021): 13634.</li>
+    <li>Hou, G., Y. Kuai, L. Yin, Y. Li, and P. Shu. "A Comprehensive Review of Thermal Comfort Related Design Strategy of Semi-Outdoor Transitional Spaces." <em>Energy and Buildings</em> 345 (2025): 116116. <a href="https://doi.org/10.1016/j.enbuild.2025.116116">https://doi.org/10.1016/j.enbuild.2025.116116</a>.</li>
+    <li>Inform Planning. <em>Marpole Community Centre Functional Program: Final Report</em>. Vancouver: City of Vancouver, July 20, 2021.</li>
+    <li>Kenawy, Inji, and Hisham Elkadi. "The Outdoor Thermal Benchmarks in Melbourne Urban Climate." <em>Sustainable Cities and Society</em> 43 (2018): 587–600.</li>
+    <li>Kim, Jungsoo, Federico Tartarini, Thomas Parkinson, Paul Cooper, and Richard de Dear. "Thermal Comfort in a Mixed-Mode Building: Are Occupants More Adaptive?" <em>Energy and Buildings</em> 203 (2019): 109436. <a href="https://doi.org/10.1016/j.enbuild.2019.109436">https://doi.org/10.1016/j.enbuild.2019.109436</a>.</li>
+    <li>Krüger, E., F. Rossi, and P. Drach. "Calibration of the Physiological Equivalent Temperature Index for Three Different Climatic Regions." <em>International Journal of Biometeorology</em> 61 (2017): 1323–36. <a href="https://doi.org/10.1007/s00484-017-1310-8">https://doi.org/10.1007/s00484-017-1310-8</a>.</li>
+    <li>Lacaton, Anne, and Jean-Philippe Vassal. <em>It's Nice Today: On Climate, Comfort, and Pleasure</em>. Berlin: Ruby Press, 2024.</li>
+    <li>Lau, Kevin, Lingye Yao, and Edward Ng. "Designing for Mild Winters: Evidence-Based Thermal Comfort Benchmarks from Urban Parks in a Sub-Tropical City." <em>International Journal of Biometeorology</em> 70 (2026): 116. <a href="https://doi.org/10.1007/s00484-026-03190-9">https://doi.org/10.1007/s00484-026-03190-9</a>.</li>
+    <li>Li, H., L. Zhang, H. Zhou, and T. Hong. "MCP-Enabled Agentic AI Workflow for Building Energy Modelling: Framework and Use Cases." <em>Journal of Building Performance Simulation</em> (2026). <a href="https://doi.org/10.1080/19401493.2026.2653969">https://doi.org/10.1080/19401493.2026.2653969</a>.</li>
+    <li>Ma, X., H. Chen, T. Li, et al. "Spatial Thermal Comfort Autonomy (sTCA) for Corridor–Atrium Buildings in Cold-Climate High-Density Contexts: UTCI-Based Multi-Objective Optimisation and Sensitivity Analysis." <em>Frontiers of Architectural Research</em> (2026). <a href="https://doi.org/10.1016/j.foar.2026.03.018">https://doi.org/10.1016/j.foar.2026.03.018</a>.</li>
+    <li>Mora, Rodrigo, and Robert Bean. "Thermal Comfort: Designing for People." <em>ASHRAE Journal</em>, February 2018, 40–46.</li>
+    <li>"My Top Five Favorite Features of Forma Site Design in 2025." <em>Autodesk Forma Blog</em>, January 19, 2026. <a href="https://blogs.autodesk.com/forma/2026/01/19/my-top-five-favorite-features-of-forma-site-design-in-2025/">https://blogs.autodesk.com/forma/2026/01/19/my-top-five-favorite-features-of-forma-site-design-in-2025/</a>.</li>
+    <li>Nikolopoulou, Marialena, and Spyros Lykoudis. "Thermal Comfort in Outdoor Urban Spaces: Analysis across Different European Countries." <em>Building and Environment</em> 41 (2006): 1455–70. <a href="https://doi.org/10.1016/j.buildenv.2005.05.031">https://doi.org/10.1016/j.buildenv.2005.05.031</a>.</li>
+    <li>Nwagwu Ume-Ezeoke, J., C. Gorlé, and R. K. Jain. "AURA: Automated Universal Floor Plan Replication for Airflow and Thermal Analysis." Preprint, SSRN 6791324, 2026.</li>
+    <li>Oliver, Paul. "Vernacular Know-How." In <em>Vernacular Architecture</em>. Routledge, 1990.</li>
+    <li>Pantavou, K., S. Lykoudis, M. Nikolopoulou, and I. X. Tsiros. "Thermal Sensation and Climate: A Comparison of UTCI and PET Thresholds in Different Climates." <em>International Journal of Biometeorology</em> 62 (2018): 1695–1708. <a href="https://doi.org/10.1007/s00484-018-1569-4">https://doi.org/10.1007/s00484-018-1569-4</a>.</li>
+    <li>Pérez-Fargallo, Alexis, Paula Gacitúa-Ferrada, Laura Marín-Restrepo, and David Bienvenido-Huertas. "Relationship between the Architectural and Constructive Characteristics of Dwellings and the Adaptive Actions of Their Occupants." <em>Energy Efficiency</em> 18 (2025): 27. <a href="https://doi.org/10.1007/s12053-025-10312-6">https://doi.org/10.1007/s12053-025-10312-6</a>.</li>
+    <li>"Philippe Rahm: Thermodynamics Cities." <em>IAAC Blog</em>, April 29, 2014. <a href="https://www.iaacblog.com/2014/04/29/philippe-rahm-thermodynamics-cities/">https://www.iaacblog.com/2014/04/29/philippe-rahm-thermodynamics-cities/</a>.</li>
+    <li>Turan, Mete. "Vernacular Design and Environmental Wisdom." In <em>Vernacular Architecture</em>. Routledge, 1990.</li>
+    <li>Yang, Xinpeng, Diyu Yang, Ying Song, and Weiwei Liu. "Quantifying the Effect of Psychological Adaptation: A New Model for Outdoor Thermal Comfort Evaluation in Urban Public Spaces — A Case Study in the Hot-Summer and Cold-Winter Zone." <em>Sustainable Cities and Society</em> 148 (2026): 107679. <a href="https://doi.org/10.1016/j.scs.2026.107679">https://doi.org/10.1016/j.scs.2026.107679</a>.</li>
+    <li>Zacharias, John, Ted Stathopoulos, and Hanqing Wu. "Microclimate and Downtown Open Space Activity." <em>Environment and Behavior</em> 33, no. 2 (2001): 296–315.</li>
+    <li>Zhang, Y., X. Zhang, J. Han, and X. Liu. "Study on the Outdoor Thermal Comfort of College Students under Different Activity Intensities in a High-Altitude Climate Zone." <em>Frontiers in Public Health</em> 12 (2024): 1365470. <a href="https://doi.org/10.3389/fpubh.2024.1365470">https://doi.org/10.3389/fpubh.2024.1365470</a>.</li>
+  </ol>
+</section>
+
+<footer class="foot">
+  <p>ARCH 548 GP1, progress review 1, 28 October 2026. Reviewers: James Huemoeller and Xun Liu. Sources are listed in the bibliography above and cited in the written outline with Chicago notes; this page quotes the same authors and figures.</p>
+  <p>Thresholds on this page are borrowed from studies in other cities and labelled as such. There is no local PET study for Vancouver.</p>
+</footer>
+
+</main>
+</div><!-- /layout -->
+
+<script>
+/* ============================================================
+   One scroll conductor. Native scroll position is the only
+   source of truth: the same position always gives the same stage.
+   ============================================================ */
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const seg = (p,a,b)=>clamp((p-a)/(b-a));
+const ease = t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp = (a,b,t)=>a+(b-a)*t;
+const S = ['#6F8CA6','#7FA8AA','#A3BD8E','#D7B35E','#C4613A'];
+const NAMES = ['exposed','protected','buffered','tempered','controlled'];
+const DEFS = ['no roof','roof, fewer than two walls','roof, at least two walls','fully enclosed, no mechanical conditioning','mechanically conditioned'];
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function txt(attrs,parent,s){const t=el('text',attrs,parent);t.textContent=s;return t;}
+
+/* ---------- hero: the spotlight follows the cursor ---------- */
+(function spotlight(){
+  const box=document.getElementById('photos'); if(!box) return;
+  let tx=null, ty=null, cx=null, cy=null, raf=0, dragging=false;
+  const apply=()=>{ box.style.setProperty('--mx', cx.toFixed(1)+'px'); box.style.setProperty('--my', cy.toFixed(1)+'px'); };
+  const tick=()=>{
+    raf=0;
+    if(cx===null){ cx=tx; cy=ty; } else { cx+=(tx-cx)*.14; cy+=(ty-cy)*.14; }
+    apply();
+    if(Math.abs(tx-cx)>.3||Math.abs(ty-cy)>.3) raf=requestAnimationFrame(tick);
+  };
+  box.addEventListener('pointermove',e=>{
+    if(dragging) return;
+    const r=box.getBoundingClientRect(); tx=e.clientX-r.left; ty=e.clientY-r.top;
+    if(RM){ cx=tx; cy=ty; apply(); return; }
+    if(!raf) raf=requestAnimationFrame(tick);
+  },{passive:true});
+  // the circle is about a third of the frame: radius = 36% of the frame width
+  const sizeR=()=>box.style.setProperty('--r', (box.getBoundingClientRect().width*0.36).toFixed(0)+'px');
+  sizeR(); addEventListener('resize',sizeR);
+
+  /* the bar: starts at the left edge; drag it (mouse, touch or arrow keys) and winter rain fills in behind it */
+  const handle=document.getElementById('wipe-handle'); const bar=document.getElementById('wipe-bar');
+  let wx=0;
+  const setW=v=>{ wx=clamp(v,0,100); box.style.setProperty('--wx', wx.toFixed(2)+'%'); handle.setAttribute('aria-valuenow', Math.round(wx)); box.classList.toggle('wiped', wx>8); };
+  const fromEvent=e=>{ const r=box.getBoundingClientRect(); setW((e.clientX-r.left)/r.width*100); };
+  bar.addEventListener('pointerdown',e=>{ dragging=true; bar.setPointerCapture(e.pointerId); fromEvent(e); e.preventDefault(); });
+  bar.addEventListener('pointermove',e=>{ if(dragging) fromEvent(e); });
+  const stop=()=>{dragging=false;}; bar.addEventListener('pointerup',stop); bar.addEventListener('pointercancel',stop);
+  handle.addEventListener('keydown',e=>{ const step=e.shiftKey?10:2; if(e.key==='ArrowLeft'){setW(wx-step);e.preventDefault();} if(e.key==='ArrowRight'){setW(wx+step);e.preventDefault();} if(e.key==='Home'){setW(0);} if(e.key==='End'){setW(100);} });
+})();
+
+
+/* ---------- plaza strip: one set is cloned so the loop is seamless; the conductor moves it ---------- */
+const stripTrack=document.getElementById('strip-track');
+const stripSet=stripTrack&&stripTrack.firstElementChild;
+if(stripTrack){ const copy=stripSet.cloneNode(true); copy.setAttribute('aria-hidden','true'); copy.querySelectorAll('img').forEach(i=>i.alt=''); stripTrack.appendChild(copy); }
+function renderStrip(){
+  if(!stripTrack||RM) return;
+  const r=stripTrack.parentElement.getBoundingClientRect();
+  const moved=Math.max(0, innerHeight - r.top);          // pixels scrolled since the strip entered the screen, 1:1
+  const w=stripSet.getBoundingClientRect().width||1;
+  stripTrack.style.transform=`translateX(${-(moved % w)}px)`;
+}
+
+/* ---------- world A: wall → bands ---------- */
+const bandsG = document.getElementById('wA-bands');
+const namesG = document.getElementById('wA-names');
+const bandEls = S.map(()=>el('rect',{y:150,height:280},bandsG));
+NAMES.forEach(n=>txt({class:'lab','text-anchor':'middle',y:465},namesG,n));
+function renderWall(beat,p){
+  if(RM) p=1;
+  const rise = beat==='problem' ? ease(seg(p,0,.22)) : 1;      // fully up before the Problem paragraph reaches mid-screen (p~.37-.41)
+  const split = beat==='thesis' ? ease(seg(p,.05,.6)) : 0;
+  document.getElementById('wA-rain').setAttribute('opacity', beat==='problem' ? seg(p,.12,.28) : 1-split);
+  document.getElementById('wA-labels').setAttribute('opacity', beat==='problem' ? seg(p,.22,.36) : 1-split*1.6);
+  namesG.setAttribute('opacity', beat==='thesis' ? seg(p,.55,.85) : 0);
+  bandEls.forEach((r,i)=>{
+    const cx = lerp(400, 100+i*150, split), w = lerp(22, 136, split), h = 280*rise;
+    r.setAttribute('x', cx-w/2); r.setAttribute('width', w);
+    r.setAttribute('y', 430-h); r.setAttribute('height', h);
+    r.setAttribute('fill', split<.15 ? '#1B2622' : S[i]);
+    r.setAttribute('fill-opacity', split<.15 ? 1 : .35+.65*split);
+    namesG.children[i].setAttribute('x', cx);
+  });
+}
+
+/* ---------- world C: five sections assembling ---------- */
+const secsvg = document.getElementById('secsvg');
+const secParts = [];
+(function buildSections(){
+  for(let i=0;i<5;i++){
+    const g = el('g',{transform:`translate(${i*200},0)`},secsvg);
+    const parts=[];
+    el('line',{x1:20,y1:290,x2:180,y2:290,stroke:'#1B2622','stroke-width':1.5},g);
+    const sky = el('g',{},g);
+    el('circle',{cx:150,cy:40,r:9,fill:'none',stroke:'#D7B35E','stroke-width':1.5},sky);
+    for(let k=0;k<8;k++){const a=k*Math.PI/4;el('line',{x1:150+13*Math.cos(a),y1:40+13*Math.sin(a),x2:150+17*Math.cos(a),y2:40+17*Math.sin(a),stroke:'#D7B35E','stroke-width':1.5},sky);}
+    const rainBottom = i===0 ? 270 : 108;
+    const rain = el('g',{stroke:'#6F8CA6','stroke-width':1.2,'stroke-dasharray':'3 6','stroke-linecap':'round'},g);
+    for(let k=0;k<6;k++){const x=40+k*22;el('line',{x1:x+12,y1:30,x2:x,y2:rainBottom},rain);}
+    parts.push(sky,rain);
+    if(i===0){
+      const tree=el('g',{},g); el('line',{x1:40,y1:290,x2:40,y2:230,stroke:'#1B2622','stroke-width':2},tree); el('circle',{cx:40,cy:212,r:22,fill:'#A3BD8E','fill-opacity':.6,stroke:'#1B2622','stroke-width':1},tree);
+      const wind=el('g',{stroke:'#56625D','stroke-width':1,fill:'none'},g); el('path',{d:'M20 200 q30 -10 60 0 t60 0'},wind); el('path',{d:'M20 230 q30 -10 60 0 t60 0'},wind);
+      parts.push(tree,wind);
+    }
+    if(i>=1){
+      const roof=el('g',{},g);
+      el('rect',{x:34,y:112,width:132,height:8,fill:i>=4?'#1B2622':'#56625D'},roof);
+      if(i===1){el('line',{x1:42,y1:120,x2:42,y2:290,stroke:'#1B2622','stroke-width':3},roof);el('line',{x1:158,y1:120,x2:158,y2:290,stroke:'#1B2622','stroke-width':3},roof);}
+      parts.push(roof);
+    }
+    if(i>=2){
+      const walls=el('g',{},g);
+      el('rect',{x:46,y:120,width:112,height:170,fill:'#DFE5E0'},walls);
+      el('rect',{x:36,y:120,width:8,height:170,fill:'#1B2622'},walls);
+      if(i===2){el('line',{x1:158,y1:120,x2:158,y2:290,stroke:'#1B2622','stroke-width':3},walls);}
+      parts.push(walls);
+    }
+    if(i>=3){
+      const enc=el('g',{},g);
+      el('rect',{x:46,y:120,width:112,height:170,fill:i===3?'#F6EAD0':'#F2D9CE'},enc);
+      el('line',{x1:158,y1:120,x2:158,y2:290,stroke:'#1B2622','stroke-width':i===3?1.5:6},enc);
+      if(i===3){el('line',{x1:163,y1:120,x2:163,y2:290,stroke:'#1B2622','stroke-width':1},enc);el('line',{x1:36,y1:120,x2:36,y2:290,stroke:'#1B2622','stroke-width':1.5},enc);}
+      parts.push(enc);
+    }
+    if(i===4){
+      const mech=el('g',{},g);
+      el('rect',{x:112,y:128,width:34,height:18,fill:'#fff',stroke:'#1B2622','stroke-width':1},mech);
+      txt({x:129,y:141,'text-anchor':'middle','font-size':9},mech,'HRV');
+      el('path',{d:'M100 137 h8 m-3 -3 l3 3 l-3 3',stroke:'#C4613A','stroke-width':1.5,fill:'none'},mech);
+      el('path',{d:'M158 137 h-8 m3 -3 l-3 3 l3 3',stroke:'#6F8CA6','stroke-width':1.5,fill:'none'},mech);
+      el('rect',{x:30,y:112,width:6,height:178,fill:'#1B2622'},mech);
+      parts.push(mech);
+    }
+    const who = ['walk','walk','stand','sit','sit'][i];
+    const fig = el('g',{transform:'translate(92,254) scale(1.05)'},g); el('use',{href:'#fig-'+who},fig); parts.push(fig);
+    const lab=el('g',{},g);
+    el('rect',{x:30,y:316,width:140,height:6,fill:S[i]},lab);
+    txt({x:30,y:345,class:'lab','font-weight':700},lab,NAMES[i]);
+    const d=el('text',{x:30,y:364,class:'lab-2'},lab); d.textContent=DEFS[i];
+    if(DEFS[i].length>26){ d.textContent=''; const w=DEFS[i].split(', '); w.forEach((s,k)=>{const ts=el('tspan',{x:30,dy:k?16:0},d); ts.textContent=s+(k<w.length-1?',':'');}); }
+    parts.push(lab);
+    secParts.push(parts);
+  }
+})();
+function renderSections(p){
+  if(RM) p=1;
+  secParts.forEach((parts,i)=>{
+    const s0 = i*0.17;
+    parts.forEach((part,k)=>{
+      const o = seg(p, s0 + k*0.025, s0 + k*0.025 + 0.07);
+      part.setAttribute('opacity', o);
+      if(k>1 && k<parts.length-2){ part.setAttribute('transform', `translate(0,${(1-o)*-10})`); }
+    });
+  });
+}
+
+/* ---------- world D: the roadmap ---------- */
+const RMAP = {
+  gp1:{x:331, panel:[178,484], hx:95, bx:152, steps:[
+    {id:'observation', tag:'OBSERVATION', text:['Climate affect public life'], y:153, box:[128,226], tags:[]},
+    {id:'critique', tag:'CRITIQUE', text:['Challenging the uniform indoor','environmental control mode'], y:277, box:[250,348], tags:['Logical Argument']},
+    {id:'research', tag:'RESEARCH', text:['Establishing the relationship between','activities, climate, and space'], y:421, box:[388,518], tags:['Logical Argument','Case Study','Simulation','Interpretive']},
+    {id:'translation', tag:'TRANSLATION', text:['Converting performance requirements into','spatial decisions'], y:565, box:[532,660], tags:['Case Study','Simulation','Correlational']}
+  ]},
+  gp2:{x:861, panel:[708,1014], hx:1104, bx:1040, steps:[
+    {id:'experiment', tag:'EXPERIMENT', text:['Generate, compare, and validate','spatial options/scenarios.'], y:153, box:[128,226], tags:['Simulation','Qualitative']},
+    {id:'synthesis', tag:'ARCHITECTURAL SYNTHESIS', text:['Translate research into architectural','design'], y:273, box:[250,348], tags:['Logical Argument','Qualitative']},
+    {id:'open', tag:'OPEN ENDING', text:['From a Design Experiment to an','Evolvable Design Method'], y:417, box:[388,500], tags:['Logical Argument']}
+  ]}
+};
+const rm = { order:[], panels:{}, stepEls:{}, tagGroups:{}, tagIndex:{}, label:null, now:null };
+(function buildRoadmap(){
+  const svg=document.getElementById('rmsvg');
+  const F='Schibsted Grotesk, Arial, sans-serif';
+  const add=(e)=>{rm.order.push(e);return e;};
+  for(const col of ['gp1','gp2']){
+    const c=RMAP[col];
+    rm.panels[col]=el('rect',{x:c.panel[0],y:120,width:c.panel[1]-c.panel[0],height:553,fill:'#DCE5CC'});
+    svg.insertBefore(rm.panels[col], svg.firstChild);
+  }
+  for(const col of ['gp1','gp2']){
+    const c=RMAP[col];
+    const head=add(el('g',{},svg));
+    el('rect',{x:c.x-89,y:57,width:178,height:32,fill:'#9ED5B5'},head);
+    txt({x:c.x,y:79,'text-anchor':'middle','font-family':F,'font-size':20,'font-weight':700},head,col.toUpperCase());
+    if(col==='gp1'){ const t=add(el('g',{},svg)); el('rect',{x:60,y:248,width:70,height:20,fill:'#9ED5B5'},t); txt({x:95,y:263,'text-anchor':'middle','font-family':F,'font-size':13},t,'Tactics'); }
+    c.steps.forEach((s,i)=>{
+      const g=add(el('g',{},svg)); rm.stepEls[s.id]=g;
+      const w=s.tag.length*9.5+18;
+      el('rect',{x:c.x-w/2,y:s.y-15,width:w,height:21,fill:'#F0C987'},g);
+      txt({x:c.x,y:s.y,'text-anchor':'middle','font-family':F,'font-size':15,'letter-spacing':.5},g,s.tag);
+      s.text.forEach((line,k)=>txt({x:c.x,y:s.y+34+k*17,'text-anchor':'middle','font-family':F,'font-size':15},g,line));
+      if(i<c.steps.length-1 && col==='gp1'){
+        const y1=s.y+34+s.text.length*17+6, y2=c.steps[i+1].y-22;
+        const a=add(el('g',{stroke:'#1B2622','stroke-width':1.2,fill:'none'},svg));
+        el('line',{x1:c.x,y1:y1,x2:c.x,y2:y2-4,'stroke-dasharray':'1.5 4'},a);
+        el('path',{d:`M${c.x-5} ${y2-8} l5 5 l5 -5`},a);
+        if(i>0){ el('line',{x1:c.x+14,y1:y1+4,x2:c.x+14,y2:y2,'stroke-dasharray':'1.5 4'},a); el('path',{d:`M${c.x+9} ${y1+8} l5 -5 l5 5`},a); }
+      }
+      if(s.tags.length){
+        const tg=add(el('g',{},svg)); rm.tagGroups[s.id]=tg; rm.tagIndex[s.id]=rm.order.length-1;
+        const mid=s.y+34+(s.text.length-1)*8;
+        const top=mid-(s.tags.length-1)*13-9;
+        s.tags.forEach((t,k)=>{
+          const y=top+k*26;
+          el('rect',{x:c.hx-52,y:y-10,width:104,height:19,fill:'#F0C987'},tg);
+          txt({x:c.hx,y:y+4,'text-anchor':'middle','font-family':F,'font-size':12},tg,t);
+        });
+        if(s.tags.length>1) el('line',{x1:c.bx,y1:top-16,x2:c.bx,y2:top+(s.tags.length-1)*26+16,stroke:'#9AA7AE','stroke-width':1},tg);
+        const lx1 = col==='gp1' ? c.bx : c.panel[1]-14, lx2 = col==='gp1' ? c.panel[0]+26 : c.bx;
+        el('line',{x1:lx1,y1:mid,x2:lx2,y2:mid,stroke:'#9AA7AE','stroke-width':1,'stroke-dasharray':'1.5 4'},tg);
+      }
+    });
+  }
+  const conn=add(el('g',{stroke:'#1B2622','stroke-width':1.4,fill:'none'},svg));
+  el('rect',{x:518,y:605,width:8,height:8,fill:'#1B2622',stroke:'none'},conn);
+  el('path',{d:'M526 609 H598 V153 H684','stroke-dasharray':'2 4'},conn);
+  el('path',{d:'M678 147 l8 6 l-8 6'},conn);
+  rm.label=el('g',{opacity:0},svg);
+  txt({x:331,y:0,'text-anchor':'middle','font-family':F,'font-size':13,'font-weight':700,fill:'#2A7354','letter-spacing':1},rm.label,'CURRENT STAGE');
+  rm.now=el('g',{opacity:0},svg);
+  el('rect',{x:196,y:238,width:292,height:288,fill:'none',stroke:'#E0362C','stroke-width':3,'stroke-dasharray':'12 7'},rm.now);
+  const ct=el('text',{x:500,y:250,'font-family':F,'font-size':14,fill:'#E0362C','letter-spacing':.5},rm.now);
+  el('tspan',{x:500,dy:0},ct).textContent='CURRENT'; el('tspan',{x:500,dy:17},ct).textContent='STAGE';
+})();
+function setPanel(col, box, t){
+  const r=rm.panels[col];
+  r.setAttribute('y', lerp(120,box[0],t)); r.setAttribute('height', lerp(553,box[1]-box[0],t));
+}
+function renderRoadmap(beat,p){
+  if(RM) p=1;
+  const N=rm.order.length;
+  const build = beat==='method' ? seg(p,0,.42) : 1;
+  const bo=i=>clamp((build*1.15 - i/N)/.12);
+  rm.order.forEach((e,i)=>e.setAttribute('opacity', bo(i)));
+  let col=null, step=null, hl=0;
+  const slide = ease(seg(p,0,.12));   // the panel shrinks from the whole column to the lit step
+  if(beat==='critique'){ col='gp1'; step='critique'; hl=slide; }
+  else if(beat==='direction'){ col='gp1'; step='research'; hl=ease(seg(p,.66,.78)); }
+  else if(beat==='premises'||beat==='activity'||beat==='space'){ col='gp1'; step='research'; hl=1; }
+  else if(beat==='decision'||beat==='test'){ col='gp1'; step='translation'; hl=slide; }
+  else if(beat==='payoff'){ col='gp1'; step='research'; hl=slide; }
+  rm.now.setAttribute('opacity', beat==='method' ? seg(p,.68,.82) : 0);
+  const boxOf=(c,id)=>RMAP[c].steps.find(s=>s.id===id).box;
+  if(col){
+    setPanel(col, boxOf(col,step), hl);
+    const other = col==='gp1'?'gp2':'gp1';
+    rm.panels[other].setAttribute('opacity', 1-hl);
+    rm.panels[col].setAttribute('opacity', 1);
+    for(const id in rm.tagGroups){ rm.tagGroups[id].setAttribute('opacity', (id===step?1:1-.88*hl) * bo(rm.tagIndex[id])); }
+    const b=boxOf(col,step);
+    rm.label.setAttribute('opacity', 0); void b;
+  } else {
+    setPanel('gp1',[0,0],0); setPanel('gp2',[0,0],0);
+    rm.panels.gp1.setAttribute('opacity',1); rm.panels.gp2.setAttribute('opacity',1);
+    rm.label.setAttribute('opacity',0);
+  }
+}
+
+/* ---------- world B: the three fields ---------- */
+const C = { space:document.getElementById('c-space'), activity:document.getElementById('c-activity'), decision:document.getElementById('c-decision') };
+const T = { space:document.getElementById('t-space'), activity:document.getElementById('t-activity'), decision:document.getElementById('t-decision') };
+const STATES = {
+  seed:     { space:[398,174,0], activity:[311,312,0], decision:[487,312,0] },
+  venn:     { space:[398,174,108], activity:[311,312,108], decision:[487,312,108] },
+  apart:    { space:[400,205,96], activity:[262,392,96], decision:[538,392,96] },
+  fActivity:{ space:[118,86,48], activity:[400,300,252], decision:[682,86,48] },
+  fSpace:   { space:[400,300,252], activity:[118,86,48], decision:[682,86,48] },
+  fDecision:{ space:[118,86,48], activity:[682,86,48], decision:[400,300,252] }
+};
+const BSTATE = { direction:'venn', premises:'apart', activity:'fActivity', space:'fSpace', decision:'fDecision', test:'fDecision', payoff:'venn' };
+const BPREV  = { direction:'seed', premises:'venn', activity:'apart', space:'fActivity', decision:'fSpace', test:'fDecision', payoff:'fDecision' };
+const TRANGE = { direction:[0,.18], premises:[.18,.42], activity:[0,.28], space:[0,.28], decision:[.18,.44], test:[0,.1], payoff:[.18,.5] };
+
+/* Venn extras: rain, icons, arrows, centre label, satellites (positions traced from the drawing) */
+const vx = document.getElementById('venn-extra');
+(function buildVenn(){
+  const F='Schibsted Grotesk, Arial, sans-serif';
+  const rainG=document.getElementById('venn-rain');
+  for(let k=0;k<26;k++){ const x=258+k*11.5, y=4+(k%3)*16; el('line',{x1:x+4,y1:y,x2:x,y2:y+14},rainG); }
+  txt({x:398,y:112,'text-anchor':'middle',class:'lab','font-size':16},vx,'Climate Infrastructure');
+  txt({x:311,y:382,'text-anchor':'middle',class:'lab','font-size':16},vx,'Spatial Behavior');
+  const l3=el('text',{x:487,y:375,'text-anchor':'middle',class:'lab','font-size':16},vx);
+  el('tspan',{x:487,dy:0},l3).textContent='Inhabitable'; el('tspan',{x:487,dy:18},l3).textContent='Climate Threshold';
+  const ci=el('g',{stroke:'#3B4A50','stroke-width':2,fill:'none','stroke-linecap':'round'},vx);
+  for(let k=0;k<5;k++){ const x=362+k*18; el('line',{x1:x+3,y1:136,x2:x,y2:148},ci); }
+  el('rect',{x:355,y:160,width:86,height:9,fill:'#8E979B',stroke:'#3B4A50'},ci);
+  el('line',{x1:366,y1:169,x2:366,y2:202},ci); el('line',{x1:430,y1:169,x2:430,y2:202},ci);
+  el('rect',{x:386,y:186,width:24,height:4,fill:'#7B8F7B',stroke:'none'},ci); el('line',{x1:390,y1:190,x2:390,y2:202},ci); el('line',{x1:406,y1:190,x2:406,y2:202},ci);
+  el('line',{x1:356,y1:202,x2:440,y2:202},ci);
+  const sb=el('g',{stroke:'#1B2622','stroke-width':2,fill:'none','stroke-linecap':'round'},vx);
+  [[272,0],[302,0],[326,-4],[336,0],[346,-4]].forEach(([x,dy])=>{ el('circle',{cx:x,cy:298+dy,r:4,fill:'#1B2622',stroke:'none'},sb); el('line',{x1:x,y1:302+dy,x2:x,y2:322},sb); });
+  el('line',{x1:285,y1:308,x2:293,y2:308,'stroke-dasharray':'2 2'},sb);
+  el('path',{d:'M322 288 q14 -8 28 0',stroke:'#4C6B3C','stroke-width':1.5},sb);
+  el('line',{x1:268,y1:332,x2:354,y2:332},sb);
+  const th=el('g',{stroke:'#1B2622','stroke-width':2,fill:'none','stroke-linecap':'round'},vx);
+  el('line',{x1:452,y1:296,x2:456,y2:284},th); el('line',{x1:462,y1:292,x2:466,y2:280},th); el('line',{x1:474,y1:300,x2:478,y2:288},th);
+  el('rect',{x:474,y:302,width:22,height:32,fill:'#F7F8F7'},th); el('line',{x1:470,y1:302,x2:500,y2:302},th);
+  el('circle',{cx:485,cy:314,r:3,fill:'#1B2622',stroke:'none'},th); el('line',{x1:485,y1:317,x2:485,y2:330},th);
+  el('rect',{x:504,y:306,width:18,height:28,fill:'#ECEEEC'},th);
+  el('line',{x1:446,y1:334,x2:528,y2:334},th);
+  const ar=el('g',{stroke:'#1B2622','stroke-width':2.2,fill:'none','marker-start':'url(#ah)','marker-end':'url(#ah)'},vx);
+  el('line',{x1:340,y1:262,x2:368,y2:224},ar);
+  el('line',{x1:430,y1:224,x2:458,y2:262},ar);
+  el('line',{x1:368,y1:312,x2:430,y2:312},ar);
+  txt({x:330,y:232,'text-anchor':'middle','font-family':F,'font-size':13,'font-weight':700},vx,'host');
+  txt({x:470,y:232,'text-anchor':'middle','font-family':F,'font-size':13,'font-weight':700},vx,'support');
+  txt({x:399,y:336,'text-anchor':'middle','font-family':F,'font-size':13,'font-weight':700},vx,'derive');
+  txt({x:399,y:280,'text-anchor':'middle','font-family':F,'font-size':12,'font-weight':800,'letter-spacing':1.2},vx,'VERNACULAR');
+  txt({x:399,y:295,'text-anchor':'middle','font-family':F,'font-size':12,'font-weight':800,'letter-spacing':1.2},vx,'INTELLIGENCE');
+  const sat=(x,y,r,lines,ax1,ay1,ax2,ay2)=>{
+    const g=el('g',{},vx);
+    el('circle',{cx:x,cy:y,r:r,fill:'#F7F8F7',stroke:'#3B4A50','stroke-width':1.3},g);
+    const t=el('text',{x:x,y:y-(lines.length-1)*7+4,'text-anchor':'middle',class:'lab-2','font-size':12,fill:'#3B4A50'},g);
+    lines.forEach((s,k)=>{ el('tspan',{x:x,dy:k?14:0},t).textContent=s; });
+    el('line',{x1:ax1,y1:ay1,x2:ax2,y2:ay2,stroke:'#1B2622','stroke-width':2,'marker-start':'url(#ah)','marker-end':'url(#ah)'},g);
+  };
+  sat(211,155,46,['Architecture','framework'],262,157,286,166);
+  sat(676,310,46,['Thermal comfort','& tolerance'],600,312,626,312);
+  sat(311,493,40,['Activity'],311,424,311,450);
+})();
+
+function setCircle(k, s, big){
+  C[k].setAttribute('cx',s[0]); C[k].setAttribute('cy',s[1]); C[k].setAttribute('r',s[2]);
+  T[k].setAttribute('x',s[0]); T[k].setAttribute('y', big ? s[1]-s[2]+34 : s[1]+5);
+}
+function renderCircles(beat,p){
+  const [ta,tb]=TRANGE[beat];
+  const t = RM ? 1 : ease(seg(p,ta,tb));
+  const a = STATES[BPREV[beat]], b = STATES[BSTATE[beat]];
+  for(const k in C){
+    const s=[0,1,2].map(i=>lerp(a[k][i],b[k][i],t));
+    const big = BSTATE[beat].startsWith('f') && BSTATE[beat].toLowerCase().includes(k.slice(0,4));
+    setCircle(k,s,big);
+  }
+  const vennW = (beat==='direction'||beat==='payoff') ? t : beat==='premises' ? 1-t : 0;
+  vx.setAttribute('opacity', vennW);
+  document.getElementById('venn-rain').setAttribute('opacity', beat==='direction' ? vennW*seg(p,.14,.3) : beat==='premises' ? vennW : 0);
+  const dim = beat==='test' ? seg(p,.1,.24) : beat==='space' ? seg(p,.5,.62) : 0;
+  for(const k in C){
+    C[k].setAttribute('fill-opacity', lerp(.92,.72,vennW)-.8*dim);
+    C[k].setAttribute('stroke-opacity', 1-.85*dim);
+    const r=+C[k].getAttribute('r');
+    T[k].setAttribute('opacity', (r<4?0:1)*(1-vennW)*(1-dim));
+  }
+  const ovs = {premises:'ov-method', activity:'ov-activity', space:'ov-space', decision:'ov-decision', test:'ov-test', payoff:'ov-payoff'};
+  const gate = {premises:.44, activity:.18, space:.28, decision:.46, test:.24, payoff:.5};
+  for(const b in ovs){ document.getElementById(ovs[b]).classList.toggle('on', b===beat && (RM || p > gate[b]) && !(b==='space' && p>.56)); }
+  document.getElementById('ov-sketch').classList.toggle('on', beat==='space' && (RM || p>.6));
+  if(beat==='activity') renderActChart(p);
+  if(beat==='space'){ renderKit(p); renderSketch(p); }
+  if(beat==='test') renderResults(p);
+}
+
+/* ---------- activity chart ---------- */
+(function buildTicks(){
+  const g=document.getElementById('ticks');
+  for(let t=0;t<=30;t+=5){const x=40+t/30*400;el('line',{x1:x,y1:124,x2:x,y2:129,stroke:'#56625D'},g);txt({x:x,y:142,'text-anchor':'middle',fill:'#56625D','font-size':11},g,t);}
+  const X=t=>40+t/30*400;
+  const bo=document.querySelector('#band-orig rect'); bo.setAttribute('x',X(18)); bo.setAttribute('width',X(23)-X(18));
+  const bg=document.querySelector('#band-glas rect'); bg.setAttribute('x',X(10)); bg.setAttribute('width',X(18)-X(10));
+  const sl=document.querySelector('#shift-old line'); sl.setAttribute('x1',X(18)); sl.setAttribute('x2',X(22)-6);
+  document.querySelector('#shift-old polygon').setAttribute('points',`${X(22)},164 ${X(22)-8},159 ${X(22)-8},169`);
+})();
+function renderActChart(p){
+  if(RM) p=1;
+  document.getElementById('band-orig').setAttribute('opacity', seg(p,.22,.28));
+  document.getElementById('band-glas').setAttribute('opacity', seg(p,.3,.36));
+  document.getElementById('shift-old').setAttribute('opacity', seg(p,.38,.44));
+  document.getElementById('tol').setAttribute('opacity', seg(p,.46,.5));
+  const f = 1+1.5*ease(seg(p,.5,.62));
+  const w = 80*f; document.getElementById('tol-wide').setAttribute('x',180-w/2); document.getElementById('tol-wide').setAttribute('width',w);
+  document.getElementById('tol-txt').setAttribute('x',180+w/2+8); document.getElementById('tol-txt').textContent='×'+f.toFixed(1);
+  document.getElementById('met').setAttribute('opacity', seg(p,.64,.7));
+}
+
+/* ---------- space: kit-of-parts glyphs, then the sketches ---------- */
+const KIT = [
+  ['Veranda or arcade','rain shelter and a social edge','<rect x="10" y="22" width="60" height="5" fill="#56625D"/><line x1="16" y1="27" x2="16" y2="54" /><line x1="40" y1="27" x2="40" y2="54"/><line x1="64" y1="27" x2="64" y2="54"/><line x1="4" y1="54" x2="76" y2="54"/><rect x="70" y="27" width="6" height="27" fill="#1B2622"/>'],
+  ['Courtyard','a microclimate inside the block','<rect x="8" y="8" width="64" height="44" fill="none"/><rect x="24" y="20" width="32" height="20" fill="#A3BD8E" fill-opacity=".5"/><circle cx="40" cy="30" r="4" fill="#A3BD8E" stroke="none"/>'],
+  ['Thermal mass','heavy surfaces that hold warmth','<rect x="14" y="14" width="14" height="40" fill="#1B2622"/><path d="M34 24 q6 -4 12 0 t12 0" fill="none" stroke="#C4613A"/><path d="M34 34 q6 -4 12 0 t12 0" fill="none" stroke="#C4613A"/><line x1="4" y1="54" x2="76" y2="54"/>'],
+  ['Operable envelope','open it when the day allows','<rect x="10" y="12" width="60" height="42" fill="none"/><line x1="40" y1="12" x2="40" y2="54"/><path d="M40 12 l20 -8" /><path d="M40 54 l20 8"/>'],
+  ['Winter sun first','face the low sun, close the windward side (Hou 2025)','<circle cx="60" cy="16" r="6" fill="none" stroke="#D7B35E"/><path d="M54 22 l-20 18" stroke="#D7B35E" stroke-dasharray="2 3"/><rect x="10" y="24" width="6" height="30" fill="#1B2622"/><rect x="10" y="20" width="58" height="4" fill="#56625D"/><line x1="4" y1="54" x2="76" y2="54"/>'],
+  ['Translucent roof','light comes in, expectations stay outdoor (Hou 2025)','<rect x="10" y="18" width="60" height="4" fill="#56625D" fill-opacity=".4" stroke="#56625D"/><line x1="16" y1="22" x2="16" y2="54"/><line x1="64" y1="22" x2="64" y2="54"/><path d="M30 8 l-4 8 M40 8 l0 8 M50 8 l4 8" stroke="#D7B35E"/><line x1="4" y1="54" x2="76" y2="54"/>'],
+  ['Winter garden','a buffer room before the heated one (Lacaton and Vassal)','<rect x="8" y="18" width="30" height="36" fill="none" stroke-dasharray="3 2"/><rect x="38" y="18" width="34" height="36" fill="#F2D9CE"/><line x1="4" y1="54" x2="76" y2="54"/>'],
+  ['Canopy 3.0–5.0 m, depth to height about 7:10','City of Vancouver rain shelter guideline','<rect x="22" y="14" width="42" height="4" fill="#56625D"/><line x1="60" y1="18" x2="60" y2="54"/><path d="M10 20 v34 M6 26 l4 -6 l4 6 M6 48 l4 6 l4 -6" stroke="#56625D"/><path d="M22 8 h42 M24 4 l-2 4 l2 4 M62 4 l2 4 l-2 4" stroke="#56625D"/><line x1="4" y1="54" x2="76" y2="54"/>']
+];
+(function buildKit(){
+  const k=document.getElementById('kit');
+  KIT.forEach(([n,s,svg])=>{
+    const f=document.createElement('figure');
+    f.innerHTML=`<svg viewBox="0 0 80 64" fill="none" stroke="#1B2622" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${svg}</svg><figcaption>${n}<span>${s}</span></figcaption>`;
+    k.appendChild(f);
+  });
+})();
+function renderKit(p){
+  if(RM) p=1;
+  [...document.querySelectorAll('#kit figure')].forEach((f,i)=>f.classList.toggle('in', p > .28 + i*.025));
+}
+function renderSketch(p){
+  const w = RM ? 1 : ease(seg(p,.62,.92));
+  document.getElementById('sketch-img').style.clipPath = `inset(0 ${(1-w)*100}% 0 0)`;
+  const pen=document.getElementById('sketch-pen'); pen.style.left = (w*100)+'%'; pen.style.opacity = w>0&&w<1 ? .8 : 0;
+}
+
+/* ---------- decision: rules on the band ---------- */
+const RULES = [
+  {id:'R1',kind:'lit',s:'Activities that must stay dry: at least protected',basis:'City of Vancouver guidelines treat rain shelter as a design intent (canopies 3.0–5.0 m high, depth-to-height about 7:10).',ev:'Inferred',pins:[{w:1,su:1}]},
+  {id:'R2',kind:'lit',s:'Activities sensitive to wind: at least buffered',basis:'Toronto pedestrian wind criteria: sitting ≤ 10, standing ≤ 15, walking ≤ 20 km/h, each 80% of the time. Matching these limits to a stage is my own step.',ev:'Borrowed limits, inferred matching',pins:[{w:2,su:2}]},
+  {id:'R3',kind:'lit',s:'Seated activities: at least controlled in winter, at least tempered in summer',basis:'Mora and Bean: the adaptive model needs an outdoor mean of at least 10 °C, which Vancouver misses from November to April; Lau, Zhang: static activities need more warmth.',ev:'Inferred (winter); assumption (summer)',pins:[{w:4,su:3}]},
+  {id:'R4',kind:'lit',s:'Vigorous activities tolerate cooler conditions: tempered is enough',basis:'Zhang: the more intense the activity, the lower the neutral PET; Lau.',ev:'Supported in direction by the literature',pins:[{w:3,su:3}]},
+  {id:'R5',kind:'own',s:'Activities with hygiene, safety or precision needs (kitchen, exhibits, pool): controlled',basis:'Common sense; no source.',ev:'Assumption',pins:[{w:4,su:4}]},
+  {id:'R6',kind:'lit',s:'Activities for older adults and children: one stage higher, up to controlled',basis:'Lau: people over 75 prefer warmer conditions; Mora and Bean: ASHRAE 55 does not directly cover vulnerable groups.',ev:'Inferred',shift:true},
+  {id:'R7',kind:'own',s:'Indoor activities of medium intensity or above (gym, fitness, youth): at least tempered in winter, at least buffered in summer',basis:'My decision: dry floors, equipment, sportswear.',ev:'My decision; seasonal wording is an assumption',pins:[{w:3,su:2}]},
+  {id:'R8',kind:'own',s:'Undressing: washrooms at least tempered; changing rooms and showers at least controlled in winter, at least tempered in summer',basis:'My decision.',ev:'My decision; exact wording is an assumption',pins:[{label:'washrooms',w:3,su:3},{label:'changing, showers',w:4,su:3}]}
+];
+(function buildRules(){
+  const ol=document.getElementById('rules');
+  RULES.forEach((r,i)=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<button type="button" aria-pressed="false"><span class="rid">${r.id}</span><span class="stmt">${r.s}<span class="ev ${r.kind}">${r.ev}</span><span class="basis">${r.basis}</span></span></button>`;
+    li.querySelector('button').addEventListener('click',()=>{selectRule(i);});
+    ol.appendChild(li);
+  });
+  const svg=document.getElementById('band-segs');
+  S.forEach((c,i)=>{ el('rect',{x:i*120,y:40,width:118,height:26,fill:c,rx:2},svg); });
+  selectRule(0);
+})();
+function selectRule(i){
+  [...document.querySelectorAll('#rules li')].forEach((li,k)=>{li.classList.toggle('on',k===i);li.querySelector('button').setAttribute('aria-pressed',k===i);});
+  const r=RULES[i];
+  document.getElementById('selrule').innerHTML=`<b>${r.id}</b> ${r.s}`;
+  const g=document.getElementById('band-pins'); g.innerHTML='';
+  const cx=s=>s*120+59;
+  if(r.shift){
+    el('path',{d:'M60 28 H520 m-10 -8 l10 8 l-10 8',stroke:'#1B2622','stroke-width':1.5,fill:'none'},g);
+    txt({x:300,y:18,'text-anchor':'middle',class:'lab-2'},g,'one stage up from the activity’s own rule, up to controlled');
+    return;
+  }
+  r.pins.forEach((pin,k)=>{
+    el('polygon',{points:`${cx(pin.w)},38 ${cx(pin.w)-8},24 ${cx(pin.w)+8},24`,fill:'#1B2622'},g);
+    txt({x:cx(pin.w),y:16,'text-anchor':'middle',class:'lab-2'},g,pin.label||'winter');
+    el('polygon',{points:`${cx(pin.su)},68 ${cx(pin.su)-8},82 ${cx(pin.su)+8},82`,fill:'#F2F4F1',stroke:'#1B2622','stroke-width':1.5},g);
+    txt({x:cx(pin.su),y:98+(k?14:0),'text-anchor':'middle',class:'lab-2'},g,pin.label||'summer');
+  });
+}
+
+/* ---------- test: results bars ---------- */
+const RES = [['Unassigned space',[14,11,15,10],'lower is better'],['Sun exposure',[66,69,57,45],'higher is better'],['Gradient sequence',[70,71,69,68],'higher is better']];
+const resBars=[];
+(function buildResults(){
+  const svg=document.getElementById('ressvg');
+  const F='Schibsted Grotesk, Arial, sans-serif';
+  RES.forEach((m,mi)=>{
+    const y0=mi*96+12;
+    txt({x:0,y:y0+8,'font-size':12,'font-weight':700,'font-family':F},svg,m[0]);
+    txt({x:420,y:y0+8,'font-size':10,'text-anchor':'end','font-family':F,fill:'#56625D'},svg,m[2]);
+    m[1].forEach((v,oi)=>{
+      const y=y0+16+oi*16;
+      txt({x:0,y:y+10,'font-size':11,'font-family':F,fill:'#56625D'},svg,'ABCD'[oi]);
+      const r=el('rect',{x:16,y:y,height:11,width:0,fill: mi===0?'#6F8CA6': mi===1?'#D7B35E':'#A3BD8E'},svg);
+      const vt=txt({x:20,y:y+10,'font-size':10,'font-family':F},svg,v+'%');
+      resBars.push({r,vt,v});
+    });
+  });
+})();
+function renderResults(p){
+  const t = RM ? 1 : ease(seg(p,.26,.5));
+  resBars.forEach(b=>{ const w=b.v/100*360*t; b.r.setAttribute('width',w); b.vt.setAttribute('x',20+w); });
+}
+
+/* ---------- conductor ---------- */
+const beats=[...document.querySelectorAll('.beat')].map(e=>({id:e.dataset.beat,step:e.dataset.step,el:e}));
+const LAYER={wall:'L-wall',sections:'L-sections',roadmap:'L-roadmap',circles:'L-circles'};
+function layerMix(beat,p){
+  const m={wall:0,sections:0,roadmap:0,circles:0};
+  if(beat==='problem'||beat==='thesis') m.wall=1;
+  else if(beat==='method') m.roadmap=1;                                              // PDF p5-6: the whole diagram, then the dashed current-stage box
+  else if(beat==='critique'){ const k=seg(p,.2,.26); m.roadmap=1-k; m.sections=k; }  // p7: Critique lit, then p8-9
+  else if(beat==='direction'){ const k=seg(p,.62,.7); m.circles=1-k; m.roadmap=k; }   // p11 comes in early, while the Direction text is still on screen
+  else if(beat==='premises'){ const k=seg(p,.1,.17); m.roadmap=1-k; m.circles=k; }    // ...and hands over to the three fields as the Premises text arrives
+  else if(beat==='activity'||beat==='space'||beat==='test') m.circles=1;
+  else { const k=seg(p,.14,.2); m.roadmap=1-k; m.circles=k; }                        // decision (p17), payoff: the diagram comes back with the step lit
+  return m;
+}
+function conduct(){
+  const vh=innerHeight, anchor=vh*0.5;
+  let active=null,p=0;
+  for(const b of beats){const r=b.el.getBoundingClientRect(); if(r.top<=anchor && r.bottom>anchor){active=b;p=(anchor-r.top)/r.height;break;}}
+  if(!active){ const lastB=beats[beats.length-1]; if(lastB.el.getBoundingClientRect().bottom<=anchor){active=lastB;p=1;} }
+  render(active,p);
+}
+const marks=[...document.querySelectorAll('mark.hl')];
+function renderMarks(){
+  const line=innerHeight*0.68;
+  for(const m of marks){ const r=m.getBoundingClientRect(); m.style.setProperty('--k', seg(line - r.top, 0, 110).toFixed(3)); }
+}
+function render(active,p){
+  renderMarks(); renderStrip();
+  const m = active ? layerMix(active.id,p) : {wall:0,sections:0,roadmap:0,circles:0};
+  for(const w in LAYER){ const L=document.getElementById(LAYER[w]); L.style.opacity=m[w]; L.classList.toggle('live', m[w]>.5); }
+  document.querySelectorAll('.rail li').forEach(li=>li.classList.toggle('on', !!active && li.dataset.step===active.step));
+  if(!active) return;
+  if(m.wall) renderWall(active.id,p);
+  if(m.sections) renderSections(seg(p,.24,.6));   // all five assembled by the time the stage list reaches mid-screen (p~.6)
+  if(m.roadmap) renderRoadmap(active.id,p);
+  if(m.circles) renderCircles(active.id,p);
+}
+addEventListener('scroll',conduct,{passive:true});   // scroll events already arrive at most once per frame; no rAF gate, so a hidden tab never gets stuck
+addEventListener('resize',()=>requestAnimationFrame(conduct));
+document.fonts && document.fonts.ready.then(conduct);
+conduct();
+</script>
+</body>
+</html>

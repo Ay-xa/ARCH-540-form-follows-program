@@ -1,0 +1,14 @@
+ARCH 548 GP1 - Assignment 3, Progress Review 1
+Ayden He (hhe34@student.ubc.ca) - 28 October 2026
+
+Just Enough: conditioning as a calibrated gradient of climatic protection
+
+Web version of the presentation:
+
+https://claude.ai/artifact/DaftdihfHwQyDw2pnBfhSr
+
+How to view
+- Open the link in a desktop browser (Chrome or Edge), full screen. An internet connection is needed for the fonts.
+- The page is one continuous scroll. Scroll slowly: the diagrams on the right are driven by scroll position and build up as the text passes.
+
+
