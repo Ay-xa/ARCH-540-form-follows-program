@@ -7,12 +7,12 @@
 
 | 要看什么 | 位置 |
 |---|---|
-| **工具本身**（form follows program，六步：选功能 → 面积与净高 → 选场地 → 体块推演 → 确认体块与功能 → 效果展示） | `02_Prototypes/Version_01/index.html`。直接用浏览器打开即可；需要联网（three.js、anime.js 从 CDN 加载，场地数据查温哥华开放数据）。开了 GitHub Pages 后网址是 `https://<用户名>.github.io/<仓库名>/02_Prototypes/Version_01/` |
+| **工具本身**（form follows program，六步：选功能 → 面积与净高 → 选场地 → 体块推演 → 确认体块与功能 → 效果展示） | `02_Prototypes/Version_01/index.html`。直接用浏览器打开即可；需要联网（three.js、anime.js 从 CDN 加载，场地数据查温哥华开放数据）。在线版（GitHub Pages）：https://ay-xa.github.io/ARCH-540-form-follows-program/02_Prototypes/Version_01/ |
 | 工具的用法和每一步做了什么 | `02_Prototypes/Version_01/README.md` |
 | 规则与功能库（阶段规则、排布准则、功能库） | `02_Prototypes/_shared/Rules/` |
 | 研究策略（thesis 的方向标） | `01_Research/Research_Strategy.md` |
 | 文献笔记、案例流线归纳 | `01_Research/`（`Circulation_Patterns.md` 等） |
-| GP1 Progress Review #1 的网页版与讲稿 | `04_Presentation/web/index.html`、`04_Presentation/GP1_Progress_Review_1_*.md` |
+| GP1 Progress Review #1 的网页版与讲稿 | `04_Presentation/web/index.html`（在线版：https://ay-xa.github.io/ARCH-540-form-follows-program/04_Presentation/web/ ）、`04_Presentation/GP1_Progress_Review_1_*.md` |
 | 过程截图 | `04_Presentation/screenshots/` |
 | 工具逻辑草稿、逐步记录 | `Tool_Logic_Draft_v2.md`、`Architecture_Massing_Level_Space_Program.md` |
 
